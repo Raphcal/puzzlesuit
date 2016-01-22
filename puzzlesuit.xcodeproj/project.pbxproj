@@ -1,0 +1,392 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		643C245C1C52D466003ACE44 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643C245B1C52D466003ACE44 /* AppDelegate.swift */; };
+		643C245E1C52D466003ACE44 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643C245D1C52D466003ACE44 /* ViewController.swift */; };
+		643C24601C52D466003ACE44 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 643C245F1C52D466003ACE44 /* Assets.xcassets */; };
+		643C24631C52D466003ACE44 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 643C24611C52D466003ACE44 /* Main.storyboard */; };
+		643C246E1C52D466003ACE44 /* puzzlesuitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643C246D1C52D466003ACE44 /* puzzlesuitTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		643C246A1C52D466003ACE44 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 643C24501C52D466003ACE44 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 643C24571C52D466003ACE44;
+			remoteInfo = puzzlesuit;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		643C24581C52D466003ACE44 /* puzzlesuit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = puzzlesuit.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		643C245B1C52D466003ACE44 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		643C245D1C52D466003ACE44 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		643C245F1C52D466003ACE44 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		643C24621C52D466003ACE44 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		643C24641C52D466003ACE44 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		643C24691C52D466003ACE44 /* puzzlesuitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = puzzlesuitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		643C246D1C52D466003ACE44 /* puzzlesuitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = puzzlesuitTests.swift; sourceTree = "<group>"; };
+		643C246F1C52D466003ACE44 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		643C24551C52D466003ACE44 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		643C24661C52D466003ACE44 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		643C244F1C52D466003ACE44 = {
+			isa = PBXGroup;
+			children = (
+				643C245A1C52D466003ACE44 /* puzzlesuit */,
+				643C246C1C52D466003ACE44 /* puzzlesuitTests */,
+				643C24591C52D466003ACE44 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		643C24591C52D466003ACE44 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				643C24581C52D466003ACE44 /* puzzlesuit.app */,
+				643C24691C52D466003ACE44 /* puzzlesuitTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		643C245A1C52D466003ACE44 /* puzzlesuit */ = {
+			isa = PBXGroup;
+			children = (
+				643C245B1C52D466003ACE44 /* AppDelegate.swift */,
+				643C245D1C52D466003ACE44 /* ViewController.swift */,
+				643C245F1C52D466003ACE44 /* Assets.xcassets */,
+				643C24611C52D466003ACE44 /* Main.storyboard */,
+				643C24641C52D466003ACE44 /* Info.plist */,
+			);
+			path = puzzlesuit;
+			sourceTree = "<group>";
+		};
+		643C246C1C52D466003ACE44 /* puzzlesuitTests */ = {
+			isa = PBXGroup;
+			children = (
+				643C246D1C52D466003ACE44 /* puzzlesuitTests.swift */,
+				643C246F1C52D466003ACE44 /* Info.plist */,
+			);
+			path = puzzlesuitTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		643C24571C52D466003ACE44 /* puzzlesuit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 643C24721C52D466003ACE44 /* Build configuration list for PBXNativeTarget "puzzlesuit" */;
+			buildPhases = (
+				643C24541C52D466003ACE44 /* Sources */,
+				643C24551C52D466003ACE44 /* Frameworks */,
+				643C24561C52D466003ACE44 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = puzzlesuit;
+			productName = puzzlesuit;
+			productReference = 643C24581C52D466003ACE44 /* puzzlesuit.app */;
+			productType = "com.apple.product-type.application";
+		};
+		643C24681C52D466003ACE44 /* puzzlesuitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 643C24751C52D466003ACE44 /* Build configuration list for PBXNativeTarget "puzzlesuitTests" */;
+			buildPhases = (
+				643C24651C52D466003ACE44 /* Sources */,
+				643C24661C52D466003ACE44 /* Frameworks */,
+				643C24671C52D466003ACE44 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				643C246B1C52D466003ACE44 /* PBXTargetDependency */,
+			);
+			name = puzzlesuitTests;
+			productName = puzzlesuitTests;
+			productReference = 643C24691C52D466003ACE44 /* puzzlesuitTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		643C24501C52D466003ACE44 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0720;
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = "Raphaël Calabro";
+				TargetAttributes = {
+					643C24571C52D466003ACE44 = {
+						CreatedOnToolsVersion = 7.2;
+					};
+					643C24681C52D466003ACE44 = {
+						CreatedOnToolsVersion = 7.2;
+						TestTargetID = 643C24571C52D466003ACE44;
+					};
+				};
+			};
+			buildConfigurationList = 643C24531C52D466003ACE44 /* Build configuration list for PBXProject "puzzlesuit" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 643C244F1C52D466003ACE44;
+			productRefGroup = 643C24591C52D466003ACE44 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				643C24571C52D466003ACE44 /* puzzlesuit */,
+				643C24681C52D466003ACE44 /* puzzlesuitTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		643C24561C52D466003ACE44 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				643C24601C52D466003ACE44 /* Assets.xcassets in Resources */,
+				643C24631C52D466003ACE44 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		643C24671C52D466003ACE44 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		643C24541C52D466003ACE44 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				643C245E1C52D466003ACE44 /* ViewController.swift in Sources */,
+				643C245C1C52D466003ACE44 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		643C24651C52D466003ACE44 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				643C246E1C52D466003ACE44 /* puzzlesuitTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		643C246B1C52D466003ACE44 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 643C24571C52D466003ACE44 /* puzzlesuit */;
+			targetProxy = 643C246A1C52D466003ACE44 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		643C24611C52D466003ACE44 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				643C24621C52D466003ACE44 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		643C24701C52D466003ACE44 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		643C24711C52D466003ACE44 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		643C24731C52D466003ACE44 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = puzzlesuit/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = fr.rca.puzzlesuit;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		643C24741C52D466003ACE44 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = puzzlesuit/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = fr.rca.puzzlesuit;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		643C24761C52D466003ACE44 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = puzzlesuitTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = fr.rca.puzzlesuitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/puzzlesuit.app/Contents/MacOS/puzzlesuit";
+			};
+			name = Debug;
+		};
+		643C24771C52D466003ACE44 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = puzzlesuitTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = fr.rca.puzzlesuitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/puzzlesuit.app/Contents/MacOS/puzzlesuit";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		643C24531C52D466003ACE44 /* Build configuration list for PBXProject "puzzlesuit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				643C24701C52D466003ACE44 /* Debug */,
+				643C24711C52D466003ACE44 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		643C24721C52D466003ACE44 /* Build configuration list for PBXNativeTarget "puzzlesuit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				643C24731C52D466003ACE44 /* Debug */,
+				643C24741C52D466003ACE44 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		643C24751C52D466003ACE44 /* Build configuration list for PBXNativeTarget "puzzlesuitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				643C24761C52D466003ACE44 /* Debug */,
+				643C24771C52D466003ACE44 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 643C24501C52D466003ACE44 /* Project object */;
+}
