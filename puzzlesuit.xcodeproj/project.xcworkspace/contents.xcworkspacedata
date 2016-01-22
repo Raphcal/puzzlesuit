@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:puzzlesuit.xcodeproj">
+      location = "self:PuzzleSuit.xcodeproj">
    </FileRef>
 </Workspace>
