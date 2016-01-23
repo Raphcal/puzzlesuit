@@ -11,9 +11,7 @@ import Cocoa
 class KeyboardListener: NSWindowController {
     
     override func awakeFromNib() {
-        if let delegate = NSApplication.sharedApplication().delegate as? AppDelegate {
-            delegate.window = self.window
-        }
+        (NSApplication.sharedApplication().delegate as? AppDelegate)?.window = self.window
     }
     
     override func keyDown(theEvent: NSEvent) {

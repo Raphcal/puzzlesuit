@@ -10,7 +10,7 @@ import Foundation
 
 @objc protocol Scene {
     
-    var director : Director? { get set }
+    var director : Director! { get set }
     var backgroundColor : Color { get set }
     
     /// Chargement initial de la scène. Appelé lors d'une transition vers cette scène.
@@ -52,7 +52,7 @@ class NoFade : NSObject, Fade {
     var progress : Float = 1
     var previousScene : Scene = EmptyScene()
     var nextScene : Scene = EmptyScene()
-    var director : Director? = nil
+    var director : Director!
     var backgroundColor = Color()
     
     func draw() {

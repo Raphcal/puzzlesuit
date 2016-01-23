@@ -33,13 +33,11 @@ class View : NSObject {
     /// Zoom général de la vue.
     var zoom : GLfloat = 1
     
-    var factory : SpriteFactory?
-    
-    init(factory: SpriteFactory? = nil) {
-        let screenWidth: GLfloat = 320
-        let screenHeight: GLfloat = 240
+    override init() {
+        let screenWidth: GLfloat = 640
+        let screenHeight: GLfloat = 480
         
-        self.width = 384
+        self.width = 320
         self.ratio = width / screenWidth
         self.height = screenHeight * ratio
     }
@@ -51,17 +49,6 @@ class View : NSObject {
         #else
             glOrtho(0, GLdouble(zoomedWidth), 0, GLdouble(zoomedHeight), -1, 1)
         #endif
-        
-        // TODO: Utiliser autre chose que factory pour pouvoir gérer les objets Text.
-        if let factory = self.factory {
-            for sprite in factory.sprites {
-                sprite.width = GLfloat(sprite.animation.frame.width) * zoom
-                sprite.height = GLfloat(sprite.animation.frame.height) * zoom
-                // TODO: Changer les positions Y
-                // sprite.y =
-                factory.updateLocationOfSprite(sprite)
-            }
-        }
     }
     
     func updateViewWithBounds(bounds: CGRect) {

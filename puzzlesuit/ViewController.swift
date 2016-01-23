@@ -11,13 +11,14 @@ import OpenGL.GL
 
 class ViewController: NSViewController {
 
+    @IBOutlet weak var gameView : GameView!
+    let director = Director()
+    
     override var representedObject: AnyObject? {
         didSet {
             // Update the view, if already loaded.
         }
     }
-    
-    @IBOutlet weak var gameView : GameView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +38,9 @@ class ViewController: NSViewController {
         
         glEnableClientState(GLenum(GL_VERTEX_ARRAY))
         glEnableClientState(GLenum(GL_TEXTURE_COORD_ARRAY))
+        
+        gameView.director = director
+        director.start()
         
         gameView.initializeDisplayLink()
     }

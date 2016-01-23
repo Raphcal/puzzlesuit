@@ -13,7 +13,7 @@ class FadeScene : NSObject, Fade {
     let halfProgress : GLfloat = 0.5
     let fullProgress : GLfloat = 1
     
-    var director : Director?
+    var director : Director!
     var backgroundColor : Color = Color()
     
     var previousScene : Scene = EmptyScene()
@@ -51,7 +51,7 @@ class FadeScene : NSObject, Fade {
         self.progress = min(GLfloat(time / duration), fullProgress)
         
         if !firstScene && progress >= fullProgress {
-            director!.nextScene = nextScene
+            director.nextScene = nextScene
             
         } else if firstScene && progress >= halfProgress {
             firstScene = false

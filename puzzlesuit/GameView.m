@@ -77,22 +77,6 @@
     View *view = [View instance];
     [view updateViewWithBounds:bounds];
     [view applyZoom];
-    
-//    [Camera instance].width = bounds.size.width;
-//    [Camera instance].height = bounds.size.height;
-    
-    // Redimensionnement du fond
-//    static BOOL done = NO;
-//    if (!done) {
-//        View *view = [View instance];
-//        [view updateViewWithBounds:bounds];
-//        
-//        GLint dim[2] = {view.width, view.height};
-//        CGLSetParameter(self.openGLContext.CGLContextObj, kCGLCPSurfaceBackingSize, dim);
-//        CGLEnable (self.openGLContext.CGLContextObj, kCGLCESurfaceBackingSize);
-//        [[self openGLContext] update];
-//        done = YES;
-//    }
 
     CGLUnlockContext([[self openGLContext] CGLContextObj]);
 }

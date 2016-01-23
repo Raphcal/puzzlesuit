@@ -47,6 +47,9 @@
 		643C24C61C52D709003ACE44 /* Resources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643C24C51C52D709003ACE44 /* Resources.swift */; };
 		643C24CA1C52D759003ACE44 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643C24C91C52D759003ACE44 /* Grid.swift */; };
 		643C24D31C52D990003ACE44 /* ReferencePool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643C24D21C52D990003ACE44 /* ReferencePool.swift */; };
+		645E5EC61C54267700E29345 /* atlas.png in Resources */ = {isa = PBXBuildFile; fileRef = 645E5EC41C54267700E29345 /* atlas.png */; };
+		645E5EC71C54267700E29345 /* atlas.sprites in Resources */ = {isa = PBXBuildFile; fileRef = 645E5EC51C54267700E29345 /* atlas.sprites */; };
+		645E5EC91C54272900E29345 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 645E5EC81C54272900E29345 /* GameScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -108,6 +111,9 @@
 		643C24C51C52D709003ACE44 /* Resources.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Resources.swift; sourceTree = "<group>"; };
 		643C24C91C52D759003ACE44 /* Grid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		643C24D21C52D990003ACE44 /* ReferencePool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferencePool.swift; sourceTree = "<group>"; };
+		645E5EC41C54267700E29345 /* atlas.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = atlas.png; sourceTree = "<group>"; };
+		645E5EC51C54267700E29345 /* atlas.sprites */ = {isa = PBXFileReference; lastKnownFileType = file; path = atlas.sprites; sourceTree = "<group>"; };
+		645E5EC81C54272900E29345 /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,11 +156,12 @@
 			isa = PBXGroup;
 			children = (
 				643C24CB1C52D763003ACE44 /* Audio */,
+				645E5EC31C54265900E29345 /* Data */,
 				643C24D01C52D8A5003ACE44 /* Draw */,
 				643C24CE1C52D7F4003ACE44 /* Input */,
 				643C24C81C52D72E003ACE44 /* Map */,
 				643C24D11C52D8C3003ACE44 /* Math */,
-				643C24CC1C52D783003ACE44 /* Resource */,
+				643C24CC1C52D783003ACE44 /* IO */,
 				643C24CD1C52D7C7003ACE44 /* Scene */,
 				643C24C71C52D70D003ACE44 /* Sprite */,
 				643C24CF1C52D87B003ACE44 /* UI */,
@@ -189,6 +196,7 @@
 				643C24C31C52D6F4003ACE44 /* Definition.swift */,
 				643C248D1C52D6D0003ACE44 /* Direction.swift */,
 				643C24991C52D6D0003ACE44 /* Motion.swift */,
+				643C24D21C52D990003ACE44 /* ReferencePool.swift */,
 				643C24921C52D6D0003ACE44 /* Hitbox.swift */,
 				643C249F1C52D6D0003ACE44 /* Sprite.swift */,
 				643C24A01C52D6D0003ACE44 /* SpriteFactory.swift */,
@@ -217,15 +225,12 @@
 			name = Audio;
 			sourceTree = "<group>";
 		};
-		643C24CC1C52D783003ACE44 /* Resource */ = {
+		643C24CC1C52D783003ACE44 /* IO */ = {
 			isa = PBXGroup;
 			children = (
-				643C24901C52D6D0003ACE44 /* EventBus.swift */,
-				643C24D21C52D990003ACE44 /* ReferencePool.swift */,
-				643C24C51C52D709003ACE44 /* Resources.swift */,
 				643C24A11C52D6D0003ACE44 /* Streams.swift */,
 			);
-			name = Resource;
+			name = IO;
 			sourceTree = "<group>";
 		};
 		643C24CD1C52D7C7003ACE44 /* Scene */ = {
@@ -233,9 +238,11 @@
 			children = (
 				643C248A1C52D6D0003ACE44 /* Camera.swift */,
 				643C248E1C52D6D0003ACE44 /* Director.swift */,
+				643C24901C52D6D0003ACE44 /* EventBus.swift */,
 				643C249E1C52D6D0003ACE44 /* Scene.swift */,
 				643C248F1C52D6D0003ACE44 /* EmptyScene.swift */,
 				643C24911C52D6D0003ACE44 /* FadeScene.swift */,
+				645E5EC81C54272900E29345 /* GameScene.swift */,
 			);
 			name = Scene;
 			sourceTree = "<group>";
@@ -264,6 +271,7 @@
 			isa = PBXGroup;
 			children = (
 				643C24801C52D615003ACE44 /* Draws.swift */,
+				643C24C51C52D709003ACE44 /* Resources.swift */,
 				643C24A21C52D6D0003ACE44 /* SurfaceArray.h */,
 				643C24A31C52D6D0003ACE44 /* SurfaceArray.m */,
 				643C24A41C52D6D0003ACE44 /* Surfaces.swift */,
@@ -278,6 +286,15 @@
 				643C249D1C52D6D0003ACE44 /* Random.swift */,
 			);
 			name = Math;
+			sourceTree = "<group>";
+		};
+		645E5EC31C54265900E29345 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				645E5EC41C54267700E29345 /* atlas.png */,
+				645E5EC51C54267700E29345 /* atlas.sprites */,
+			);
+			name = Data;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -362,6 +379,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				643C24601C52D466003ACE44 /* Assets.xcassets in Resources */,
+				645E5EC61C54267700E29345 /* atlas.png in Resources */,
+				645E5EC71C54267700E29345 /* atlas.sprites in Resources */,
 				643C24631C52D466003ACE44 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -400,6 +419,7 @@
 				643C245E1C52D466003ACE44 /* ViewController.swift in Sources */,
 				643C24B41C52D6D0003ACE44 /* Map.swift in Sources */,
 				643C24C01C52D6D0003ACE44 /* SurfaceArray.m in Sources */,
+				645E5EC91C54272900E29345 /* GameScene.swift in Sources */,
 				643C24861C52D615003ACE44 /* KeyboardListener.swift in Sources */,
 				643C24AF1C52D6D0003ACE44 /* FadeScene.swift in Sources */,
 				643C24851C52D615003ACE44 /* GameView.m in Sources */,

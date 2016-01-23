@@ -11,8 +11,8 @@ import Foundation
 /// Scène vide.
 class EmptyScene : NSObject, Scene {
     
-    var director : Director?
-    var backgroundColor : Color = Color()
+    var director : Director!
+    var backgroundColor = Color()
     
     func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval) {
         // Pas de mise à jour.

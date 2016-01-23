@@ -15,21 +15,19 @@ class Director : NSObject {
     static let halfProgress : Float = 0.5
     
     static let audio : Audio = OpenALAudio()
+    static let operationQueue = NSOperationQueue()
     
     var scene : Scene = EmptyScene()
     var nextScene : Scene?
+    var preloadedScene : PreloadableScene?
     
     var fade : Fade = NoFade()
-    
-    let operationQueue = NSOperationQueue()
-    var preloadedScene : PreloadableScene?
     
     func start() {
         View.instance.applyZoom()
         
-        // gameCenter.authenticate()
-        
         self.fade = FadeScene()
+        self.scene = GameScene()
         scene.director = self
         fade.director = self
         scene.load?()
@@ -81,11 +79,11 @@ class Director : NSObject {
     func preload(scene: PreloadableScene) {
         self.preloadedScene = scene
         
-        scene.loadInBackground(operationQueue)
+        scene.loadInBackground(Director.operationQueue)
     }
     
     func waitAndSwitchToPreloadedScene() {
-        operationQueue.waitUntilAllOperationsAreFinished()
+        Director.operationQueue.waitUntilAllOperationsAreFinished()
         
         if preloadedScene != nil {
             self.nextScene = preloadedScene
@@ -95,7 +93,7 @@ class Director : NSObject {
     
     func cancelPreloading() {
         if let preloadedScene = self.preloadedScene {
-            operationQueue.cancelAllOperations()
+            Director.operationQueue.cancelAllOperations()
             preloadedScene.unload?()
             self.preloadedScene = nil
         }
