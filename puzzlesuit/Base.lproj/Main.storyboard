@@ -670,9 +670,23 @@
             <objects>
                 <viewController id="XfG-lQ-9wD" customClass="ViewController" customModule="PuzzleSuit" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="m2S-Jp-Qdl">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="240"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <openGLView useAuxiliaryDepthBufferStencil="NO" allowOffline="YES" translatesAutoresizingMaskIntoConstraints="NO" id="x3Y-bl-llV" customClass="GameView">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="240"/>
+                            </openGLView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="x3Y-bl-llV" secondAttribute="trailing" id="64D-1M-Y8g"/>
+                            <constraint firstAttribute="bottom" secondItem="x3Y-bl-llV" secondAttribute="bottom" id="AiQ-ff-w4E"/>
+                            <constraint firstItem="x3Y-bl-llV" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="Hn6-s6-ehN"/>
+                            <constraint firstItem="x3Y-bl-llV" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="d3A-4N-EmH"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="gameView" destination="x3Y-bl-llV" id="ftw-77-GbL"/>
+                    </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
