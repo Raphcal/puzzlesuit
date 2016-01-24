@@ -50,6 +50,8 @@
 		645E5EC61C54267700E29345 /* atlas.png in Resources */ = {isa = PBXBuildFile; fileRef = 645E5EC41C54267700E29345 /* atlas.png */; };
 		645E5EC71C54267700E29345 /* atlas.sprites in Resources */ = {isa = PBXBuildFile; fileRef = 645E5EC51C54267700E29345 /* atlas.sprites */; };
 		645E5EC91C54272900E29345 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 645E5EC81C54272900E29345 /* GameScene.swift */; };
+		64F517A91C556E3D006FB2AE /* PlayerMotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64F517A81C556E3D006FB2AE /* PlayerMotion.swift */; };
+		64F517AB1C556F8F006FB2AE /* GameGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64F517AA1C556F8F006FB2AE /* GameGrid.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -114,6 +116,8 @@
 		645E5EC41C54267700E29345 /* atlas.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = atlas.png; sourceTree = "<group>"; };
 		645E5EC51C54267700E29345 /* atlas.sprites */ = {isa = PBXFileReference; lastKnownFileType = file; path = atlas.sprites; sourceTree = "<group>"; };
 		645E5EC81C54272900E29345 /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		64F517A81C556E3D006FB2AE /* PlayerMotion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerMotion.swift; sourceTree = "<group>"; };
+		64F517AA1C556F8F006FB2AE /* GameGrid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameGrid.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,11 +165,13 @@
 				643C24CE1C52D7F4003ACE44 /* Input */,
 				643C24C81C52D72E003ACE44 /* Map */,
 				643C24D11C52D8C3003ACE44 /* Math */,
+				64F517A71C556DEF006FB2AE /* Motion */,
 				643C24CC1C52D783003ACE44 /* IO */,
 				643C24CD1C52D7C7003ACE44 /* Scene */,
 				643C24C71C52D70D003ACE44 /* Sprite */,
 				643C24CF1C52D87B003ACE44 /* UI */,
 				643C245B1C52D466003ACE44 /* AppDelegate.swift */,
+				64F517AA1C556F8F006FB2AE /* GameGrid.swift */,
 				643C24811C52D615003ACE44 /* GameView.h */,
 				643C24821C52D615003ACE44 /* GameView.m */,
 				643C245D1C52D466003ACE44 /* ViewController.swift */,
@@ -195,7 +201,6 @@
 				643C248C1C52D6D0003ACE44 /* Counter.swift */,
 				643C24C31C52D6F4003ACE44 /* Definition.swift */,
 				643C248D1C52D6D0003ACE44 /* Direction.swift */,
-				643C24991C52D6D0003ACE44 /* Motion.swift */,
 				643C24D21C52D990003ACE44 /* ReferencePool.swift */,
 				643C24921C52D6D0003ACE44 /* Hitbox.swift */,
 				643C249F1C52D6D0003ACE44 /* Sprite.swift */,
@@ -295,6 +300,15 @@
 				645E5EC51C54267700E29345 /* atlas.sprites */,
 			);
 			name = Data;
+			sourceTree = "<group>";
+		};
+		64F517A71C556DEF006FB2AE /* Motion */ = {
+			isa = PBXGroup;
+			children = (
+				643C24991C52D6D0003ACE44 /* Motion.swift */,
+				64F517A81C556E3D006FB2AE /* PlayerMotion.swift */,
+			);
+			name = Motion;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -416,6 +430,7 @@
 				643C24B01C52D6D0003ACE44 /* Hitbox.swift in Sources */,
 				643C24C11C52D6D0003ACE44 /* Surfaces.swift in Sources */,
 				643C24AE1C52D6D0003ACE44 /* EventBus.swift in Sources */,
+				64F517AB1C556F8F006FB2AE /* GameGrid.swift in Sources */,
 				643C245E1C52D466003ACE44 /* ViewController.swift in Sources */,
 				643C24B41C52D6D0003ACE44 /* Map.swift in Sources */,
 				643C24C01C52D6D0003ACE44 /* SurfaceArray.m in Sources */,
@@ -428,6 +443,7 @@
 				643C24AB1C52D6D0003ACE44 /* Direction.swift in Sources */,
 				643C24B71C52D6D0003ACE44 /* Motion.swift in Sources */,
 				643C24A71C52D6D0003ACE44 /* Audio.m in Sources */,
+				64F517A91C556E3D006FB2AE /* PlayerMotion.swift in Sources */,
 				643C24B61C52D6D0003ACE44 /* Menu.swift in Sources */,
 				643C24A61C52D6D0003ACE44 /* Animation.swift in Sources */,
 				643C24B51C52D6D0003ACE44 /* Math.swift in Sources */,
