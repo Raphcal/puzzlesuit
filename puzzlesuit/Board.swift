@@ -10,8 +10,8 @@ import GLKit
 
 struct BoardLocation {
     
-    let x : Int
-    let y : Int
+    var x : Int
+    var y : Int
     
     func index() -> Int {
         return y * Board.columns + x
@@ -83,8 +83,9 @@ class Board : Square {
         let location = locationForSprite(sprite)
         dirty.append(location)
         
-        if location.x == 2 && location.y == 1 {
+        if location.x == 2 && location.y <= 2 {
             EventBus.instance.fireEvent(.BoardOverflow, withValue: self)
+            return
         }
         
         let index = location.index()
@@ -103,8 +104,13 @@ class Board : Square {
     func resolve() {
         for location in dirty {
             // TODO: Vérifier les mains possibles.
-            
+            var top = location
+            top.y--
+            if let card = grid[top.index()] {
+                // TODO: Vérifier
+            }
         }
+        dirty.removeAll()
     }
     
     private func locationForSprite(sprite: Sprite) -> BoardLocation {

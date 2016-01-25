@@ -40,6 +40,10 @@ class GameFlow {
     init(board: Board, generator: Generator) {
         self.board = board
         self.generator = generator
+        
+        EventBus.instance.setListener({ (value) -> Void in
+            self.state = .Lost
+        }, forEvent: .BoardOverflow, parent: self)
     }
     
     func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval) {
@@ -72,6 +76,11 @@ class GameFlow {
                 sprite.motion = NoMotion()
                 board.attachSprite(sprite)
                 hand.removeAll()
+                
+                if state == .Lost {
+                    return
+                }
+                
                 self.state = .Chain
             }
         }
@@ -85,6 +94,10 @@ class GameFlow {
     
     private func updateResolve() {
         board.resolve()
+        
+        if state == .Lost {
+            return
+        }
         
         if board.detached == 0 {
             self.state = .Initial
