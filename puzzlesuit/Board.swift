@@ -8,23 +8,44 @@
 
 import GLKit
 
+struct BoardLocation {
+    
+    let x : Int
+    let y : Int
+    
+    func index() -> Int {
+        return y * Board.columns + x
+    }
+    
+}
+
 class Board : Square {
     
-    let factory : SpriteFactory
+    static let columns = 6
+    static let rows = 12
+    static let hiddenRows = 2
     
-    let columns = 6
-    let rows = 12
-    let hiddenRows = 2
+    let factory : SpriteFactory
     
     var grid : [Sprite?]
     let cardSize : Spot
     
     var detached = 0
     
+    var dirty = [BoardLocation]()
+    
+    override init() {
+        self.factory = SpriteFactory()
+        self.grid = []
+        self.cardSize = Spot()
+        
+        super.init()
+    }
+    
     init(factory: SpriteFactory, square: Square) {
         self.factory = factory
-        self.grid = [Sprite?](count: columns * (rows + hiddenRows), repeatedValue: nil)
-        self.cardSize = Spot(x: square.width / GLfloat(columns), y: square.height / GLfloat(rows))
+        self.grid = [Sprite?](count: Board.columns * (Board.rows + Board.hiddenRows), repeatedValue: nil)
+        self.cardSize = Spot(x: square.width / GLfloat(Board.columns), y: square.height / GLfloat(Board.rows))
         
         super.init(square: square)
     }
@@ -44,35 +65,46 @@ class Board : Square {
         return sprites
     }
     
-    func spriteBelowSprite(sprite: Sprite) -> Sprite? {
-        return grid[indexForX(sprite.x, y: sprite.bottom + 1)]
+    func isAboveSomething(sprite: Sprite) -> Bool {
+        let location = locationForX(sprite.x, y: sprite.bottom + 1)
+        return location.y >= (Board.rows + Board.hiddenRows) || grid[location.index()] != nil
     }
     
-    func attachSprite(sprite: Sprite) {
+    func attachSprite(sprite: Sprite) throws {
         detached--
-        grid[indexForSprite(sprite)] = sprite
         
-        // TODO: Sauvegarder les points de collisions et faire "resolve" à partir de ces points.
+        let location = locationForSprite(sprite)
+        dirty.append(location)
+        
+        if location.x == 2 && location.y == 1 {
+            throw GameError.Lost
+        }
+        
+        let index = location.index()
+        grid[index] = sprite
+        
+        // Correction de la position
+        sprite.x = self.left + cardSize.x * GLfloat(location.x)
+        sprite.y = self.top + cardSize.y * GLfloat(location.y)
     }
     
-    func detach() {
+    func detachSpriteAtIndex(index: Int) {
         // TODO: Écrire la méthode.
+        // Calculer à partir du contenu de dirty.
     }
     
     func resolve() {
-        for index in 0..<grid.count {
-            let x = index % columns
-            let y = index / columns
-            
+        for location in dirty {
+            // TODO: Vérifier les mains possibles.
         }
     }
     
-    private func indexForSprite(sprite: Sprite) -> Int {
-        return indexForX(sprite.x, y: sprite.y)
+    private func locationForSprite(sprite: Sprite) -> BoardLocation {
+        return locationForX(sprite.x, y: sprite.y)
     }
     
-    private func indexForX(x: GLfloat, y: GLfloat) -> Int {
-        return Int((x - self.x) / cardSize.x) + (Int((y - self.y) / cardSize.y) + hiddenRows) * rows
+    private func locationForX(x: GLfloat, y: GLfloat) -> BoardLocation {
+        return BoardLocation(x: Int((x - self.left) / cardSize.x), y: Int((y - self.top) / cardSize.y) + Board.hiddenRows)
     }
     
     private func spriteForCard(card: Card) -> Sprite {
@@ -82,6 +114,8 @@ class Board : Square {
         
         sprite.x = 2 * cardSize.x  + cardSize.x / 2
         sprite.y = -cardSize.y / 2
+        sprite.width = cardSize.x
+        sprite.height = cardSize.y
         
         return sprite
     }

@@ -10,7 +10,13 @@ import Foundation
 
 enum GameFlowState {
     
-    case Initial, Play, Attach, Resolve, Chain
+    case Initial, Play, Chain, Resolve, Lost
+    
+}
+
+enum GameError : ErrorType {
+    
+    case Lost
     
 }
 
@@ -24,6 +30,11 @@ class GameFlow {
     
     var hand = [Sprite]()
     
+    init() {
+        self.board = Board()
+        self.generator = Generator()
+    }
+    
     init(board: Board, generator: Generator) {
         self.board = board
         self.generator = generator
@@ -34,8 +45,12 @@ class GameFlow {
         case .Initial:
             updateInitial()
         case .Play:
-            break
-        default:
+            updatePlay()
+        case .Chain:
+            updateChain()
+        case .Resolve:
+            updateResolve()
+        case .Lost:
             break
         }
     }
@@ -50,11 +65,33 @@ class GameFlow {
     
     private func updatePlay() {
         for sprite in hand {
-            if board.spriteBelowSprite(sprite) != nil {
+            if board.isAboveSomething(sprite) {
                 (sprite.motion as? PlayerMotion)?.linkedSprite.motion = FallMotion()
                 sprite.motion = NoMotion()
-                board.attachSprite(sprite)
+                do {
+                    try board.attachSprite(sprite)
+                    hand.removeAll()
+                    self.state = .Chain
+                } catch {
+                    self.state = .Lost
+                }
             }
+        }
+    }
+    
+    private func updateChain() {
+        if board.detached == 0 {
+            self.state = .Resolve
+        }
+    }
+    
+    private func updateResolve() {
+        board.resolve()
+        
+        if board.detached == 0 {
+            self.state = .Initial
+        } else {
+            self.state = .Chain
         }
     }
     

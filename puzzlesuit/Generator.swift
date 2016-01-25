@@ -22,6 +22,10 @@ class Generator {
     
     let cards : [Card]
     
+    init() {
+        self.cards = []
+    }
+    
     init(capacity: Int, highest: Int = 4, suits: [Suit] = Suit.all()) {
         var cards = [Card]()
         
