@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		560ABB8A1C56254700E6D549 /* Suit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560ABB891C56254700E6D549 /* Suit.swift */; };
+		560ABB8C1C562E6C00E6D549 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560ABB8B1C562E6C00E6D549 /* Card.swift */; };
 		643C245C1C52D466003ACE44 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643C245B1C52D466003ACE44 /* AppDelegate.swift */; };
 		643C245E1C52D466003ACE44 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643C245D1C52D466003ACE44 /* ViewController.swift */; };
 		643C24601C52D466003ACE44 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 643C245F1C52D466003ACE44 /* Assets.xcassets */; };
@@ -66,6 +68,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		560ABB891C56254700E6D549 /* Suit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Suit.swift; sourceTree = "<group>"; };
+		560ABB8B1C562E6C00E6D549 /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		643C24581C52D466003ACE44 /* PuzzleSuit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PuzzleSuit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		643C245B1C52D466003ACE44 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		643C245D1C52D466003ACE44 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -140,6 +144,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		560ABB881C56252400E6D549 /* Game */ = {
+			isa = PBXGroup;
+			children = (
+				64F517AA1C556F8F006FB2AE /* Board.swift */,
+				560ABB8B1C562E6C00E6D549 /* Card.swift */,
+				647674A41C55FED8009F6F46 /* Generator.swift */,
+				560ABB891C56254700E6D549 /* Suit.swift */,
+			);
+			name = Game;
+			sourceTree = "<group>";
+		};
 		643C244F1C52D466003ACE44 = {
 			isa = PBXGroup;
 			children = (
@@ -164,6 +179,7 @@
 				643C24CB1C52D763003ACE44 /* Audio */,
 				645E5EC31C54265900E29345 /* Data */,
 				643C24D01C52D8A5003ACE44 /* Draw */,
+				560ABB881C56252400E6D549 /* Game */,
 				643C24CE1C52D7F4003ACE44 /* Input */,
 				643C24C81C52D72E003ACE44 /* Map */,
 				643C24D11C52D8C3003ACE44 /* Math */,
@@ -173,10 +189,8 @@
 				643C24C71C52D70D003ACE44 /* Sprite */,
 				643C24CF1C52D87B003ACE44 /* UI */,
 				643C245B1C52D466003ACE44 /* AppDelegate.swift */,
-				64F517AA1C556F8F006FB2AE /* Board.swift */,
 				643C24811C52D615003ACE44 /* GameView.h */,
 				643C24821C52D615003ACE44 /* GameView.m */,
-				647674A41C55FED8009F6F46 /* Generator.swift */,
 				643C245D1C52D466003ACE44 /* ViewController.swift */,
 				643C245F1C52D466003ACE44 /* Assets.xcassets */,
 				643C24611C52D466003ACE44 /* Main.storyboard */,
@@ -371,7 +385,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 643C24531C52D466003ACE44 /* Build configuration list for PBXProject "PuzzleSuit" */;
+			buildConfigurationList = 643C24531C52D466003ACE44 /* Build configuration list for PBXProject "puzzlesuit" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -445,6 +459,7 @@
 				643C24B81C52D6D0003ACE44 /* NoController.swift in Sources */,
 				643C24CA1C52D759003ACE44 /* Grid.swift in Sources */,
 				643C24AB1C52D6D0003ACE44 /* Direction.swift in Sources */,
+				560ABB8C1C562E6C00E6D549 /* Card.swift in Sources */,
 				643C24B71C52D6D0003ACE44 /* Motion.swift in Sources */,
 				643C24A71C52D6D0003ACE44 /* Audio.m in Sources */,
 				64F517A91C556E3D006FB2AE /* PlayerMotion.swift in Sources */,
@@ -453,6 +468,7 @@
 				643C24B51C52D6D0003ACE44 /* Math.swift in Sources */,
 				643C24B11C52D6D0003ACE44 /* Input.swift in Sources */,
 				643C245C1C52D466003ACE44 /* AppDelegate.swift in Sources */,
+				560ABB8A1C56254700E6D549 /* Suit.swift in Sources */,
 				643C24C41C52D6F4003ACE44 /* Definition.swift in Sources */,
 				643C24C61C52D709003ACE44 /* Resources.swift in Sources */,
 				643C24A91C52D6D0003ACE44 /* Color.swift in Sources */,
@@ -628,7 +644,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		643C24531C52D466003ACE44 /* Build configuration list for PBXProject "PuzzleSuit" */ = {
+		643C24531C52D466003ACE44 /* Build configuration list for PBXProject "puzzlesuit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				643C24701C52D466003ACE44 /* Debug */,

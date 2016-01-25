@@ -8,16 +8,34 @@
 
 import Foundation
 
-class Generator {
+class GeneratorState {
     
-    let tiles : [Int]
+    private var count = 0
     
-    init(capacity: Int) {
-        self.tiles = []
+    func next() -> Int {
+        return count++
     }
     
-    func nextWith(count: Int) {
-        return tiles[(count + count / tiles.count) % tiles.count]
+}
+
+class Generator {
+    
+    let cards : [Card]
+    
+    init(capacity: Int, highest: Int = 4, suits: [Suit] = Suit.all()) {
+        var cards = [Card]()
+        
+        for _ in 0..<capacity {
+            if let suit = Suit(rawValue: Random.next(suits.count)) {
+                cards.append(Card(suit: suit, value: Random.next(highest)))
+            }
+        }
+        
+        self.cards = cards
+    }
+    
+    func cardForState(state: GeneratorState) -> Card {
+        return cards[state.next() % cards.count]
     }
     
 }
