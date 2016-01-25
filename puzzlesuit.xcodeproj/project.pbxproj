@@ -11,6 +11,7 @@
 		560ABB8C1C562E6C00E6D549 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560ABB8B1C562E6C00E6D549 /* Card.swift */; };
 		560ABB8E1C56458C00E6D549 /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560ABB8D1C56458C00E6D549 /* Component.swift */; };
 		560ABB901C56467200E6D549 /* GameFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560ABB8F1C56467200E6D549 /* GameFlow.swift */; };
+		56DE742C1C56535000C47093 /* FallMotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DE742B1C56535000C47093 /* FallMotion.swift */; };
 		643C245C1C52D466003ACE44 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643C245B1C52D466003ACE44 /* AppDelegate.swift */; };
 		643C245E1C52D466003ACE44 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643C245D1C52D466003ACE44 /* ViewController.swift */; };
 		643C24601C52D466003ACE44 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 643C245F1C52D466003ACE44 /* Assets.xcassets */; };
@@ -74,6 +75,7 @@
 		560ABB8B1C562E6C00E6D549 /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		560ABB8D1C56458C00E6D549 /* Component.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
 		560ABB8F1C56467200E6D549 /* GameFlow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameFlow.swift; sourceTree = "<group>"; };
+		56DE742B1C56535000C47093 /* FallMotion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FallMotion.swift; sourceTree = "<group>"; };
 		643C24581C52D466003ACE44 /* PuzzleSuit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PuzzleSuit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		643C245B1C52D466003ACE44 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		643C245D1C52D466003ACE44 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -330,6 +332,7 @@
 			children = (
 				643C24991C52D6D0003ACE44 /* Motion.swift */,
 				64F517A81C556E3D006FB2AE /* PlayerMotion.swift */,
+				56DE742B1C56535000C47093 /* FallMotion.swift */,
 			);
 			name = Motion;
 			sourceTree = "<group>";
@@ -468,6 +471,7 @@
 				643C24AB1C52D6D0003ACE44 /* Direction.swift in Sources */,
 				560ABB8C1C562E6C00E6D549 /* Card.swift in Sources */,
 				643C24B71C52D6D0003ACE44 /* Motion.swift in Sources */,
+				56DE742C1C56535000C47093 /* FallMotion.swift in Sources */,
 				643C24A71C52D6D0003ACE44 /* Audio.m in Sources */,
 				64F517A91C556E3D006FB2AE /* PlayerMotion.swift in Sources */,
 				643C24B61C52D6D0003ACE44 /* Menu.swift in Sources */,

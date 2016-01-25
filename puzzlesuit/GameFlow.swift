@@ -22,6 +22,8 @@ class GameFlow {
     
     var state = GameFlowState.Initial
     
+    var hand = [Sprite]()
+    
     init(board: Board, generator: Generator) {
         self.board = board
         self.generator = generator
@@ -31,15 +33,33 @@ class GameFlow {
         switch state {
         case .Initial:
             updateInitial()
+        case .Play:
+            break
         default:
             break
         }
     }
     
     private func updateInitial() {
+        let cards = board.spritesForMainCard(nextCard(), andExtraCard: nextCard())
         
+        hand.appendContentsOf(cards)
         
         self.state = .Play
+    }
+    
+    private func updatePlay() {
+        for sprite in hand {
+            if board.spriteBelowSprite(sprite) != nil {
+                (sprite.motion as? PlayerMotion)?.linkedSprite.motion = FallMotion()
+                sprite.motion = NoMotion()
+                board.attachSprite(sprite)
+            }
+        }
+    }
+    
+    private func nextCard() -> Card {
+        return generator.cardForState(generatorState)
     }
     
 }
