@@ -30,6 +30,8 @@ class GameFlow {
     
     var hand = [Sprite]()
     
+    // TODO: Compter les détachements ici ?
+    
     init() {
         self.board = Board()
         self.generator = Generator()
@@ -66,7 +68,7 @@ class GameFlow {
     private func updatePlay() {
         for sprite in hand {
             if board.isAboveSomething(sprite) {
-                (sprite.motion as? PlayerMotion)?.linkedSprite.motion = FallMotion()
+                (sprite.motion as? PlayerMotion)?.linkedSprite.motion = FallMotion(board: board)
                 sprite.motion = NoMotion()
                 do {
                     try board.attachSprite(sprite)

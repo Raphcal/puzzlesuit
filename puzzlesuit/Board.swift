@@ -70,13 +70,14 @@ class Board : Square {
         return location.y >= (Board.rows + Board.hiddenRows) || grid[location.index()] != nil
     }
     
-    func attachSprite(sprite: Sprite) throws {
+    func attachSprite(sprite: Sprite, tail: [Sprite] = []) throws {
         detached--
         
         let location = locationForSprite(sprite)
         dirty.append(location)
         
         if location.x == 2 && location.y == 1 {
+            // TODO: Envoyer un événement plutôt qu'une exception ?
             throw GameError.Lost
         }
         
@@ -86,16 +87,17 @@ class Board : Square {
         // Correction de la position
         sprite.x = self.left + cardSize.x * GLfloat(location.x)
         sprite.y = self.top + cardSize.y * GLfloat(location.y)
+        sprite.factory.updateLocationOfSprite(sprite)
     }
     
     func detachSpriteAtIndex(index: Int) {
         // TODO: Écrire la méthode.
-        // Calculer à partir du contenu de dirty.
     }
     
     func resolve() {
         for location in dirty {
             // TODO: Vérifier les mains possibles.
+            
         }
     }
     
@@ -112,8 +114,8 @@ class Board : Square {
         sprite.animation = SingleFrameAnimation(definition: sprite.definition.animations[0])
         sprite.animation.frameIndex = card.value
         
-        sprite.x = 2 * cardSize.x  + cardSize.x / 2
-        sprite.y = -cardSize.y / 2
+        sprite.x = self.left + 2 * cardSize.x  + cardSize.x / 2
+        sprite.y = self.top - cardSize.y / 2
         sprite.width = cardSize.x
         sprite.height = cardSize.y
         

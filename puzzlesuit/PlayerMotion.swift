@@ -18,9 +18,10 @@ class MainCardMotion : PlayerMotion {
     
     let linkedSprite : Sprite
     
-    var speed : GLfloat = 32
-    var downSpeed : GLfloat = 64
-    var lateral = false
+    let speed : GLfloat = 32
+    let downSpeed : GLfloat = 96
+    
+    var lateralMove : LateralMove?
     
     init(extra: Sprite) {
         self.linkedSprite = extra
@@ -37,10 +38,18 @@ class MainCardMotion : PlayerMotion {
         sprite.y += delta * speed
         linkedSprite.y += delta * speed
         
-        if !lateral && Input.instance.pressed(.Left) {
-            // TODO: Déplacement à gauche
-        } else if !lateral && Input.instance.pressed(.Right) {
-            // TODO: Déplacement à droite
+        if let lateralMove = self.lateralMove {
+            // Application du déplacement.
+            lateralMove.updateWithTimeSinceLastUpdate(timeSinceLastUpdate)
+            if lateralMove.ended {
+                self.lateralMove = nil
+            }
+        } else if Input.instance.pressed(.Left) {
+            // Déplacement à gauche
+            self.lateralMove = LateralMove(main: sprite, extra: linkedSprite, direction: .Left)
+        } else if Input.instance.pressed(.Right) {
+            // Déplacement à droite
+            self.lateralMove = LateralMove(main: sprite, extra: linkedSprite, direction: .Right)
         }
         
         sprite.factory.updateLocationOfSprite(sprite)
@@ -51,7 +60,7 @@ class MainCardMotion : PlayerMotion {
 class ExtraCardMotion : Motion {
     
     let linkedSprite : Sprite
-    var rotating = false
+    var rotation : Rotation?
     
     init(main: Sprite) {
         self.linkedSprite = main
@@ -62,13 +71,89 @@ class ExtraCardMotion : Motion {
     }
     
     func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval, sprite: Sprite) {
-        if !rotating && Input.instance.pressed(.RotateLeft) {
-            // TODO: Rotation à gauche
-        } else if !rotating && Input.instance.pressed(.RotateRight) {
-            // TODO: Rotation à droite
+        if let rotation = self.rotation {
+            // Application de la rotation.
+            rotation.updateWithTimeSinceLastUpdate(timeSinceLastUpdate)
+            if rotation.ended {
+                self.rotation = nil
+            }
+        } else if Input.instance.pressed(.RotateLeft) {
+            self.rotation = Rotation(main: linkedSprite, extra: sprite, direction: .Left)
+        } else if Input.instance.pressed(.RotateRight) {
+            self.rotation = Rotation(main: linkedSprite, extra: sprite, direction: .Right)
         }
         
         sprite.factory.updateLocationOfSprite(sprite)
+    }
+    
+}
+
+class LateralMove {
+    
+    let duration : NSTimeInterval
+    var time : NSTimeInterval = 0
+    
+    let main: Sprite
+    let extra: Sprite
+    
+    let distance : GLfloat
+    
+    var ended = false
+    
+    init(main: Sprite, extra: Sprite, direction: Direction, duration: NSTimeInterval = 0.1) {
+        self.main = main
+        self.extra = extra
+        self.duration = duration
+        self.distance = main.width * direction.value()
+    }
+    
+    func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval) {
+        let oldProgression = GLfloat(time / duration)
+        
+        self.time += timeSinceLastUpdate
+        let progression = min(GLfloat(time / duration), 1)
+        
+        let x = (progression - oldProgression) * distance
+        main.x += x
+        extra.x += x
+        
+        self.ended = progression == 1
+    }
+    
+}
+
+class Rotation {
+    
+    let duration : NSTimeInterval
+    var time : NSTimeInterval = 0
+    
+    let center : Spot
+    let sprite : Sprite
+    
+    let from : GLfloat
+    let rotation : GLfloat
+    let length : GLfloat
+    
+    var ended = false
+    
+    init(main: Sprite, extra: Sprite, direction: Direction, duration: NSTimeInterval = 0.1) {
+        self.center = main
+        self.sprite = extra
+        self.duration = duration
+        self.from = atan2(extra.y - main.y, extra.x - main.x)
+        self.rotation = GLfloat(M_PI_2) * direction.value()
+        self.length = distance(float2(main.x, main.y), float2(extra.x, extra.y))
+    }
+    
+    func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval) {
+        self.time += timeSinceLastUpdate
+        let progression = min(GLfloat(time / duration), 1)
+        
+        let angle = from + rotation * progression
+        sprite.x = center.x + cos(angle) * length
+        sprite.y = center.y + sin(angle) * length
+        
+        self.ended = progression == 1
     }
     
 }
