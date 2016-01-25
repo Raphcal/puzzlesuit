@@ -8,7 +8,7 @@
 
 import GLKit
 
-class GameGrid : Square {
+class Board : Square {
     
     let columns = 6
     let rows = 12
