@@ -79,10 +79,9 @@ class KeyboardController : Controller {
             .Down: .Down,
             .Left: .Left,
             .Right: .Right,
-            .Space: .Jump,
-            .Enter: .Start,
-            .L: .L,
-            .R: .R,
+            .W: .RotateLeft,
+            .X: .RotateRight,
+            .Enter: .Start
         ])
     }
     

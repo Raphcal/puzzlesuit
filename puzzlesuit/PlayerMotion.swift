@@ -8,22 +8,32 @@
 
 import GLKit
 
-class MainPlayerMotion : Motion {
+class MainCardMotion : Motion {
+    
+    let extra : Sprite
+    
+    init(extra: Sprite) {
+        self.extra = extra
+    }
     
     func load(sprite: Sprite) {
-        // TODO: Écrire la méthode.
+        // Pas de chargement.
     }
     
     func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval, sprite: Sprite) {
-        // TODO: Écrire la méthode.
+        if Input.instance.pressed(.RotateLeft) {
+            
+        }
     }
     
 }
 
-class SecondaryPlayerMotion : Motion {
+class ExtraCardMotion : Motion {
+    
+    var rotating = false
     
     func load(sprite: Sprite) {
-        // TODO: Écrire la méthode.
+        // Pas de chargement.
     }
     
     func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval, sprite: Sprite) {

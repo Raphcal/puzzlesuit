@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		560ABB8A1C56254700E6D549 /* Suit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560ABB891C56254700E6D549 /* Suit.swift */; };
 		560ABB8C1C562E6C00E6D549 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560ABB8B1C562E6C00E6D549 /* Card.swift */; };
+		560ABB8E1C56458C00E6D549 /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560ABB8D1C56458C00E6D549 /* Component.swift */; };
+		560ABB901C56467200E6D549 /* GameFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560ABB8F1C56467200E6D549 /* GameFlow.swift */; };
 		643C245C1C52D466003ACE44 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643C245B1C52D466003ACE44 /* AppDelegate.swift */; };
 		643C245E1C52D466003ACE44 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643C245D1C52D466003ACE44 /* ViewController.swift */; };
 		643C24601C52D466003ACE44 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 643C245F1C52D466003ACE44 /* Assets.xcassets */; };
@@ -70,6 +72,8 @@
 /* Begin PBXFileReference section */
 		560ABB891C56254700E6D549 /* Suit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Suit.swift; sourceTree = "<group>"; };
 		560ABB8B1C562E6C00E6D549 /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
+		560ABB8D1C56458C00E6D549 /* Component.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
+		560ABB8F1C56467200E6D549 /* GameFlow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameFlow.swift; sourceTree = "<group>"; };
 		643C24581C52D466003ACE44 /* PuzzleSuit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PuzzleSuit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		643C245B1C52D466003ACE44 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		643C245D1C52D466003ACE44 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -149,8 +153,10 @@
 			children = (
 				64F517AA1C556F8F006FB2AE /* Board.swift */,
 				560ABB8B1C562E6C00E6D549 /* Card.swift */,
+				560ABB8D1C56458C00E6D549 /* Component.swift */,
 				647674A41C55FED8009F6F46 /* Generator.swift */,
 				560ABB891C56254700E6D549 /* Suit.swift */,
+				560ABB8F1C56467200E6D549 /* GameFlow.swift */,
 			);
 			name = Game;
 			sourceTree = "<group>";
@@ -177,7 +183,7 @@
 			isa = PBXGroup;
 			children = (
 				643C24CB1C52D763003ACE44 /* Audio */,
-				645E5EC31C54265900E29345 /* Data */,
+				645E5EC31C54265900E29345 /* Assets */,
 				643C24D01C52D8A5003ACE44 /* Draw */,
 				560ABB881C56252400E6D549 /* Game */,
 				643C24CE1C52D7F4003ACE44 /* Input */,
@@ -310,13 +316,13 @@
 			name = Math;
 			sourceTree = "<group>";
 		};
-		645E5EC31C54265900E29345 /* Data */ = {
+		645E5EC31C54265900E29345 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
 				645E5EC41C54267700E29345 /* atlas.png */,
 				645E5EC51C54267700E29345 /* atlas.sprites */,
 			);
-			name = Data;
+			name = Assets;
 			sourceTree = "<group>";
 		};
 		64F517A71C556DEF006FB2AE /* Motion */ = {
@@ -438,6 +444,7 @@
 				643C24AC1C52D6D0003ACE44 /* Director.swift in Sources */,
 				643C24BC1C52D6D0003ACE44 /* Scene.swift in Sources */,
 				643C24D31C52D990003ACE44 /* ReferencePool.swift in Sources */,
+				560ABB901C56467200E6D549 /* GameFlow.swift in Sources */,
 				647674A51C55FED8009F6F46 /* Generator.swift in Sources */,
 				643C24BA1C52D6D0003ACE44 /* Point.swift in Sources */,
 				643C24BD1C52D6D0003ACE44 /* Sprite.swift in Sources */,
@@ -467,6 +474,7 @@
 				643C24A61C52D6D0003ACE44 /* Animation.swift in Sources */,
 				643C24B51C52D6D0003ACE44 /* Math.swift in Sources */,
 				643C24B11C52D6D0003ACE44 /* Input.swift in Sources */,
+				560ABB8E1C56458C00E6D549 /* Component.swift in Sources */,
 				643C245C1C52D466003ACE44 /* AppDelegate.swift in Sources */,
 				560ABB8A1C56254700E6D549 /* Suit.swift in Sources */,
 				643C24C41C52D6F4003ACE44 /* Definition.swift in Sources */,

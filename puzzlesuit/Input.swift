@@ -9,10 +9,10 @@
 import GLKit
 
 enum GamePadButton {
-    case Up, Down, Left, Right, Jump, L, R, Start
+    case Up, Down, Left, Right, RotateLeft, RotateRight, Start
     
     static func values() -> [GamePadButton] {
-        return [.Up, .Down, .Left, .Right, .Jump, .L, .R, .Start]
+        return [.Up, .Down, .Left, .Right, .RotateLeft, .RotateRight, .Start]
     }
 }
 

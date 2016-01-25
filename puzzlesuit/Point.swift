@@ -130,6 +130,13 @@ class Square : Spot, Shape {
         super.init()
     }
     
+    init(square: Square) {
+        self.width = square.width
+        self.height = square.height
+        
+        super.init(point: square)
+    }
+    
     init(centerX: GLfloat, centerY: GLfloat, width: GLfloat, height: GLfloat) {
         self.width = width
         self.height = height

@@ -117,7 +117,7 @@ class Menu {
             selectItemAtIndex(selection + 1)
         } else if Input.instance.pressed(.Up) {
             selectItemAtIndex(selection - 1)
-        } else if Input.instance.pressed(.Start) || Input.instance.pressed(.Jump) {
+        } else if Input.instance.pressed(.Start) {
             onSelection?(item: selectedItem)
         }
     }
