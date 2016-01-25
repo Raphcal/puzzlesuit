@@ -34,13 +34,9 @@ class FallMotion : Motion {
             sprite.factory.updateLocationOfSprite(other)
         }
         
-        if board.isAboveSomething(sprite) {
-            do {
-                sprite.motion = NoMotion()
-                try board.attachSprite(sprite, tail: tail)
-            } catch {
-                // TODO: FAIRE DIFFEREMMENT !
-            }
+        if board.isSpriteAboveSomething(sprite) {
+            sprite.motion = NoMotion()
+            board.attachSprite(sprite, tail: tail)
         }
         
         sprite.factory.updateLocationOfSprite(sprite)

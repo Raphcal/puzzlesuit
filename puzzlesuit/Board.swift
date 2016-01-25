@@ -48,6 +48,13 @@ class Board : Square {
         self.cardSize = Spot(x: square.width / GLfloat(Board.columns), y: square.height / GLfloat(Board.rows))
         
         super.init(square: square)
+        
+        #if SHOW_BACKGROUND
+            let sprite = factory.sprite(0)
+            sprite.width = square.width
+            sprite.height = square.height
+            sprite.center = square
+        #endif
     }
     
     func spritesForMainCard(mainCard: Card, andExtraCard extraCard: Card) -> [Sprite] {
@@ -65,28 +72,27 @@ class Board : Square {
         return sprites
     }
     
-    func isAboveSomething(sprite: Sprite) -> Bool {
+    func isSpriteAboveSomething(sprite: Sprite) -> Bool {
         let location = locationForX(sprite.x, y: sprite.bottom + 1)
         return location.y >= (Board.rows + Board.hiddenRows) || grid[location.index()] != nil
     }
     
-    func attachSprite(sprite: Sprite, tail: [Sprite] = []) throws {
+    func attachSprite(sprite: Sprite, tail: [Sprite] = []) {
         detached--
         
         let location = locationForSprite(sprite)
         dirty.append(location)
         
         if location.x == 2 && location.y == 1 {
-            // TODO: Envoyer un événement plutôt qu'une exception ?
-            throw GameError.Lost
+            EventBus.instance.fireEvent(.BoardOverflow, withValue: self)
         }
         
         let index = location.index()
         grid[index] = sprite
         
         // Correction de la position
-        sprite.x = self.left + cardSize.x * GLfloat(location.x)
-        sprite.y = self.top + cardSize.y * GLfloat(location.y)
+        sprite.x = self.left + cardSize.x * GLfloat(location.x) + cardSize.x / 2
+        sprite.y = self.top + cardSize.y * GLfloat(location.y - Board.hiddenRows) + cardSize.y / 2
         sprite.factory.updateLocationOfSprite(sprite)
     }
     

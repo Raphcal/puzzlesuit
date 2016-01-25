@@ -57,7 +57,7 @@ class MainCardMotion : PlayerMotion {
     
 }
 
-class ExtraCardMotion : Motion {
+class ExtraCardMotion : PlayerMotion {
     
     let linkedSprite : Sprite
     var rotation : Rotation?

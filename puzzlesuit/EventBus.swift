@@ -9,14 +9,8 @@
 import Foundation
 
 enum Event : Int {
-    /// Nombre de bulle modifié.
-    case BubbleCountChanged
-    /// Vie gagnée.
-    case LifeGained
-    /// Vie perdue.
-    case LifeLost
-    /// Fin du niveau.
-    case LevelFinished
+    /// Dépassement du tableau.
+    case BoardOverflow
     /// La connexion avec GameCenter a changée.
     case GameCenterStatusChanged
     /// Nombre d'événements.

@@ -67,16 +67,12 @@ class GameFlow {
     
     private func updatePlay() {
         for sprite in hand {
-            if board.isAboveSomething(sprite) {
+            if board.isSpriteAboveSomething(sprite) {
                 (sprite.motion as? PlayerMotion)?.linkedSprite.motion = FallMotion(board: board)
                 sprite.motion = NoMotion()
-                do {
-                    try board.attachSprite(sprite)
-                    hand.removeAll()
-                    self.state = .Chain
-                } catch {
-                    self.state = .Lost
-                }
+                board.attachSprite(sprite)
+                hand.removeAll()
+                self.state = .Chain
             }
         }
     }

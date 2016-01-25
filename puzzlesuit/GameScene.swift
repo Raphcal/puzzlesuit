@@ -15,7 +15,7 @@ class GameScene : NSObject, Scene {
     
     let factory = SpriteFactory(capacity: 255)
     
-    let size : GLfloat = 24
+    let size : GLfloat = 16
     var flow = GameFlow()
     
     func load() {
