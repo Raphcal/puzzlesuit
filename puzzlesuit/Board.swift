@@ -167,9 +167,9 @@ class Board : Square {
         case .Left:
             return locationForSprite(sprite).x > 0
         case .Right:
-            return locationForSprite(sprite).x < Board.columns
+            return locationForSprite(sprite).x < Board.columns - 1
         case .Down:
-            return locationForSprite(sprite).y < Board.rows + Board.hiddenRows
+            return locationForSprite(sprite).y < Board.rows + Board.hiddenRows - 1
         case .Up:
             return locationForSprite(sprite).y > 0
         }

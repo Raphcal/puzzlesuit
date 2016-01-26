@@ -82,9 +82,9 @@ class ExtraCardMotion : PlayerMotion {
             if rotation.ended {
                 self.rotation = nil
             }
-        } else if Input.instance.pressed(.RotateLeft) && board.areSprites([sprite, linkedSprite], ableToMoveToDirection: .Left) {
+        } else if Input.instance.pressed(.RotateLeft) {
             self.rotation = Rotation(main: linkedSprite, extra: sprite, direction: .Left)
-        } else if Input.instance.pressed(.RotateRight) && board.areSprites([sprite, linkedSprite], ableToMoveToDirection: .Right) {
+        } else if Input.instance.pressed(.RotateRight) {
             self.rotation = Rotation(main: linkedSprite, extra: sprite, direction: .Right)
         }
         
