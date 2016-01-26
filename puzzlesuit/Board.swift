@@ -10,13 +10,25 @@ import GLKit
 
 struct BoardLocation {
     
-    var x : Int
-    var y : Int
+    let x : Int
+    let y : Int
     
     func index() -> Int {
         return y * Board.columns + x
     }
     
+}
+
+func + (left: BoardLocation, right: BoardLocation) -> BoardLocation {
+    return BoardLocation(x: left.x + right.x, y: left.y + right.y)
+}
+
+func == (left: BoardLocation, right: BoardLocation) -> Bool {
+    return left.x == right.x && left.y == right.y
+}
+
+func += (inout left: BoardLocation, right: BoardLocation) {
+    left = left + right
 }
 
 class Board : Square {
@@ -80,21 +92,28 @@ class Board : Square {
     func attachSprite(sprite: Sprite, tail: [Sprite] = []) {
         detached--
         
+        let sprites : [Sprite]
+        
+        if tail.isEmpty {
+            sprites = [sprite]
+        } else {
+            sprites = tail
+        }
+        
         let location = locationForSprite(sprite)
         dirty.append(location)
         
-        if location.x == 2 && location.y <= 2 {
-            EventBus.instance.fireEvent(.BoardOverflow, withValue: self)
-            return
+        for sprite in sprites {
+            let location = locationForSprite(sprite)
+            
+            // Correction de la position.
+            sprite.x = self.left + cardSize.x * GLfloat(location.x) + cardSize.x / 2
+            sprite.y = self.top + cardSize.y * GLfloat(location.y - Board.hiddenRows) + cardSize.y / 2
+            sprite.factory.updateLocationOfSprite(sprite)
+            
+            // Placement dans la grille.
+            grid[location.index()] = sprite
         }
-        
-        let index = location.index()
-        grid[index] = sprite
-        
-        // Correction de la position
-        sprite.x = self.left + cardSize.x * GLfloat(location.x) + cardSize.x / 2
-        sprite.y = self.top + cardSize.y * GLfloat(location.y - Board.hiddenRows) + cardSize.y / 2
-        sprite.factory.updateLocationOfSprite(sprite)
     }
     
     func detachSpriteAtIndex(index: Int) {
@@ -103,14 +122,33 @@ class Board : Square {
     
     func resolve() {
         for location in dirty {
-            // TODO: Vérifier les mains possibles.
-            var top = location
-            top.y--
-            if let card = grid[top.index()] {
-                // TODO: Vérifier
+            if let card = cardAtLocation(location) {
+                
+                // Vérification des brelans / carrés / etc.
+                var sameKinds = [location]
+                sameKinds.appendContentsOf(sameKindLocations(card.value, start: location, direction: BoardLocation(x: 0, y: -1)))
+                sameKinds.appendContentsOf(sameKindLocations(card.value, start: location, direction: BoardLocation(x: 0, y: 1)))
+                sameKinds.appendContentsOf(sameKindLocations(card.value, start: location, direction: BoardLocation(x: -1, y: 0)))
+                sameKinds.appendContentsOf(sameKindLocations(card.value, start: location, direction: BoardLocation(x: 1, y: 0)))
+                
+                if sameKinds.count > 2 {
+                    // TODO: Supprimer les cartes et faire tomber les sprites affectés.
+                    NSLog("\(sameKinds.count) of a kind")
+                    removeCardsAtLocations(sameKinds)
+                }
+                
+                // TODO: Vérification des doubles pairs.
+                
+                // TODO: Vérification des suites.
+                
+                // TODO: Vérification des couleurs.
             }
         }
         dirty.removeAll()
+    }
+    
+    func spriteAtX(x: Int, y: Int) -> Sprite? {
+        return grid[y * Board.rows + x]
     }
     
     private func locationForSprite(sprite: Sprite) -> BoardLocation {
@@ -132,6 +170,61 @@ class Board : Square {
         sprite.height = cardSize.y
         
         return sprite
+    }
+    
+    private func cardAtLocation(location: BoardLocation) -> Card? {
+        if location.x >= 0 && location.x < Board.columns && location.y >= 0 && location.y < Board.rows + Board.hiddenRows, let sprite = grid[location.index()] {
+            return Card(sprite: sprite)
+        } else {
+            return nil
+        }
+    }
+    
+    private func sameKindLocations(value: Int, start: BoardLocation, direction: BoardLocation) -> [BoardLocation] {
+        var locations = [BoardLocation]()
+        
+        var current = start + direction
+        while let card = cardAtLocation(current) where card.value == value {
+            locations.append(current)
+            current += direction
+        }
+        
+        return locations
+    }
+    
+    private func removeCardsAtLocations(locations: [BoardLocation]) {
+        let sorted = locations.sort { (left, right) -> Bool in
+            if left.y == right.y {
+                return left.x < right.x
+            } else {
+                return left.y < right.y
+            }
+        }
+        for location in sorted {
+            removeCardAtLocation(location)
+        }
+    }
+    
+    private func removeCardAtLocation(location: BoardLocation) {
+        let index = location.index()
+        grid[index]!.destroy()
+        grid[index] = nil
+        
+        var tail = [Sprite]()
+        
+        let top = BoardLocation(x: 0, y: -1)
+        var nextLocation = location + top
+        
+        while nextLocation.y >= 0, let sprite = grid[nextLocation.index()] {
+            tail.append(sprite)
+            grid[nextLocation.index()] = nil
+            nextLocation += top
+        }
+        
+        if tail.count >= 1 {
+            detached++
+            tail[0].motion = FallMotion(board: self, tail: tail)
+        }
     }
     
 }

@@ -27,9 +27,16 @@ class FallMotion : Motion {
     
     func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval, sprite: Sprite) {
         let step = GLfloat(timeSinceLastUpdate) * speed
-        sprite.y += step
         
-        for other in tail {
+        let sprites : [Sprite]
+        
+        if tail.isEmpty {
+            sprites = [sprite]
+        } else {
+            sprites = tail
+        }
+        
+        for other in sprites {
             other.y += step
             sprite.factory.updateLocationOfSprite(other)
         }
@@ -38,8 +45,6 @@ class FallMotion : Motion {
             sprite.motion = NoMotion()
             board.attachSprite(sprite, tail: tail)
         }
-        
-        sprite.factory.updateLocationOfSprite(sprite)
     }
     
 }
