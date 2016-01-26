@@ -11,6 +11,7 @@
 		560ABB8C1C562E6C00E6D549 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560ABB8B1C562E6C00E6D549 /* Card.swift */; };
 		560ABB8E1C56458C00E6D549 /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560ABB8D1C56458C00E6D549 /* Component.swift */; };
 		560ABB901C56467200E6D549 /* GameFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560ABB8F1C56467200E6D549 /* GameFlow.swift */; };
+		56D8769C1C57AC13003C1880 /* Identifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D8769B1C57AC13003C1880 /* Identifier.swift */; };
 		56DE742C1C56535000C47093 /* FallMotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DE742B1C56535000C47093 /* FallMotion.swift */; };
 		643C245C1C52D466003ACE44 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643C245B1C52D466003ACE44 /* AppDelegate.swift */; };
 		643C245E1C52D466003ACE44 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643C245D1C52D466003ACE44 /* ViewController.swift */; };
@@ -75,6 +76,7 @@
 		560ABB8B1C562E6C00E6D549 /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		560ABB8D1C56458C00E6D549 /* Component.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
 		560ABB8F1C56467200E6D549 /* GameFlow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameFlow.swift; sourceTree = "<group>"; };
+		56D8769B1C57AC13003C1880 /* Identifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Identifier.swift; sourceTree = "<group>"; };
 		56DE742B1C56535000C47093 /* FallMotion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FallMotion.swift; sourceTree = "<group>"; };
 		643C24581C52D466003ACE44 /* PuzzleSuit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PuzzleSuit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		643C245B1C52D466003ACE44 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -159,6 +161,7 @@
 				647674A41C55FED8009F6F46 /* Generator.swift */,
 				560ABB891C56254700E6D549 /* Suit.swift */,
 				560ABB8F1C56467200E6D549 /* GameFlow.swift */,
+				56D8769B1C57AC13003C1880 /* Identifier.swift */,
 			);
 			name = Game;
 			sourceTree = "<group>";
@@ -452,6 +455,7 @@
 				643C24BA1C52D6D0003ACE44 /* Point.swift in Sources */,
 				643C24BD1C52D6D0003ACE44 /* Sprite.swift in Sources */,
 				643C24A81C52D6D0003ACE44 /* Camera.swift in Sources */,
+				56D8769C1C57AC13003C1880 /* Identifier.swift in Sources */,
 				643C24B21C52D6D0003ACE44 /* KeyboardController.swift in Sources */,
 				643C24841C52D615003ACE44 /* Draws.swift in Sources */,
 				643C24BF1C52D6D0003ACE44 /* Streams.swift in Sources */,

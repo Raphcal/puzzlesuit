@@ -125,11 +125,8 @@ class Board : Square {
             if let card = cardAtLocation(location) {
                 
                 // Vérification des brelans / carrés / etc.
-                var sameKinds = [location]
-                sameKinds.appendContentsOf(sameKindLocations(card.value, start: location, direction: BoardLocation(x: 0, y: -1)))
-                sameKinds.appendContentsOf(sameKindLocations(card.value, start: location, direction: BoardLocation(x: 0, y: 1)))
-                sameKinds.appendContentsOf(sameKindLocations(card.value, start: location, direction: BoardLocation(x: -1, y: 0)))
-                sameKinds.appendContentsOf(sameKindLocations(card.value, start: location, direction: BoardLocation(x: 1, y: 0)))
+                let identifier = Identifier(board: self)
+                let sameKinds = identifier.locationsOfSameKindAsCard(card, location: location)
                 
                 if sameKinds.count > 2 {
                     // TODO: Supprimer les cartes et faire tomber les sprites affectés.
@@ -196,7 +193,7 @@ class Board : Square {
         return sprite
     }
     
-    private func cardAtLocation(location: BoardLocation) -> Card? {
+    func cardAtLocation(location: BoardLocation) -> Card? {
         if location.x >= 0 && location.x < Board.columns && location.y >= 0 && location.y < Board.rows + Board.hiddenRows, let sprite = grid[location.index()] {
             return Card(sprite: sprite)
         } else {
@@ -204,13 +201,13 @@ class Board : Square {
         }
     }
     
-    private func sameKindLocations(value: Int, start: BoardLocation, direction: BoardLocation) -> [BoardLocation] {
+    private func sameKindLocations(value: Int, start: BoardLocation, direction: Direction) -> [BoardLocation] {
         var locations = [BoardLocation]()
         
-        var current = start + direction
+        var current = start + direction.location()
         while let card = cardAtLocation(current) where card.value == value {
             locations.append(current)
-            current += direction
+            current += direction.location()
         }
         
         return locations
@@ -236,13 +233,12 @@ class Board : Square {
         
         var tail = [Sprite]()
         
-        let top = BoardLocation(x: 0, y: -1)
-        var nextLocation = location + top
+        var nextLocation = location + Direction.Up.location()
         
         while nextLocation.y >= 0, let sprite = grid[nextLocation.index()] {
             tail.append(sprite)
             grid[nextLocation.index()] = nil
-            nextLocation += top
+            nextLocation += Direction.Up.location()
         }
         
         if tail.count >= 1 {
