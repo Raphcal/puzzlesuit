@@ -75,8 +75,8 @@ class Board : Square {
         
         extra.y -= cardSize.y
         
-        main.motion = MainCardMotion(extra: extra)
-        extra.motion = ExtraCardMotion(main: main)
+        main.motion = MainCardMotion(board: self, extra: extra)
+        extra.motion = ExtraCardMotion(board: self, main: main)
         
         let sprites = [main, extra]
         detached += sprites.count
@@ -149,6 +149,30 @@ class Board : Square {
     
     func spriteAtX(x: Int, y: Int) -> Sprite? {
         return grid[y * Board.rows + x]
+    }
+    
+    func areSprites(sprites: [Sprite], ableToMoveToDirection direction: Direction) -> Bool {
+        var result = true
+        
+        for sprite in sprites {
+            result = result && isSprite(sprite, ableToMoveToDirection: direction)
+        }
+        
+        return result
+    }
+    
+    func isSprite(sprite: Sprite, ableToMoveToDirection direction: Direction) -> Bool {
+        // TODO: Vérifier la présence de sprites.
+        switch direction {
+        case .Left:
+            return locationForSprite(sprite).x > 0
+        case .Right:
+            return locationForSprite(sprite).x < Board.columns
+        case .Down:
+            return locationForSprite(sprite).y < Board.rows + Board.hiddenRows
+        case .Up:
+            return locationForSprite(sprite).y > 0
+        }
     }
     
     private func locationForSprite(sprite: Sprite) -> BoardLocation {

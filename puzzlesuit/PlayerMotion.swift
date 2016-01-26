@@ -16,6 +16,7 @@ protocol PlayerMotion : Motion {
 
 class MainCardMotion : PlayerMotion {
     
+    let board : Board
     let linkedSprite : Sprite
     
     let speed : GLfloat = 32
@@ -23,7 +24,8 @@ class MainCardMotion : PlayerMotion {
     
     var lateralMove : LateralMove?
     
-    init(extra: Sprite) {
+    init(board: Board, extra: Sprite) {
+        self.board = board
         self.linkedSprite = extra
     }
     
@@ -44,10 +46,10 @@ class MainCardMotion : PlayerMotion {
             if lateralMove.ended {
                 self.lateralMove = nil
             }
-        } else if Input.instance.pressed(.Left) {
+        } else if Input.instance.pressed(.Left) && board.areSprites([sprite, linkedSprite], ableToMoveToDirection: .Left) {
             // Déplacement à gauche
             self.lateralMove = LateralMove(main: sprite, extra: linkedSprite, direction: .Left)
-        } else if Input.instance.pressed(.Right) {
+        } else if Input.instance.pressed(.Right) && board.areSprites([sprite, linkedSprite], ableToMoveToDirection: .Right) {
             // Déplacement à droite
             self.lateralMove = LateralMove(main: sprite, extra: linkedSprite, direction: .Right)
         }
@@ -59,10 +61,13 @@ class MainCardMotion : PlayerMotion {
 
 class ExtraCardMotion : PlayerMotion {
     
+    let board : Board
     let linkedSprite : Sprite
+    
     var rotation : Rotation?
     
-    init(main: Sprite) {
+    init(board: Board, main: Sprite) {
+        self.board = board
         self.linkedSprite = main
     }
     
@@ -77,9 +82,9 @@ class ExtraCardMotion : PlayerMotion {
             if rotation.ended {
                 self.rotation = nil
             }
-        } else if Input.instance.pressed(.RotateLeft) {
+        } else if Input.instance.pressed(.RotateLeft) && board.areSprites([sprite, linkedSprite], ableToMoveToDirection: .Left) {
             self.rotation = Rotation(main: linkedSprite, extra: sprite, direction: .Left)
-        } else if Input.instance.pressed(.RotateRight) {
+        } else if Input.instance.pressed(.RotateRight) && board.areSprites([sprite, linkedSprite], ableToMoveToDirection: .Right) {
             self.rotation = Rotation(main: linkedSprite, extra: sprite, direction: .Right)
         }
         
