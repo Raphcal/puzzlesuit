@@ -10,7 +10,7 @@ import Foundation
 
 enum GameFlowState {
     
-    case Initial, Play, Chain, Resolve, Lost
+    case Initial, Play, Chain, Resolve, Pause, Commit, Lost
     
 }
 
@@ -29,6 +29,9 @@ class GameFlow {
     var state = GameFlowState.Initial
     
     var hand = [Sprite]()
+    
+    var pause : NSTimeInterval = 0
+    var nextState = GameFlowState.Initial
     
     // TODO: Compter les détachements ici ?
     
@@ -52,6 +55,10 @@ class GameFlow {
             updateChain()
         case .Resolve:
             updateResolve()
+        case .Pause:
+            updatePause(timeSinceLastUpdate)
+        case .Commit:
+            updateCommit()
         case .Lost:
             break
         }
@@ -68,7 +75,7 @@ class GameFlow {
     private func updatePlay() {
         for sprite in hand {
             if board.isSpriteAboveSomething(sprite) {
-                (sprite.motion as? PlayerMotion)?.linkedSprite.motion = FallMotion(board: board)
+                (sprite.motion as? Linked)?.linkedSprite.motion = FallMotion(board: board)
                 sprite.motion = NoMotion()
                 board.attachSprite(sprite)
                 hand.removeAll()
@@ -86,6 +93,26 @@ class GameFlow {
     
     private func updateResolve() {
         board.resolve()
+        
+        if board.marked.count > 0 {
+            pause = 0.3
+            self.nextState = .Commit
+            self.state = .Pause
+        } else {
+            self.state = .Commit
+        }
+    }
+    
+    private func updatePause(timeSinceLastUpdate: NSTimeInterval) {
+        self.pause -= timeSinceLastUpdate
+        
+        if pause < 0 {
+            self.state = nextState
+        }
+    }
+    
+    private func updateCommit() {
+        board.commit()
         
         if board.spriteAtX(2, y: 2) != nil {
             self.state = .Lost

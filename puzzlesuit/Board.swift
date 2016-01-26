@@ -45,6 +45,7 @@ class Board : Square {
     var detached = 0
     
     var dirty = [BoardLocation]()
+    var marked = [BoardLocation]()
     
     override init() {
         self.factory = SpriteFactory()
@@ -116,10 +117,6 @@ class Board : Square {
         }
     }
     
-    func detachSpriteAtIndex(index: Int) {
-        // TODO: Écrire la méthode.
-    }
-    
     func resolve() {
         for location in dirty {
             if let card = cardAtLocation(location) {
@@ -131,7 +128,8 @@ class Board : Square {
                 if sameKinds.count > 2 {
                     // TODO: Supprimer les cartes et faire tomber les sprites affectés.
                     NSLog("\(sameKinds.count) of a kind")
-                    removeCardsAtLocations(sameKinds)
+                    marked.appendContentsOf(sameKinds)
+                    removalWarningForCardsAtLocations(sameKinds)
                 }
                 
                 // TODO: Vérification des doubles pairs.
@@ -142,6 +140,15 @@ class Board : Square {
             }
         }
         dirty.removeAll()
+    }
+    
+    func mark() -> Int {
+        return 0
+    }
+    
+    func commit() {
+        removeCardsAtLocations(marked)
+        marked.removeAll()
     }
     
     func spriteAtX(x: Int, y: Int) -> Sprite? {
@@ -201,16 +208,14 @@ class Board : Square {
         }
     }
     
-    private func sameKindLocations(value: Int, start: BoardLocation, direction: Direction) -> [BoardLocation] {
-        var locations = [BoardLocation]()
-        
-        var current = start + direction.location()
-        while let card = cardAtLocation(current) where card.value == value {
-            locations.append(current)
-            current += direction.location()
+    private func removalWarningForCardsAtLocations(locations: [BoardLocation]) {
+        for location in locations {
+            if let sprite = grid[location.index()] {
+                sprite.animation = BlinkingAnimation(animation: sprite.animation, blinkRate: 0.005, duration: 0.25, onEnd: { animation in
+                    sprite.animation = animation
+                })
+            }
         }
-        
-        return locations
     }
     
     private func removeCardsAtLocations(locations: [BoardLocation]) {
@@ -228,22 +233,24 @@ class Board : Square {
     
     private func removeCardAtLocation(location: BoardLocation) {
         let index = location.index()
-        grid[index]!.destroy()
-        grid[index] = nil
+        if let sprite = grid[index] {
+            sprite.destroy()
+            grid[index] = nil
         
-        var tail = [Sprite]()
-        
-        var nextLocation = location + Direction.Up.location()
-        
-        while nextLocation.y >= 0, let sprite = grid[nextLocation.index()] {
-            tail.append(sprite)
-            grid[nextLocation.index()] = nil
-            nextLocation += Direction.Up.location()
-        }
-        
-        if tail.count >= 1 {
-            detached++
-            tail[0].motion = FallMotion(board: self, tail: tail)
+            var tail = [Sprite]()
+            
+            var nextLocation = location + Direction.Up.location()
+            
+            while nextLocation.y >= 0, let sprite = grid[nextLocation.index()] {
+                tail.append(sprite)
+                grid[nextLocation.index()] = nil
+                nextLocation += Direction.Up.location()
+            }
+            
+            if tail.count >= 1 {
+                detached++
+                tail[0].motion = FallMotion(board: self, tail: tail)
+            }
         }
     }
     

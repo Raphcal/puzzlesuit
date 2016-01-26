@@ -163,8 +163,9 @@ class Sprite : Square {
     }
     
     func setBlinkingWithDuration(duration: NSTimeInterval) {
-        let blinkingAnimation = BlinkingAnimation(animation: animation, duration: duration)
-        blinkingAnimation.onEnd = { self.animation = blinkingAnimation.animation }
+        let blinkingAnimation = BlinkingAnimation(animation: animation, blinkRate: 0.2, duration: duration) { animation in
+            self.animation = animation
+        }
         self.animation = blinkingAnimation
     }
     

@@ -35,7 +35,7 @@ class Identifier {
     }
     
     private func goTo(to: Direction, from: Direction?, origin: BoardLocation, card: Card) {
-        if from != to.reverse() && canGoTo(to, origin: origin), let other = board.cardAtLocation(origin + to.location()) where other.value == card.value {
+        if from != to && canGoTo(to, origin: origin), let other = board.cardAtLocation(origin + to.location()) where other.value == card.value {
             locations(card, origin: origin + to.location(), from: to.reverse())
         }
     }

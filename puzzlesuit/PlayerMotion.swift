@@ -8,13 +8,13 @@
 
 import GLKit
 
-protocol PlayerMotion : Motion {
+protocol Linked {
     
     var linkedSprite : Sprite { get }
     
 }
 
-class MainCardMotion : PlayerMotion {
+class MainCardMotion : Motion, Linked {
     
     let board : Board
     let linkedSprite : Sprite
@@ -59,7 +59,7 @@ class MainCardMotion : PlayerMotion {
     
 }
 
-class ExtraCardMotion : PlayerMotion {
+class ExtraCardMotion : Motion, Linked {
     
     let board : Board
     let linkedSprite : Sprite

@@ -231,16 +231,16 @@ class PlayOnceAnimation : SingleFrameAnimation {
 
 class BlinkingAnimation : Animation {
     
-    static let rateMultiplier : NSTimeInterval = 100
     static let Pair = 2
     
     var animation : Animation
-    var onEnd : (() -> Void)?
-    var duration : NSTimeInterval = 0
+    let onEnd : ((animation: Animation) -> Void)?
+    let duration : NSTimeInterval
     
     var time : NSTimeInterval = 0
-    var blinkRate : NSTimeInterval = 20
-    var visible = true
+    let blinkRate : NSTimeInterval
+    
+    private var visible = true
     
     var definition : AnimationDefinition {
         get {
@@ -272,34 +272,21 @@ class BlinkingAnimation : Animation {
         }
     }
     
-    init(animation: Animation) {
-        self.animation = animation
-    }
-    
-    init(animation: Animation, blinkRate: NSTimeInterval) {
-        self.animation = animation
-        self.blinkRate = blinkRate
-    }
-    
-    init(animation: Animation, duration: NSTimeInterval) {
-        self.animation = animation
-        self.duration = duration
-    }
-    
-    init(animation: Animation, duration: NSTimeInterval, onEnd:() -> Void) {
+    init(animation: Animation, blinkRate: NSTimeInterval = 0.2, duration: NSTimeInterval = 0, onEnd:((animation: Animation) -> Void)? = nil) {
         self.animation = animation
         self.onEnd = onEnd
         self.duration = duration
+        self.blinkRate = blinkRate
     }
     
     func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval) {
         self.time += timeSinceLastUpdate
         
-        let frame = Int((time * BlinkingAnimation.rateMultiplier) / blinkRate)
+        let frame = Int(time / blinkRate)
         self.visible = (frame % BlinkingAnimation.Pair) == 0
         
-        if onEnd != nil && time >= duration {
-            onEnd!()
+        if let onEnd = self.onEnd where time >= duration {
+            onEnd(animation: animation)
         }
         
         animation.updateWithTimeSinceLastUpdate(timeSinceLastUpdate)
