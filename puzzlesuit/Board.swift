@@ -129,7 +129,7 @@ class Board : Square {
             if let card = cardAtLocation(location) {
                 // Vérification des brelans / carrés / etc.
                 let identifier = Identifier(board: self)
-                let sameKinds = identifier.sameKindsAsCard(card, location: location)
+                let sameKinds = identifier.sameKindsAsCard(card, location: location, ignore: marked)
                 
                 if sameKinds.count >= 3 {
                     if identifier.isFlush(sameKinds) {
@@ -151,10 +151,19 @@ class Board : Square {
                     }
                 }
                 
-                // TODO: Vérification des suites.
+                // Vérification des suites.
+                let straight = identifier.straightIncludingCard(card, location: location, ignore: marked)
+                if straight.count > 0 {
+                    if identifier.isFlush(straight) {
+                        NSLog("\(straight.count) straight flush")
+                    } else {
+                        NSLog("\(straight.count) straight")
+                    }
+                    marked.appendContentsOf(straight)
+                }
                 
                 // Vérification des couleurs.
-                let sameSuit = identifier.sameSuitAsCard(card, location: location)
+                let sameSuit = identifier.sameSuitAsCard(card, location: location, ignore: marked)
                 if sameSuit.count >= 5 {
                     NSLog("\(sameSuit.count) length flush")
                     marked.appendContentsOf(sameSuit)

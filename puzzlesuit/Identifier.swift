@@ -54,22 +54,52 @@ class Identifier {
         self.status = [Bool](count: board.grid.count, repeatedValue: false)
     }
     
-    func sameKindsAsCard(card: Card, location: BoardLocation) -> [BoardLocation] {
+    func sameKindsAsCard(card: Card, location: BoardLocation, ignore: [BoardLocation]) -> [BoardLocation] {
+        ignoreLocations(ignore)
         findCardsMatching(Matcher(value: card.value), at: location)
         return result()
     }
     
     func pairsAroundLocations(locations: [BoardLocation], ignore: [BoardLocation]) -> [BoardLocation] {
-        for location in ignore {
-            status[location.index()] = true
-        }
+        ignoreLocations(ignore)
         findPairsAround(locations[0], notInLocation: locations[1])
         findPairsAround(locations[1], notInLocation: locations[0])
         return result()
     }
     
-    func sameSuitAsCard(card: Card, location: BoardLocation) -> [BoardLocation] {
+    func sameSuitAsCard(card: Card, location: BoardLocation, ignore: [BoardLocation]) -> [BoardLocation] {
+        ignoreLocations(ignore)
         findCardsMatching(Matcher(suit: card.suit), at: location)
+        return result()
+    }
+    
+    func straightIncludingCard(card: Card, location: BoardLocation, ignore: [BoardLocation]) -> [BoardLocation] {
+        ignoreLocations(ignore)
+        findStraightFromValue(card.value, next: -1, at: location)
+        let upLocations = result()
+        
+        ignoreLocations(ignore)
+        findStraightFromValue(card.value, next: 1, at: location)
+        var downLocations = result()
+        downLocations.removeFirst()
+        
+        locations.appendContentsOf(upLocations)
+        locations.appendContentsOf(downLocations)
+        
+        // Validation de la suite.
+        var valid = [Bool](count: 4, repeatedValue: false)
+        for location in locations {
+            if let card = board.cardAtLocation(location) {
+                valid[card.value] = true
+            }
+        }
+        for entry in valid {
+            if entry == false {
+                reset()
+                return []
+            }
+        }
+        
         return result()
     }
     
@@ -126,6 +156,19 @@ class Identifier {
         }
     }
     
+    private func findStraightFromValue(value: Int, next: Int, at origin: BoardLocation, from: Direction? = nil) {
+        self.locations.append(origin)
+        status[origin.index()] = true
+        
+        let nextValue = value + next
+        
+        for to in [Direction.Left, .Up, .Right, .Down] {
+            if from != to && canGoTo(to, origin: origin), let other = board.cardAtLocation(origin + to.location()) where other.value == nextValue {
+                findStraightFromValue(nextValue, next: next, at: origin + to.location(), from: to.reverse())
+            }
+        }
+    }
+    
     private func canGoTo(to: Direction, origin: BoardLocation) -> Bool {
         let nextIndex = (origin + to.location()).index()
         switch to {
@@ -140,13 +183,21 @@ class Identifier {
         }
     }
     
+    private func ignoreLocations(locations: [BoardLocation]) {
+        for location in locations {
+            status[location.index()] = true
+        }
+    }
+    
     private func result() -> [BoardLocation] {
         let result = locations
-        
+        reset()
+        return result
+    }
+    
+    private func reset() {
         self.status = [Bool](count: board.grid.count, repeatedValue: false)
         self.locations.removeAll()
-        
-        return result
     }
     
 }
