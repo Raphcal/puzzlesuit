@@ -12,8 +12,14 @@ enum Suit : Int {
     
     case Club, Heart, Diamond, Spade
     
-    static func all() -> [Suit] {
-        return [Club, Heart, Diamond, Spade]
-    }
+    static let all = [Suit.Club, Heart, Diamond, Spade]
+    
+}
+
+enum Value : Int {
+    
+    case As, Two, Three, Four, Jack, Queen, King
+    
+    static let all = [Value.As, .Two, .Three, .Four, .Jack, .Queen, .King]
     
 }

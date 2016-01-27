@@ -53,6 +53,7 @@
 		643C24C61C52D709003ACE44 /* Resources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643C24C51C52D709003ACE44 /* Resources.swift */; };
 		643C24CA1C52D759003ACE44 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643C24C91C52D759003ACE44 /* Grid.swift */; };
 		643C24D31C52D990003ACE44 /* ReferencePool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643C24D21C52D990003ACE44 /* ReferencePool.swift */; };
+		644286091C597D9500668A9F /* Deck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 644286081C597D9500668A9F /* Deck.swift */; };
 		645E5EC61C54267700E29345 /* atlas.png in Resources */ = {isa = PBXBuildFile; fileRef = 645E5EC41C54267700E29345 /* atlas.png */; };
 		645E5EC71C54267700E29345 /* atlas.sprites in Resources */ = {isa = PBXBuildFile; fileRef = 645E5EC51C54267700E29345 /* atlas.sprites */; };
 		645E5EC91C54272900E29345 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 645E5EC81C54272900E29345 /* GameScene.swift */; };
@@ -126,6 +127,7 @@
 		643C24C51C52D709003ACE44 /* Resources.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Resources.swift; sourceTree = "<group>"; };
 		643C24C91C52D759003ACE44 /* Grid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		643C24D21C52D990003ACE44 /* ReferencePool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferencePool.swift; sourceTree = "<group>"; };
+		644286081C597D9500668A9F /* Deck.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Deck.swift; sourceTree = "<group>"; };
 		645E5EC41C54267700E29345 /* atlas.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = atlas.png; sourceTree = "<group>"; };
 		645E5EC51C54267700E29345 /* atlas.sprites */ = {isa = PBXFileReference; lastKnownFileType = file; path = atlas.sprites; sourceTree = "<group>"; };
 		645E5EC81C54272900E29345 /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -162,6 +164,7 @@
 				560ABB891C56254700E6D549 /* Suit.swift */,
 				560ABB8F1C56467200E6D549 /* GameFlow.swift */,
 				56D8769B1C57AC13003C1880 /* Identifier.swift */,
+				644286081C597D9500668A9F /* Deck.swift */,
 			);
 			name = Game;
 			sourceTree = "<group>";
@@ -397,7 +400,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 643C24531C52D466003ACE44 /* Build configuration list for PBXProject "puzzlesuit" */;
+			buildConfigurationList = 643C24531C52D466003ACE44 /* Build configuration list for PBXProject "PuzzleSuit" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -454,6 +457,7 @@
 				647674A51C55FED8009F6F46 /* Generator.swift in Sources */,
 				643C24BA1C52D6D0003ACE44 /* Point.swift in Sources */,
 				643C24BD1C52D6D0003ACE44 /* Sprite.swift in Sources */,
+				644286091C597D9500668A9F /* Deck.swift in Sources */,
 				643C24A81C52D6D0003ACE44 /* Camera.swift in Sources */,
 				56D8769C1C57AC13003C1880 /* Identifier.swift in Sources */,
 				643C24B21C52D6D0003ACE44 /* KeyboardController.swift in Sources */,
@@ -660,7 +664,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		643C24531C52D466003ACE44 /* Build configuration list for PBXProject "puzzlesuit" */ = {
+		643C24531C52D466003ACE44 /* Build configuration list for PBXProject "PuzzleSuit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				643C24701C52D466003ACE44 /* Debug */,

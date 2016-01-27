@@ -20,13 +20,14 @@ class GeneratorState {
 
 class Generator {
     
+    // TODO: Utiliser Deck pour remplir
     let cards : [Card]
     
     init() {
         self.cards = []
     }
     
-    init(capacity: Int, highest: Int = 4, suits: [Suit] = Suit.all()) {
+    init(capacity: Int, highest: Int = 4, suits: [Suit] = Suit.all) {
         var cards = [Card]()
         
         for _ in 0..<capacity {

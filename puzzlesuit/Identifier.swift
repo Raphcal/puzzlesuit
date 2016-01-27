@@ -156,6 +156,7 @@ class Identifier {
         }
     }
     
+    // TODO: Renvoyer [origin, le plus grand de l'itération] (ne pas ajouter origin si from = nil)
     private func findStraightFromValue(value: Int, next: Int, at origin: BoardLocation, from: Direction? = nil) {
         self.locations.append(origin)
         status[origin.index()] = true
