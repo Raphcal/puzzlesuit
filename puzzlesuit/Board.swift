@@ -140,16 +140,18 @@ class Board : Square {
                     marked.appendContentsOf(sameKinds)
                 }
                 
-                // Vérification des doubles pairs.
-                if sameKinds.count == 2 {
-                    let pairs = identifier.pairsAroundLocations(sameKinds, ignore: marked)
-                    
-                    if pairs.count > 0 {
-                        NSLog("\(pairs.count / 2 + 1) pairs")
-                        marked.appendContentsOf(sameKinds)
-                        marked.appendContentsOf(pairs)
+                #if TWO_PAIRS
+                    // Vérification des doubles pairs.
+                    if sameKinds.count == 2 {
+                        let pairs = identifier.pairsAroundLocations(sameKinds, ignore: marked)
+                        
+                        if pairs.count > 0 {
+                            NSLog("\(pairs.count / 2 + 1) pairs")
+                            marked.appendContentsOf(sameKinds)
+                            marked.appendContentsOf(pairs)
+                        }
                     }
-                }
+                #endif
                 
                 // Vérification des suites.
                 let straight = identifier.straightIncludingCard(card, location: location, ignore: marked)
