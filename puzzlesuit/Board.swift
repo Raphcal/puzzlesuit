@@ -27,6 +27,10 @@ func == (left: BoardLocation, right: BoardLocation) -> Bool {
     return left.x == right.x && left.y == right.y
 }
 
+func != (left: BoardLocation, right: BoardLocation) -> Bool {
+    return left.x != right.x || left.y != right.y
+}
+
 func += (inout left: BoardLocation, right: BoardLocation) {
     left = left + right
 }
@@ -101,12 +105,14 @@ class Board : Square {
             sprites = tail
         }
         
-        let location = locationForSprite(sprite)
-        dirty.append(location)
+        var top = locationForPoint(sprite)
+        while grid[top.index()] != nil {
+            top += Direction.Up.location()
+        }
+        dirty.append(top)
         
+        var location = top
         for sprite in sprites {
-            let location = locationForSprite(sprite)
-            
             // Correction de la position.
             sprite.x = self.left + cardSize.x * GLfloat(location.x) + cardSize.x / 2
             sprite.y = self.top + cardSize.y * GLfloat(location.y - Board.hiddenRows) + cardSize.y / 2
@@ -114,31 +120,48 @@ class Board : Square {
             
             // Placement dans la grille.
             grid[location.index()] = sprite
+            location += Direction.Up.location()
         }
     }
     
     func resolve() {
         for location in dirty {
             if let card = cardAtLocation(location) {
-                
                 // Vérification des brelans / carrés / etc.
                 let identifier = Identifier(board: self)
-                let sameKinds = identifier.locationsOfSameKindAsCard(card, location: location)
+                let sameKinds = identifier.sameKindsAsCard(card, location: location)
                 
-                if sameKinds.count > 2 {
-                    // TODO: Supprimer les cartes et faire tomber les sprites affectés.
-                    NSLog("\(sameKinds.count) of a kind")
+                if sameKinds.count >= 3 {
+                    if identifier.isFlush(sameKinds) {
+                        NSLog("\(sameKinds.count) of a kind flush")
+                    } else {
+                        NSLog("\(sameKinds.count) of a kind")
+                    }
                     marked.appendContentsOf(sameKinds)
-                    removalWarningForCardsAtLocations(sameKinds)
                 }
                 
-                // TODO: Vérification des doubles pairs.
+                // Vérification des doubles pairs.
+                if sameKinds.count == 2 {
+                    let pairs = identifier.pairsAroundLocations(sameKinds, ignore: marked)
+                    
+                    if pairs.count > 0 {
+                        NSLog("\(pairs.count / 2 + 1) pairs")
+                        marked.appendContentsOf(sameKinds)
+                        marked.appendContentsOf(pairs)
+                    }
+                }
                 
                 // TODO: Vérification des suites.
                 
-                // TODO: Vérification des couleurs.
+                // Vérification des couleurs.
+                let sameSuit = identifier.sameSuitAsCard(card, location: location)
+                if sameSuit.count >= 5 {
+                    NSLog("\(sameSuit.count) length flush")
+                    marked.appendContentsOf(sameSuit)
+                }
             }
         }
+        removalWarningForCardsAtLocations(marked)
         dirty.removeAll()
     }
     
@@ -151,10 +174,6 @@ class Board : Square {
         marked.removeAll()
     }
     
-    func spriteAtX(x: Int, y: Int) -> Sprite? {
-        return grid[y * Board.rows + x]
-    }
-    
     func areSprites(sprites: [Sprite], ableToMoveToDirection direction: Direction) -> Bool {
         var result = true
         
@@ -165,26 +184,25 @@ class Board : Square {
         return result
     }
     
-    func isSprite(sprite: Sprite, ableToMoveToDirection direction: Direction) -> Bool {
-        // TODO: Vérifier la présence de sprites.
-        switch direction {
-        case .Left:
-            return locationForSprite(sprite).x > 0
-        case .Right:
-            return locationForSprite(sprite).x < Board.columns - 1
-        case .Down:
-            return locationForSprite(sprite).y < Board.rows + Board.hiddenRows - 1
-        case .Up:
-            return locationForSprite(sprite).y > 0
-        }
+    private func isSprite(sprite: Sprite, ableToMoveToDirection direction: Direction) -> Bool {
+        let location = locationForPoint(sprite) + direction.location()
+        return location.x >= 0 && location.x < Board.columns && location.y >= 0 && location.y < Board.rows + Board.hiddenRows && grid[location.index()] == nil
     }
     
-    private func locationForSprite(sprite: Sprite) -> BoardLocation {
-        return locationForX(sprite.x, y: sprite.y)
+    /// Vérifie que le point est dans la grille et que l'emplacement correspondant est vide.
+    func canMoveToPoint(point: Spot) -> Bool {
+        if point.x < left || point.x > right || point.y < top || point.y > bottom {
+            return false
+        }
+        return grid[locationForPoint(point).index()] == nil
+    }
+    
+    private func locationForPoint(point: Spot) -> BoardLocation {
+        return locationForX(point.x, y: point.y)
     }
     
     private func locationForX(x: GLfloat, y: GLfloat) -> BoardLocation {
-        return BoardLocation(x: Int((x - self.left) / cardSize.x), y: Int((y - self.top) / cardSize.y) + Board.hiddenRows)
+        return BoardLocation(x: Int((x - left) / cardSize.x), y: Int((y - top) / cardSize.y) + Board.hiddenRows)
     }
     
     private func spriteForCard(card: Card) -> Sprite {

@@ -74,7 +74,9 @@ class GameFlow {
     
     private func updatePlay() {
         for sprite in hand {
-            if board.isSpriteAboveSomething(sprite) {
+            let rotating = (sprite.motion as? CanRotate)?.rotating == true
+            
+            if !rotating && board.isSpriteAboveSomething(sprite) {
                 (sprite.motion as? Linked)?.linkedSprite.motion = FallMotion(board: board)
                 sprite.motion = NoMotion()
                 board.attachSprite(sprite)
@@ -114,7 +116,7 @@ class GameFlow {
     private func updateCommit() {
         board.commit()
         
-        if board.spriteAtX(2, y: 2) != nil {
+        if board.grid[BoardLocation(x: 2, y: 2).index()] != nil {
             self.state = .Lost
             NSLog("Perdu")
             return

@@ -14,6 +14,12 @@ protocol Linked {
     
 }
 
+protocol CanRotate {
+    
+    var rotating : Bool { get }
+    
+}
+
 class MainCardMotion : Motion, Linked {
     
     let board : Board
@@ -59,12 +65,17 @@ class MainCardMotion : Motion, Linked {
     
 }
 
-class ExtraCardMotion : Motion, Linked {
+class ExtraCardMotion : Motion, Linked, CanRotate {
     
     let board : Board
     let linkedSprite : Sprite
     
     var rotation : Rotation?
+    var rotating : Bool {
+        get {
+            return rotation != nil
+        }
+    }
     
     init(board: Board, main: Sprite) {
         self.board = board
@@ -83,9 +94,9 @@ class ExtraCardMotion : Motion, Linked {
                 self.rotation = nil
             }
         } else if Input.instance.pressed(.RotateLeft) {
-            self.rotation = Rotation(main: linkedSprite, extra: sprite, direction: .Left)
+            self.rotation = Rotation(main: linkedSprite, extra: sprite, direction: .Left, board: board)
         } else if Input.instance.pressed(.RotateRight) {
-            self.rotation = Rotation(main: linkedSprite, extra: sprite, direction: .Right)
+            self.rotation = Rotation(main: linkedSprite, extra: sprite, direction: .Right, board: board)
         }
         
         sprite.factory.updateLocationOfSprite(sprite)
@@ -95,7 +106,7 @@ class ExtraCardMotion : Motion, Linked {
 
 class LateralMove {
     
-    let duration : NSTimeInterval
+    let duration : NSTimeInterval = 0.1
     var time : NSTimeInterval = 0
     
     let main: Sprite
@@ -105,10 +116,9 @@ class LateralMove {
     
     var ended = false
     
-    init(main: Sprite, extra: Sprite, direction: Direction, duration: NSTimeInterval = 0.1) {
+    init(main: Sprite, extra: Sprite, direction: Direction) {
         self.main = main
         self.extra = extra
-        self.duration = duration
         self.distance = main.width * direction.value()
     }
     
@@ -129,7 +139,7 @@ class LateralMove {
 
 class Rotation {
     
-    let duration : NSTimeInterval
+    let duration : NSTimeInterval = 0.1
     var time : NSTimeInterval = 0
     
     let center : Spot
@@ -141,13 +151,25 @@ class Rotation {
     
     var ended = false
     
-    init(main: Sprite, extra: Sprite, direction: Direction, duration: NSTimeInterval = 0.1) {
+    init?(main: Sprite, extra: Sprite, direction: Direction, board: Board) {
         self.center = main
         self.sprite = extra
-        self.duration = duration
         self.from = atan2(extra.y - main.y, extra.x - main.x)
-        self.rotation = GLfloat(M_PI_2) * direction.value()
         self.length = distance(float2(main.x, main.y), float2(extra.x, extra.y))
+        
+        for i in 1..<4 {
+            let rotation = GLfloat(M_PI_2) * direction.value() * GLfloat(i)
+            let targetAngle = from + rotation
+            let targetPoint = Spot(x: main.x + cos(targetAngle) * length, y: main.y + sin(targetAngle) * length)
+            
+            if board.canMoveToPoint(targetPoint) {
+                self.rotation = rotation
+                return
+            }
+        }
+        
+        self.rotation = 0
+        return nil
     }
     
     func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval) {
