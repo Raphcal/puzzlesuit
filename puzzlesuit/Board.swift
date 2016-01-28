@@ -190,27 +190,13 @@ class Board : Square {
         marked.removeAll()
     }
     
-    func areSprites(sprites: [Sprite], ableToMoveToDirection direction: Direction) -> Bool {
-        var result = true
-        
-        for sprite in sprites {
-            result = result && isSprite(sprite, ableToMoveToDirection: direction)
-        }
-        
-        return result
-    }
-    
-    private func isSprite(sprite: Sprite, ableToMoveToDirection direction: Direction) -> Bool {
-        let location = locationForPoint(sprite) + direction.location()
-        return location.x >= 0 && location.x < Board.columns && location.y >= 0 && location.y < Board.rows + Board.hiddenRows && grid[location.index()] == nil
-    }
-    
     /// Vérifie que le point est dans la grille et que l'emplacement correspondant est vide.
     func canMoveToPoint(point: Spot) -> Bool {
-        if point.x < left || point.x > right || point.y < top || point.y > bottom {
+        let location = locationForPoint(point)
+        if location.x < 0 || location.x >= Board.columns || location.y < 0 || location.y >= Board.rows + Board.hiddenRows {
             return false
         }
-        return grid[locationForPoint(point).index()] == nil
+        return grid[location.index()] == nil
     }
     
     private func locationForPoint(point: Spot) -> BoardLocation {
