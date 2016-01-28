@@ -11,20 +11,20 @@ import Foundation
 struct Card {
     
     let suit : Suit
-    let value : Int
+    let rank : Rank
     
-    init(suit: Suit, value: Int) {
+    init(suit: Suit, rank: Rank) {
         self.suit = suit
-        self.value = value
+        self.rank = rank
     }
     
     init(sprite: Sprite) {
-        if let suit = Suit(rawValue: sprite.definition.index) {
+        if let suit = Suit(rawValue: sprite.definition.index), let rank = Rank(rawValue: sprite.animation.frameIndex) {
             self.suit = suit
-            self.value = sprite.animation.frameIndex
+            self.rank = rank
         } else {
             self.suit = .Club
-            self.value = 0
+            self.rank = .As
         }
     }
     

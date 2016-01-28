@@ -16,10 +16,14 @@ enum Suit : Int {
     
 }
 
-enum Value : Int {
+enum Rank : Int {
     
     case As, Two, Three, Four, Jack, Queen, King
     
-    static let all = [Value.As, .Two, .Three, .Four, .Jack, .Queen, .King]
+    static let all = [Rank.As, .Two, .Three, .Four, .Jack, .Queen, .King]
     
+}
+
+func + (left: Rank, right: Int) -> Rank? {
+    return Rank(rawValue: left.rawValue + right)
 }

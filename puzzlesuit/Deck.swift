@@ -14,7 +14,6 @@ class Deck {
     
     func next() -> Card {
         if cards.count == 0 {
-            NSLog("Remplissage du paquet")
             fillDeck()
         }
         return cards.removeAtIndex(Random.next(cards.count))
@@ -22,8 +21,8 @@ class Deck {
     
     private func fillDeck() {
         for suit in Suit.all {
-            for value in Value.all {
-                cards.append(Card(suit: suit, value: value.rawValue))
+            for value in Rank.all {
+                cards.append(Card(suit: suit, rank: value))
             }
         }
     }

@@ -20,23 +20,15 @@ class GeneratorState {
 
 class Generator {
     
-    // TODO: Utiliser Deck pour remplir
     let cards : [Card]
     
     init() {
         self.cards = []
     }
     
-    init(capacity: Int, highest: Int = 4, suits: [Suit] = Suit.all) {
-        var cards = [Card]()
-        
-        for _ in 0..<capacity {
-            if let suit = Suit(rawValue: Random.next(suits.count)) {
-                cards.append(Card(suit: suit, value: Random.next(highest)))
-            }
-        }
-        
-        self.cards = cards
+    init(capacity: Int) {
+        let deck = Deck()
+        self.cards = (0..<capacity).flatMap({ _ in deck.next() })
     }
     
     func cardForState(state: GeneratorState) -> Card {

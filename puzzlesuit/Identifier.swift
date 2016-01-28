@@ -11,30 +11,30 @@ import Foundation
 class Matcher {
     
     let suit : Suit?
-    let value : Int?
+    let rank : Rank?
     
     convenience init() {
-        self.init(suit: nil, value: nil)
+        self.init(suit: nil, rank: nil)
     }
     
-    convenience init(value: Int) {
-        self.init(suit: nil, value: value)
+    convenience init(rank: Rank) {
+        self.init(suit: nil, rank: rank)
     }
     
     convenience init(suit: Suit) {
-        self.init(suit: suit, value: nil)
+        self.init(suit: suit, rank: nil)
     }
     
-    init(suit: Suit?, value: Int?) {
+    init(suit: Suit?, rank: Rank?) {
         self.suit = suit
-        self.value = value
+        self.rank = rank
     }
     
     func matches(card: Card) -> Bool {
         if let suit = self.suit where suit != card.suit {
             return false
         }
-        if let value = self.value where value != card.value {
+        if let rank = self.rank where rank != card.rank {
             return false
         }
         return true
@@ -56,7 +56,7 @@ class Identifier {
     
     func sameKindsAsCard(card: Card, location: BoardLocation, ignore: [BoardLocation]) -> [BoardLocation] {
         ignoreLocations(ignore)
-        findCardsMatching(Matcher(value: card.value), at: location)
+        findCardsMatching(Matcher(rank: card.rank), at: location)
         return result()
     }
     
@@ -75,30 +75,10 @@ class Identifier {
     
     func straightIncludingCard(card: Card, location: BoardLocation, ignore: [BoardLocation]) -> [BoardLocation] {
         ignoreLocations(ignore)
-        findStraightFromValue(card.value, next: -1, at: location)
-        let upLocations = result()
-        
-        ignoreLocations(ignore)
-        findStraightFromValue(card.value, next: 1, at: location)
-        var downLocations = result()
-        downLocations.removeFirst()
-        
-        locations.appendContentsOf(upLocations)
-        locations.appendContentsOf(downLocations)
-        
-        // Validation de la suite.
-        var valid = [Bool](count: 4, repeatedValue: false)
-        for location in locations {
-            if let card = board.cardAtLocation(location) {
-                valid[card.value] = true
-            }
-        }
-        for entry in valid {
-            if entry == false {
-                reset()
-                return []
-            }
-        }
+    
+        locations.appendContentsOf(findStraightFromRank(card.rank, suit: card.suit, next: -1, at: location))
+        locations.append(location)
+        locations.appendContentsOf(findStraightFromRank(card.rank, suit: card.suit, next: 1, at: location))
         
         return result()
     }
@@ -130,7 +110,7 @@ class Identifier {
             let nextLocation = location + direction.location()
             
             if nextLocation != other && canGoTo(direction, origin: location), let card = board.cardAtLocation(nextLocation) {
-                findCardsMatching(Matcher(value: card.value), at: nextLocation, from: direction.reverse())
+                findCardsMatching(Matcher(rank: card.rank), at: nextLocation, from: direction.reverse())
             }
             
             if locations.count == oldLocations.count + 1 {
@@ -156,18 +136,38 @@ class Identifier {
         }
     }
     
-    // TODO: Renvoyer [origin, le plus grand de l'itération] (ne pas ajouter origin si from = nil)
-    private func findStraightFromValue(value: Int, next: Int, at origin: BoardLocation, from: Direction? = nil) {
-        self.locations.append(origin)
-        status[origin.index()] = true
+    private func findStraightFromRank(rank: Rank, suit: Suit, next: Int, at origin: BoardLocation, from: Direction? = nil) -> [BoardLocation] {
+        var locations = [BoardLocation]()
         
-        let nextValue = value + next
-        
-        for to in [Direction.Left, .Up, .Right, .Down] {
-            if from != to && canGoTo(to, origin: origin), let other = board.cardAtLocation(origin + to.location()) where other.value == nextValue {
-                findStraightFromValue(nextValue, next: next, at: origin + to.location(), from: to.reverse())
-            }
+        if from != nil {
+            locations.append(origin)
         }
+        
+        if let nextRank = rank + next {
+            var maximumSameSuitCount = 0
+            var maximum = [BoardLocation]()
+            
+            for to in [Direction.Left, .Up, .Right, .Down] {
+                if from != to && canGoTo(to, origin: origin), let other = board.cardAtLocation(origin + to.location()) where other.rank == nextRank {
+                    let result = findStraightFromRank(nextRank, suit: suit, next: next, at: origin + to.location(), from: to.reverse())
+                    
+                    let sameSuitCount = result.reduce(0, combine: { (count, location) -> Int in
+                        if let card = board.cardAtLocation(location) where card.suit == suit {
+                            return count + 1
+                        } else {
+                            return count
+                        }
+                    })
+                    
+                    if result.count > maximum.count || (result.count == maximum.count && sameSuitCount > maximumSameSuitCount) {
+                        maximum = result
+                        maximumSameSuitCount = sameSuitCount
+                    }
+                }
+            }
+            locations.appendContentsOf(maximum)
+        }
+        return locations
     }
     
     private func canGoTo(to: Direction, origin: BoardLocation) -> Bool {

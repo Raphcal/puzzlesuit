@@ -127,8 +127,20 @@ class Board : Square {
     func resolve() {
         for location in dirty {
             if let card = cardAtLocation(location) {
-                // Vérification des brelans / carrés / etc.
                 let identifier = Identifier(board: self)
+                
+                // Vérification des suites.
+                let straight = identifier.straightIncludingCard(card, location: location, ignore: marked)
+                if straight.count >= 5 {
+                    if identifier.isFlush(straight) {
+                        NSLog("\(straight.count) straight flush")
+                    } else {
+                        NSLog("\(straight.count) straight")
+                    }
+                    marked.appendContentsOf(straight)
+                }
+                
+                // Vérification des brelans / carrés / etc.
                 let sameKinds = identifier.sameKindsAsCard(card, location: location, ignore: marked)
                 
                 if sameKinds.count >= 3 {
@@ -152,17 +164,6 @@ class Board : Square {
                         }
                     }
                 #endif
-                
-                // Vérification des suites.
-                let straight = identifier.straightIncludingCard(card, location: location, ignore: marked)
-                if straight.count > 0 {
-                    if identifier.isFlush(straight) {
-                        NSLog("\(straight.count) straight flush")
-                    } else {
-                        NSLog("\(straight.count) straight")
-                    }
-                    marked.appendContentsOf(straight)
-                }
                 
                 // Vérification des couleurs.
                 let sameSuit = identifier.sameSuitAsCard(card, location: location, ignore: marked)
@@ -219,7 +220,7 @@ class Board : Square {
     private func spriteForCard(card: Card) -> Sprite {
         let sprite = factory.sprite(card.suit.rawValue)
         sprite.animation = SingleFrameAnimation(definition: sprite.definition.animations[0])
-        sprite.animation.frameIndex = card.value
+        sprite.animation.frameIndex = card.rank.rawValue
         
         sprite.x = self.left + 2 * cardSize.x  + cardSize.x / 2
         sprite.y = self.top - cardSize.y / 2
