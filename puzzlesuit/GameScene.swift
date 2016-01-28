@@ -15,14 +15,17 @@ class GameScene : NSObject, Scene {
     
     let factory = SpriteFactory(capacity: 255)
     
-    let size : GLfloat = 16
+    let unit : GLfloat = 16
     var flow = GameFlow()
     
     func load() {
-        let margin = (View.instance.height - size * GLfloat(Board.rows)) / 2
-        let board = Board(factory: factory, square: Square(left: margin, top: margin, width: size * GLfloat(Board.columns), height: size * GLfloat(Board.rows)))
+        let size = Spot(x: unit * GLfloat(Board.columns), y: unit * GLfloat(Board.rows))
+        
+        let leftBoard = Board(factory: factory, square: Square(left: 16, top: 32, width: size.x, height: size.y))
+        let rightBoard = Board(factory: factory, square: Square(left: View.instance.width - 16 - size.x, top: 32, width: size.x, height: size.y))
+        
         let generator = Generator(capacity: 256)
-        self.flow = GameFlow(board: board, generator: generator)
+        self.flow = GameFlow(board: leftBoard, generator: generator)
     }
     
     func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval) {

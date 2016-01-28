@@ -8,7 +8,13 @@
 
 import Foundation
 
-struct Card {
+protocol Entry {
+
+    // func sprite() -> Sprite
+    
+}
+
+struct Card : Entry {
     
     let suit : Suit
     let rank : Rank
@@ -28,4 +34,8 @@ struct Card {
         }
     }
     
+}
+
+struct Chip : Entry {
+    // Pas de comportement particulier.
 }

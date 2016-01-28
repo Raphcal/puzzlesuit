@@ -41,8 +41,8 @@ class Board : Square {
         
         #if SHOW_BACKGROUND
             let sprite = factory.sprite(0)
-            sprite.width = square.width
-            sprite.height = square.height
+            sprite.animation = SingleFrameAnimation(definition: sprite.animation.definition)
+            sprite.size = square.size
             sprite.center = square
         #endif
     }
@@ -177,7 +177,7 @@ class Board : Square {
     }
     
     private func locationForX(x: GLfloat, y: GLfloat) -> BoardLocation {
-        return BoardLocation(x: Int((x - left) / cardSize.x), y: Int((y - top) / cardSize.y) + Board.hiddenRows)
+        return BoardLocation(x: Int((x - left + cardSize.x) / cardSize.x) - 1, y: Int((y - top + cardSize.y) / cardSize.y) + Board.hiddenRows - 1)
     }
     
     private func spriteForCard(card: Card) -> Sprite {
