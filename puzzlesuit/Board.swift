@@ -105,21 +105,25 @@ class Board : Square {
             sprites = tail
         }
         
-        var top = locationForPoint(sprite)
-        while grid[top.index()] != nil {
-            top += Direction.Up.location()
+        var location = locationForPoint(sprite)
+        while grid[location.index()] != nil {
+            location += Direction.Up.location()
         }
-        dirty.append(top)
         
-        var location = top
         for sprite in sprites {
-            // Correction de la position.
-            sprite.x = self.left + cardSize.x * GLfloat(location.x) + cardSize.x / 2
-            sprite.y = self.top + cardSize.y * GLfloat(location.y - Board.hiddenRows) + cardSize.y / 2
-            sprite.factory.updateLocationOfSprite(sprite)
-            
-            // Placement dans la grille.
-            grid[location.index()] = sprite
+            if location.y >= 0 {
+                dirty.append(location)
+                
+                // Correction de la position du sprite.
+                sprite.x = self.left + cardSize.x * GLfloat(location.x) + cardSize.x / 2
+                sprite.y = self.top + cardSize.y * GLfloat(location.y - Board.hiddenRows) + cardSize.y / 2
+                sprite.factory.updateLocationOfSprite(sprite)
+                
+                // Placement dans la grille.
+                grid[location.index()] = sprite
+            } else {
+                sprite.destroy()
+            }
             location += Direction.Up.location()
         }
     }
