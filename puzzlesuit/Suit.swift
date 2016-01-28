@@ -15,15 +15,3 @@ enum Suit : Int {
     static let all = [Suit.Club, Heart, Diamond, Spade]
     
 }
-
-enum Rank : Int {
-    
-    case As, Two, Three, Four, Jack, Queen, King
-    
-    static let all = [Rank.As, .Two, .Three, .Four, .Jack, .Queen, .King]
-    
-}
-
-func + (left: Rank, right: Int) -> Rank? {
-    return Rank(rawValue: left.rawValue + right)
-}

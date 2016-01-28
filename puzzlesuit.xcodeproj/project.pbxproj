@@ -13,6 +13,8 @@
 		560ABB901C56467200E6D549 /* GameFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560ABB8F1C56467200E6D549 /* GameFlow.swift */; };
 		561069FD1C5A4E3F00CCCEC6 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561069FC1C5A4E3F00CCCEC6 /* Player.swift */; };
 		561069FF1C5A5EA800CCCEC6 /* Move.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561069FE1C5A5EA800CCCEC6 /* Move.swift */; };
+		56106A011C5A6EF200CCCEC6 /* BoardLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56106A001C5A6EF200CCCEC6 /* BoardLocation.swift */; };
+		56106A031C5A6F1D00CCCEC6 /* Rank.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56106A021C5A6F1D00CCCEC6 /* Rank.swift */; };
 		56D8769C1C57AC13003C1880 /* Identifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D8769B1C57AC13003C1880 /* Identifier.swift */; };
 		56DE742C1C56535000C47093 /* FallMotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DE742B1C56535000C47093 /* FallMotion.swift */; };
 		643C245C1C52D466003ACE44 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643C245B1C52D466003ACE44 /* AppDelegate.swift */; };
@@ -81,6 +83,8 @@
 		560ABB8F1C56467200E6D549 /* GameFlow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameFlow.swift; sourceTree = "<group>"; };
 		561069FC1C5A4E3F00CCCEC6 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		561069FE1C5A5EA800CCCEC6 /* Move.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Move.swift; sourceTree = "<group>"; };
+		56106A001C5A6EF200CCCEC6 /* BoardLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardLocation.swift; sourceTree = "<group>"; };
+		56106A021C5A6F1D00CCCEC6 /* Rank.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rank.swift; sourceTree = "<group>"; };
 		56D8769B1C57AC13003C1880 /* Identifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Identifier.swift; sourceTree = "<group>"; };
 		56DE742B1C56535000C47093 /* FallMotion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FallMotion.swift; sourceTree = "<group>"; };
 		643C24581C52D466003ACE44 /* PuzzleSuit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PuzzleSuit.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -162,14 +166,16 @@
 			isa = PBXGroup;
 			children = (
 				64F517AA1C556F8F006FB2AE /* Board.swift */,
+				56106A001C5A6EF200CCCEC6 /* BoardLocation.swift */,
 				560ABB8B1C562E6C00E6D549 /* Card.swift */,
 				560ABB8D1C56458C00E6D549 /* Component.swift */,
+				644286081C597D9500668A9F /* Deck.swift */,
 				647674A41C55FED8009F6F46 /* Generator.swift */,
-				560ABB891C56254700E6D549 /* Suit.swift */,
 				560ABB8F1C56467200E6D549 /* GameFlow.swift */,
 				56D8769B1C57AC13003C1880 /* Identifier.swift */,
-				644286081C597D9500668A9F /* Deck.swift */,
 				561069FC1C5A4E3F00CCCEC6 /* Player.swift */,
+				56106A021C5A6F1D00CCCEC6 /* Rank.swift */,
+				560ABB891C56254700E6D549 /* Suit.swift */,
 			);
 			name = Game;
 			sourceTree = "<group>";
@@ -491,10 +497,12 @@
 				643C24B81C52D6D0003ACE44 /* NoController.swift in Sources */,
 				643C24CA1C52D759003ACE44 /* Grid.swift in Sources */,
 				643C24AB1C52D6D0003ACE44 /* Direction.swift in Sources */,
+				56106A011C5A6EF200CCCEC6 /* BoardLocation.swift in Sources */,
 				561069FD1C5A4E3F00CCCEC6 /* Player.swift in Sources */,
 				560ABB8C1C562E6C00E6D549 /* Card.swift in Sources */,
 				643C24B71C52D6D0003ACE44 /* Motion.swift in Sources */,
 				56DE742C1C56535000C47093 /* FallMotion.swift in Sources */,
+				56106A031C5A6F1D00CCCEC6 /* Rank.swift in Sources */,
 				643C24A71C52D6D0003ACE44 /* Audio.m in Sources */,
 				64F517A91C556E3D006FB2AE /* PlayerMotion.swift in Sources */,
 				643C24B61C52D6D0003ACE44 /* Menu.swift in Sources */,
