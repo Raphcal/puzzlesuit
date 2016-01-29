@@ -53,9 +53,6 @@ class Board : Square {
         
         extra.y -= cardSize.y
         
-        main.motion = MainCardMotion(board: self, extra: extra)
-        extra.motion = ExtraCardMotion(board: self, main: main)
-        
         let sprites = [main, extra]
         detached += sprites.count
         

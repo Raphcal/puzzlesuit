@@ -16,27 +16,33 @@ class GameScene : NSObject, Scene {
     let factory = SpriteFactory(capacity: 255)
     
     let unit : GLfloat = 16
-    var flow = GameFlow()
+    var leftPlayerGameFlow = GameFlow()
+    var rightPlayerGameFlow = GameFlow()
     
     func load() {
         let size = Spot(x: unit * GLfloat(Board.columns), y: unit * GLfloat(Board.rows))
-        
-        let leftBoard = Board(factory: factory, square: Square(left: 16, top: 32, width: size.x, height: size.y))
-        let rightBoard = Board(factory: factory, square: Square(left: View.instance.width - 16 - size.x, top: 32, width: size.x, height: size.y))
-        
         let generator = Generator(capacity: 256)
         
-        self.flow = GameFlow(board: leftBoard, generator: generator)
+        self.leftPlayerGameFlow = flowWithGenerator(generator, size: size, left: 16, controller: Input.instance)
+        self.rightPlayerGameFlow = flowWithGenerator(generator, size: size, left: View.instance.width - 16 - size.x, controller: NoController())
     }
     
     func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval) {
         factory.updateWithTimeSinceLastUpdate(timeSinceLastUpdate)
-        flow.updateWithTimeSinceLastUpdate(timeSinceLastUpdate)
+        
+        leftPlayerGameFlow.updateWithTimeSinceLastUpdate(timeSinceLastUpdate)
+        rightPlayerGameFlow.updateWithTimeSinceLastUpdate(timeSinceLastUpdate)
     }
     
     func draw() {
         factory.draw()
     }
 
+    private func flowWithGenerator(generator: Generator, size: Spot, left: GLfloat, controller: Controller) -> GameFlow {
+        let board = Board(factory: factory, square: Square(left: left, top: 32, width: size.x, height: size.y))
+        let flow = GameFlow(board: board, generator: generator)
+        flow.controller = controller
+        return flow
+    }
     
 }

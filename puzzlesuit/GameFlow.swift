@@ -82,6 +82,11 @@ class GameFlow {
     
     private func updateNewHand() {
         self.hand = board.spritesForMainCard(nextHand[0], andExtraCard: nextHand[1])
+
+        let main = self.hand[0]
+        let extra = self.hand[1]
+        main.motion = MainCardMotion(board: board, extra: extra, controller: controller)
+        extra.motion = ExtraCardMotion(board: board, main: main, controller: controller)
         
         let hand = nextHand
         self.nextHand = [generator.cardForState(generatorState), generator.cardForState(generatorState)]

@@ -22,6 +22,7 @@ protocol CanRotate {
 
 class MainCardMotion : Motion, Linked {
     
+    let controller : Controller
     let board : Board
     let linkedSprite : Sprite
     
@@ -30,9 +31,10 @@ class MainCardMotion : Motion, Linked {
     
     var lateralMove : LateralMove?
     
-    init(board: Board, extra: Sprite) {
+    init(board: Board, extra: Sprite, controller: Controller) {
         self.board = board
         self.linkedSprite = extra
+        self.controller = controller
     }
     
     func load(sprite: Sprite) {
@@ -41,7 +43,7 @@ class MainCardMotion : Motion, Linked {
     
     func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval, sprite: Sprite) {
         let delta = GLfloat(timeSinceLastUpdate)
-        let speed = Input.instance.pressing(.Down) ? self.downSpeed : self.speed
+        let speed = controller.pressing(.Down) ? self.downSpeed : self.speed
         
         sprite.y += delta * speed
         linkedSprite.y += delta * speed
@@ -52,10 +54,10 @@ class MainCardMotion : Motion, Linked {
             if lateralMove.ended {
                 self.lateralMove = nil
             }
-        } else if Input.instance.pressed(.Left) {
+        } else if controller.pressed(.Left) {
             // Déplacement à gauche
             self.lateralMove = LateralMove(main: sprite, extra: linkedSprite, direction: .Left, board: board)
-        } else if Input.instance.pressed(.Right) {
+        } else if controller.pressed(.Right) {
             // Déplacement à droite
             self.lateralMove = LateralMove(main: sprite, extra: linkedSprite, direction: .Right, board: board)
         }
@@ -67,6 +69,7 @@ class MainCardMotion : Motion, Linked {
 
 class ExtraCardMotion : Motion, Linked, CanRotate {
     
+    let controller : Controller
     let board : Board
     let linkedSprite : Sprite
     
@@ -77,9 +80,10 @@ class ExtraCardMotion : Motion, Linked, CanRotate {
         }
     }
     
-    init(board: Board, main: Sprite) {
+    init(board: Board, main: Sprite, controller: Controller) {
         self.board = board
         self.linkedSprite = main
+        self.controller = controller
     }
     
     func load(sprite: Sprite) {
@@ -93,9 +97,9 @@ class ExtraCardMotion : Motion, Linked, CanRotate {
             if rotation.ended {
                 self.rotation = nil
             }
-        } else if Input.instance.pressed(.RotateLeft) {
+        } else if controller.pressed(.RotateLeft) {
             self.rotation = Rotation(main: linkedSprite, extra: sprite, direction: .Left, board: board)
-        } else if Input.instance.pressed(.RotateRight) {
+        } else if controller.pressed(.RotateRight) {
             self.rotation = Rotation(main: linkedSprite, extra: sprite, direction: .Right, board: board)
         }
         
