@@ -73,7 +73,7 @@ class GameFlow {
     
     private func updateInitial() {
         self.nextState = .NewHand
-        self.pause = 1
+        self.pause = 0.25
         self.state = .Pause
         
         nextHandPreview.append(board.factory.sprite(0))

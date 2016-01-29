@@ -24,7 +24,7 @@ class GameScene : NSObject, Scene {
         let generator = Generator(capacity: 256)
         
         self.leftPlayerGameFlow = flowWithGenerator(generator, size: size, left: 16, controller: Input.instance)
-        self.rightPlayerGameFlow = flowWithGenerator(generator, size: size, left: View.instance.width - 16 - size.x, controller: NoController())
+        self.rightPlayerGameFlow = flowWithGenerator(generator, size: size, left: View.instance.width - 16 - size.x, controller: Cpu())
     }
     
     func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval) {
