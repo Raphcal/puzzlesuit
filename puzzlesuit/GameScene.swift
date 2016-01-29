@@ -23,8 +23,11 @@ class GameScene : NSObject, Scene {
         let size = Spot(x: unit * GLfloat(Board.columns), y: unit * GLfloat(Board.rows))
         let generator = Generator(capacity: 256)
         
-        self.leftPlayerGameFlow = flowWithGenerator(generator, size: size, left: 16, controller: Input.instance)
-        self.rightPlayerGameFlow = flowWithGenerator(generator, size: size, left: View.instance.width - 16 - size.x, controller: Cpu())
+        self.leftPlayerGameFlow = flowWithGenerator(generator, size: size, left: 16)
+        self.rightPlayerGameFlow = flowWithGenerator(generator, size: size, left: View.instance.width - 16 - size.x)
+        
+        leftPlayerGameFlow.controller = Input.instance
+        rightPlayerGameFlow.controller = Cpu(board: rightPlayerGameFlow.board)
     }
     
     func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval) {
@@ -38,11 +41,9 @@ class GameScene : NSObject, Scene {
         factory.draw()
     }
 
-    private func flowWithGenerator(generator: Generator, size: Spot, left: GLfloat, controller: Controller) -> GameFlow {
+    private func flowWithGenerator(generator: Generator, size: Spot, left: GLfloat) -> GameFlow {
         let board = Board(factory: factory, square: Square(left: left, top: 32, width: size.x, height: size.y))
-        let flow = GameFlow(board: board, generator: generator)
-        flow.controller = controller
-        return flow
+        return GameFlow(board: board, generator: generator)
     }
     
 }
