@@ -15,6 +15,7 @@
 		561069FF1C5A5EA800CCCEC6 /* Move.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561069FE1C5A5EA800CCCEC6 /* Move.swift */; };
 		56106A011C5A6EF200CCCEC6 /* BoardLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56106A001C5A6EF200CCCEC6 /* BoardLocation.swift */; };
 		56106A031C5A6F1D00CCCEC6 /* Rank.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56106A021C5A6F1D00CCCEC6 /* Rank.swift */; };
+		569959001C5B82DD00B5F2C7 /* PreviewMotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 569958FF1C5B82DD00B5F2C7 /* PreviewMotion.swift */; };
 		56D8769C1C57AC13003C1880 /* Identifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D8769B1C57AC13003C1880 /* Identifier.swift */; };
 		56DE742C1C56535000C47093 /* FallMotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DE742B1C56535000C47093 /* FallMotion.swift */; };
 		643C245C1C52D466003ACE44 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643C245B1C52D466003ACE44 /* AppDelegate.swift */; };
@@ -86,6 +87,7 @@
 		561069FE1C5A5EA800CCCEC6 /* Move.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Move.swift; sourceTree = "<group>"; };
 		56106A001C5A6EF200CCCEC6 /* BoardLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardLocation.swift; sourceTree = "<group>"; };
 		56106A021C5A6F1D00CCCEC6 /* Rank.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rank.swift; sourceTree = "<group>"; };
+		569958FF1C5B82DD00B5F2C7 /* PreviewMotion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewMotion.swift; sourceTree = "<group>"; };
 		56D8769B1C57AC13003C1880 /* Identifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Identifier.swift; sourceTree = "<group>"; };
 		56DE742B1C56535000C47093 /* FallMotion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FallMotion.swift; sourceTree = "<group>"; };
 		643C24581C52D466003ACE44 /* PuzzleSuit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PuzzleSuit.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -362,6 +364,7 @@
 				643C24991C52D6D0003ACE44 /* Motion.swift */,
 				64F517A81C556E3D006FB2AE /* PlayerMotion.swift */,
 				56DE742B1C56535000C47093 /* FallMotion.swift */,
+				569958FF1C5B82DD00B5F2C7 /* PreviewMotion.swift */,
 			);
 			name = Motion;
 			sourceTree = "<group>";
@@ -423,7 +426,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 643C24531C52D466003ACE44 /* Build configuration list for PBXProject "PuzzleSuit" */;
+			buildConfigurationList = 643C24531C52D466003ACE44 /* Build configuration list for PBXProject "puzzlesuit" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -478,6 +481,7 @@
 				643C24D31C52D990003ACE44 /* ReferencePool.swift in Sources */,
 				560ABB901C56467200E6D549 /* GameFlow.swift in Sources */,
 				647674A51C55FED8009F6F46 /* Generator.swift in Sources */,
+				569959001C5B82DD00B5F2C7 /* PreviewMotion.swift in Sources */,
 				643C24BA1C52D6D0003ACE44 /* Point.swift in Sources */,
 				643C24BD1C52D6D0003ACE44 /* Sprite.swift in Sources */,
 				64C969B51C5AB091008C0300 /* AI.swift in Sources */,
@@ -694,7 +698,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		643C24531C52D466003ACE44 /* Build configuration list for PBXProject "PuzzleSuit" */ = {
+		643C24531C52D466003ACE44 /* Build configuration list for PBXProject "puzzlesuit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				643C24701C52D466003ACE44 /* Debug */,

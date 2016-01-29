@@ -10,7 +10,7 @@ import Foundation
 
 enum GameFlowState {
     
-    case Initial, Play, Chain, Resolve, Pause, Commit, Lost
+    case Initial, NewHand, Play, Chain, Resolve, Pause, Commit, Lost
     
 }
 
@@ -29,26 +29,33 @@ class GameFlow {
     var state = GameFlowState.Initial
     
     var hand = [Sprite]()
+    var nextHand : [Card]
+    
+    var nextHandPreview = [Sprite]()
     
     var pause : NSTimeInterval = 0
-    var nextState = GameFlowState.Initial
+    var nextState = GameFlowState.NewHand
     
-    // TODO: Compter les détachements ici ?
+    var controller : Controller = NoController()
     
     init() {
         self.board = Board()
         self.generator = Generator()
+        self.nextHand = []
     }
     
     init(board: Board, generator: Generator) {
         self.board = board
         self.generator = generator
+        self.nextHand = [generator.cardForState(generatorState), generator.cardForState(generatorState)]
     }
     
     func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval) {
         switch state {
         case .Initial:
             updateInitial()
+        case .NewHand:
+            updateNewHand()
         case .Play:
             updatePlay()
         case .Chain:
@@ -65,9 +72,21 @@ class GameFlow {
     }
     
     private func updateInitial() {
-        let cards = board.spritesForMainCard(nextCard(), andExtraCard: nextCard())
+        self.nextState = .NewHand
+        self.pause = 1
+        self.state = .Pause
         
-        hand.appendContentsOf(cards)
+        nextHandPreview.append(board.factory.sprite(0))
+        nextHandPreview.append(board.factory.sprite(0))
+    }
+    
+    private func updateNewHand() {
+        self.hand = board.spritesForMainCard(nextHand[0], andExtraCard: nextHand[1])
+        
+        let hand = nextHand
+        self.nextHand = [generator.cardForState(generatorState), generator.cardForState(generatorState)]
+        
+        (controller as? Cpu)?.handChanged(hand, nextHand: nextHand)
         
         self.state = .Play
     }
@@ -123,14 +142,15 @@ class GameFlow {
         }
         
         if board.detached == 0 {
-            self.state = .Initial
+            self.state = .NewHand
         } else {
             self.state = .Chain
         }
     }
     
-    private func nextCard() -> Card {
-        return generator.cardForState(generatorState)
+    private func updatePreviewSprite(sprite: Sprite, withCard card: Card) {
+        sprite.animation = SingleFrameAnimation(definition: sprite.factory.definitions[card.suit.rawValue].animations[0])
+        sprite.animation.frameIndex = card.rank.rawValue
     }
     
 }

@@ -25,6 +25,7 @@ class GameScene : NSObject, Scene {
         let rightBoard = Board(factory: factory, square: Square(left: View.instance.width - 16 - size.x, top: 32, width: size.x, height: size.y))
         
         let generator = Generator(capacity: 256)
+        
         self.flow = GameFlow(board: leftBoard, generator: generator)
     }
     

@@ -11,8 +11,6 @@ import GLKit
 /// Pas de contrôle.
 class NoController : Controller {
     
-    static let instance = NoController()
-    
     var direction : GLfloat = 0
     
     func pressed(button: GamePadButton) -> Bool {

@@ -10,4 +10,7 @@ import Foundation
 
 protocol Player {
     
+    func mainCardMotion() -> Motion
+    func extraCardMotion() -> Motion
+    
 }
