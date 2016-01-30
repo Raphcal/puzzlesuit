@@ -55,6 +55,7 @@ class Rotation {
     
     let from : GLfloat
     let rotation : GLfloat
+    let count : Int
     let length : GLfloat
     
     var ended = false
@@ -71,11 +72,13 @@ class Rotation {
             let targetPoint = Spot(x: main.x + cos(targetAngle) * length, y: main.y + sin(targetAngle) * length)
             
             if board.canMoveToPoint(targetPoint) {
+                self.count = i
                 self.rotation = rotation
                 return
             }
         }
         
+        self.count = 0
         self.rotation = 0
         return nil
     }

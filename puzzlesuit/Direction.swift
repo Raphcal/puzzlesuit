@@ -11,6 +11,9 @@ import GLKit
 enum Direction : Int {
     case Left = 0, Right, Up, Down
     
+    static let all = [Direction.Left, .Right, .Up, .Down]
+    static let circle = [Direction.Up, .Right, .Down, .Left]
+    
     private static let values : [GLfloat] = [-1, 1, -1, 1]
     private static let reverses : [Direction] = [.Right, .Left, .Down, .Up]
     private static let axes : [Axe] = [.Horizontal, .Horizontal, .Vertical, .Vertical]

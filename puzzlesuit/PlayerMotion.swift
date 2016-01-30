@@ -73,6 +73,8 @@ class ExtraCardMotion : Motion, Linked, CanRotate {
     let board : Board
     let linkedSprite : Sprite
     
+    var direction = Direction.Up
+    
     var rotation : Rotation?
     var rotating : Bool {
         get {
@@ -94,7 +96,8 @@ class ExtraCardMotion : Motion, Linked, CanRotate {
         if let rotation = self.rotation {
             // Application de la rotation.
             rotation.updateWithTimeSinceLastUpdate(timeSinceLastUpdate)
-            if rotation.ended {
+            if rotation.ended, let index = Direction.circle.indexOf(self.direction) {
+                self.direction = Direction.circle[(index + rotation.count + Direction.circle.count) % Direction.circle.count]
                 self.rotation = nil
             }
         } else if controller.pressed(.RotateLeft) {

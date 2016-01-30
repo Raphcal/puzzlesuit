@@ -51,7 +51,8 @@ protocol Cpu {
 class BaseCpu : Controller, Cpu {
     
     var flow = GameFlow()
-    var target = Spot()
+    var target = BoardLocation(x: 0, y: 0)
+    var targetDirection = Direction.Up
     
     // MARK: - Gestion des contrôles
     
@@ -60,14 +61,36 @@ class BaseCpu : Controller, Cpu {
     func pressed(button: GamePadButton) -> Bool {
         let board = flow.board
         
-        let handLocation = board.locationForPoint(flow.hand[0])
-        let targetLocation = board.locationForPoint(target)
+        let currentDirection = (flow.hand[1].motion as! ExtraCardMotion).direction
         
-        if handLocation.x > targetLocation.x {
-            return button == .Left
-        } else if handLocation.x < targetLocation.x {
-            return button == .Right
-        } else {
+        switch button {
+        case .Left:
+            return board.locationForPoint(flow.hand[0]).x > target.x
+        case .Right:
+            return board.locationForPoint(flow.hand[0]).x < target.x
+        case .RotateLeft:
+            switch currentDirection {
+            case .Up:
+                return targetDirection == .Left || targetDirection == .Down
+            case .Left:
+                return targetDirection == .Down || targetDirection == .Right
+            case .Down:
+                return targetDirection == .Right || targetDirection == .Up
+            case .Right:
+                return targetDirection == .Up || targetDirection == .Left
+            }
+        case .RotateRight:
+            switch currentDirection {
+            case .Up:
+                return targetDirection == .Right || targetDirection == .Down
+            case .Right:
+                return targetDirection == .Down || targetDirection == .Left
+            case .Down:
+                return targetDirection == .Left || targetDirection == .Up
+            case .Left:
+                return targetDirection == .Up || targetDirection == .Right
+            }
+        default:
             return false
         }
     }
@@ -87,9 +110,9 @@ class BaseCpu : Controller, Cpu {
     // MARK: - Fonctions spécifiques
     
     func handChanged(hand: [Card], nextHand: [Card]) {
-        let column = Random.next(Board.columns)
-        target = Spot(x: GLfloat(column) * flow.hand[0].width + flow.board.left, y: 0)
-        NSLog("Colonne \(column) (\(target.x))")
+        target = BoardLocation(x: Random.next(Board.columns), y: 0)
+        targetDirection = Direction.circle[Random.next(Direction.circle.count)]
+        NSLog("Colonne \(target.x), rotation : \(targetDirection)")
     }
     
 }
