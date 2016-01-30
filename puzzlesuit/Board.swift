@@ -169,7 +169,7 @@ class Board : Square {
         return grid[location.index()] == nil
     }
     
-    private func locationForPoint(point: Spot) -> BoardLocation {
+    func locationForPoint(point: Spot) -> BoardLocation {
         return locationForX(point.x, y: point.y)
     }
     

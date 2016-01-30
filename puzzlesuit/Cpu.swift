@@ -40,15 +40,65 @@ class Zone {
     
 }
 
-class Cpu : Controller {
+protocol Cpu {
     
-    let board : Board
-    var zones = [Zone()]
+    var flow : GameFlow { get set }
+    
+    func handChanged(hand: [Card], nextHand: [Card])
+    
+}
+
+class BaseCpu : Controller, Cpu {
+    
+    var flow = GameFlow()
     var target = Spot()
     
-    init(board: Board) {
-        self.board = board
+    // MARK: - Gestion des contrôles
+    
+    var direction : GLfloat = 0
+    
+    func pressed(button: GamePadButton) -> Bool {
+        let board = flow.board
+        
+        let handLocation = board.locationForPoint(flow.hand[0])
+        let targetLocation = board.locationForPoint(target)
+        
+        if handLocation.x > targetLocation.x {
+            return button == .Left
+        } else if handLocation.x < targetLocation.x {
+            return button == .Right
+        } else {
+            return false
+        }
     }
+    
+    func pressing(button: GamePadButton) -> Bool {
+        return false
+    }
+    
+    func draw() {
+        // Pas d'affichage.
+    }
+    
+    func updateWithTouches(touches: [Int : Spot]) {
+        // Pas d'utilisation de l'écran tactile.
+    }
+    
+    // MARK: - Fonctions spécifiques
+    
+    func handChanged(hand: [Card], nextHand: [Card]) {
+        let column = Random.next(Board.columns)
+        target = Spot(x: GLfloat(column) * flow.hand[0].width + flow.board.left, y: 0)
+        NSLog("Colonne \(column) (\(target.x))")
+    }
+    
+}
+
+class ZoneCpu : Controller, Cpu {
+    
+    var flow = GameFlow()
+    var zones = [Zone()]
+    var target = Spot()
     
     // MARK: - Gestion des contrôles
     
@@ -86,7 +136,7 @@ class Cpu : Controller {
         
         switch zone.aim! {
         case let .Flush(suit):
-            self.target = flushTargetForHand(hand, inZone: zone, board: board)
+            self.target = flushTargetForHand(hand, inZone: zone, board: flow.board)
         default:
             break
         }

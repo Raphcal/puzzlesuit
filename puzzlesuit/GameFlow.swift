@@ -76,6 +76,10 @@ class GameFlow {
         self.pause = 0.25
         self.state = .Pause
         
+        if var cpu = controller as? Cpu {
+            cpu.flow = self
+        }
+        
         nextHandPreview.append(board.factory.sprite(0))
         nextHandPreview.append(board.factory.sprite(0))
     }
