@@ -72,7 +72,7 @@ class Rotation {
             let targetPoint = Spot(x: main.x + cos(targetAngle) * length, y: main.y + sin(targetAngle) * length)
             
             if board.canMoveToPoint(targetPoint) {
-                self.count = i
+                self.count = i * Int(direction.value())
                 self.rotation = rotation
                 return
             }

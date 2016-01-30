@@ -73,7 +73,7 @@ class BaseCpu : Controller, Cpu {
             case .Up:
                 return targetDirection == .Left || targetDirection == .Down
             case .Left:
-                return targetDirection == .Down || targetDirection == .Right
+                return targetDirection == .Down
             case .Down:
                 return targetDirection == .Right || targetDirection == .Up
             case .Right:

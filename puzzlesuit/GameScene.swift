@@ -31,10 +31,13 @@ class GameScene : NSObject, Scene {
     }
     
     func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval) {
-        factory.updateWithTimeSinceLastUpdate(timeSinceLastUpdate)
+        // Limitation du lag
+        let time = min(timeSinceLastUpdate, 0.1)
         
-        leftPlayerGameFlow.updateWithTimeSinceLastUpdate(timeSinceLastUpdate)
-        rightPlayerGameFlow.updateWithTimeSinceLastUpdate(timeSinceLastUpdate)
+        factory.updateWithTimeSinceLastUpdate(time)
+        
+        leftPlayerGameFlow.updateWithTimeSinceLastUpdate(time)
+        rightPlayerGameFlow.updateWithTimeSinceLastUpdate(time)
     }
     
     func draw() {
