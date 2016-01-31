@@ -121,6 +121,10 @@ class RandomCpu : BaseCpu, Cpu {
 
 class InstantCpu : BaseCpu, Cpu {
     
+    func handChanged(hand: [Card], nextHand: [Card]) {
+        // TODO: Écrire la méthode.
+    }
+    
 }
 
 class ZoneCpu : BaseCpu, Cpu {
