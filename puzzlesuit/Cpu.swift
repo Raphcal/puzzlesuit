@@ -48,7 +48,7 @@ protocol Cpu {
     
 }
 
-class BaseCpu : Controller, Cpu {
+class BaseCpu : Controller {
     
     var flow = GameFlow()
     var target = BoardLocation(x: 0, y: 0)
@@ -107,7 +107,9 @@ class BaseCpu : Controller, Cpu {
         // Pas d'utilisation de l'écran tactile.
     }
     
-    // MARK: - Fonctions spécifiques
+}
+
+class RandomCpu : BaseCpu, Cpu {
     
     func handChanged(hand: [Card], nextHand: [Card]) {
         target = BoardLocation(x: Random.next(Board.columns), y: 0)
@@ -117,33 +119,13 @@ class BaseCpu : Controller, Cpu {
     
 }
 
-class ZoneCpu : Controller, Cpu {
+class InstantCpu : BaseCpu, Cpu {
     
-    var flow = GameFlow()
+}
+
+class ZoneCpu : BaseCpu, Cpu {
+    
     var zones = [Zone()]
-    var target = Spot()
-    
-    // MARK: - Gestion des contrôles
-    
-    var direction : GLfloat = 0
-    
-    func pressed(button: GamePadButton) -> Bool {
-        return false
-    }
-    
-    func pressing(button: GamePadButton) -> Bool {
-        return false
-    }
-    
-    func draw() {
-        // Pas d'affichage.
-    }
-    
-    func updateWithTouches(touches: [Int : Spot]) {
-        // Pas d'utilisation de l'écran tactile.
-    }
-    
-    // MARK: - Fonctions spécifiques
     
     func handChanged(hand: [Card], nextHand: [Card]) {
         NSLog("Coucou")
@@ -227,9 +209,9 @@ class ZoneCpu : Controller, Cpu {
         }
     }
     
-    private func flushTargetForHand(hand: [Card], inZone zone: Zone, board: Board) -> Spot {
+    private func flushTargetForHand(hand: [Card], inZone zone: Zone, board: Board) -> BoardLocation {
         // TODO: Décider l'emplacement du bloc actuel.
-        return Spot()
+        return BoardLocation(x: 0, y: 0)
     }
     
 }

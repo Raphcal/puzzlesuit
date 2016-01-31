@@ -78,6 +78,11 @@ class Board : Square {
         var location = locationForPoint(sprite)
         while grid[location.index()] != nil {
             location += Direction.Up.location()
+            
+            if location.y < 0 {
+                sprites.forEach({ $0.destroy() })
+                return
+            }
         }
         
         for sprite in sprites {
@@ -151,10 +156,6 @@ class Board : Square {
         dirty.removeAll()
     }
     
-    func mark() -> Int {
-        return 0
-    }
-    
     func commit() {
         removeCardsAtLocations(marked)
         marked.removeAll()
@@ -167,6 +168,17 @@ class Board : Square {
             return false
         }
         return grid[location.index()] == nil
+    }
+    
+    /// Renvoi l'emplacement de la carte la plus haute de la colonne donnée.
+    func topOfColumn(column: Int) -> BoardLocation {
+        var location = BoardLocation(x: column, y: 0)
+        
+        while grid[location.index()] == nil {
+            location += Direction.Down.location()
+        }
+        
+        return location
     }
     
     func locationForPoint(point: Spot) -> BoardLocation {
