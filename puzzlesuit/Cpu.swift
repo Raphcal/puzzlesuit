@@ -54,6 +54,8 @@ class BaseCpu : Controller {
     var target = BoardLocation(x: 0, y: 0)
     var targetDirection = Direction.Up
     
+    var down = false
+    
     // MARK: - Gestion des contrôles
     
     var direction : GLfloat = 0
@@ -96,7 +98,7 @@ class BaseCpu : Controller {
     }
     
     func pressing(button: GamePadButton) -> Bool {
-        return false
+        return button == .Down && down
     }
     
     func draw() {
@@ -123,6 +125,36 @@ class InstantCpu : BaseCpu, Cpu {
     
     func handChanged(hand: [Card], nextHand: [Card]) {
         // TODO: Écrire la méthode.
+        let board = flow.board
+        
+        var bestColumn = Random.next(Board.columns)
+        var bestScore = 0
+        
+        let identifier = Identifier(board: flow.board)
+        for column in 0..<Board.columns {
+            // TODO: Prendre en compte la 2ème carte et les rotations.
+            if let top = flow.board.topOfColumn(column), let card = board.cardAtLocation(top) {
+                var sameKinds = 0
+                var sameSuits = 0
+                if card.rank == hand[0].rank {
+                    sameKinds = identifier.sameKindsAsCard(hand[0], location: top, ignore: []).count
+                }
+                if card.suit == hand[0].suit {
+                    sameSuits = identifier.sameSuitAsCard(hand[0], location: top, ignore: []).count
+                }
+                // TODO: Calculer les suites aussi.
+                
+                let score = sameKinds * 2 + sameSuits
+                if score > bestScore {
+                    bestScore = score
+                    bestColumn = column
+                }
+            }
+        }
+        
+        self.down = true
+        self.target = BoardLocation(x: bestColumn, y: 0)
+        self.targetDirection = Direction.all[Random.next(3)]
     }
     
 }

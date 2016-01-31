@@ -171,11 +171,15 @@ class Board : Square {
     }
     
     /// Renvoi l'emplacement de la carte la plus haute de la colonne donnée.
-    func topOfColumn(column: Int) -> BoardLocation {
+    func topOfColumn(column: Int) -> BoardLocation? {
         var location = BoardLocation(x: column, y: 0)
         
         while grid[location.index()] == nil {
             location += Direction.Down.location()
+            
+            if location.y >= Board.rows + Board.hiddenRows {
+                return nil
+            }
         }
         
         return location

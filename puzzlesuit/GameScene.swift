@@ -27,7 +27,7 @@ class GameScene : NSObject, Scene {
         self.rightPlayerGameFlow = flowWithGenerator(generator, size: size, left: View.instance.width - 16 - size.x)
         
         leftPlayerGameFlow.controller = Input.instance
-        rightPlayerGameFlow.controller = RandomCpu()
+        rightPlayerGameFlow.controller = InstantCpu()
     }
     
     func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval) {
