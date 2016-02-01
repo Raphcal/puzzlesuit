@@ -103,7 +103,9 @@ class Board : Square {
         }
     }
     
-    func resolve() {
+    func resolve() -> [Hand] {
+        var result = [Hand]()
+        
         for location in dirty {
             if let card = cardAtLocation(location) {
                 let identifier = Identifier(board: self)
@@ -111,11 +113,8 @@ class Board : Square {
                 // Vérification des suites.
                 let straight = identifier.straightIncludingCard(card, location: location, ignore: marked)
                 if straight.count >= 5 {
-                    if identifier.isFlush(straight) {
-                        NSLog("\(straight.count) straight flush")
-                    } else {
-                        NSLog("\(straight.count) straight")
-                    }
+                    result.append(.Straight(count: straight.count, flush: identifier.isFlush(straight)))
+                    NSLog(result.last!.description())
                     marked.appendContentsOf(straight)
                 }
                 
@@ -123,11 +122,8 @@ class Board : Square {
                 let sameKinds = identifier.sameKindsAsCard(card, location: location, ignore: marked)
                 
                 if sameKinds.count >= 3 {
-                    if identifier.isFlush(sameKinds) {
-                        NSLog("\(sameKinds.count) of a kind flush")
-                    } else {
-                        NSLog("\(sameKinds.count) of a kind")
-                    }
+                    result.append(.SameKind(rank: cardAtLocation(sameKinds[0])!.rank, count: sameKinds.count, flush: identifier.isFlush(sameKinds)))
+                    NSLog(result.last!.description())
                     marked.appendContentsOf(sameKinds)
                 }
                 
@@ -147,13 +143,16 @@ class Board : Square {
                 // Vérification des couleurs.
                 let sameSuit = identifier.sameSuitAsCard(card, location: location, ignore: marked)
                 if sameSuit.count >= 5 {
-                    NSLog("\(sameSuit.count) length flush")
+                    result.append(.Flush(suit: cardAtLocation(sameSuit[0])!.suit, count: sameSuit.count))
+                    NSLog(result.last!.description())
                     marked.appendContentsOf(sameSuit)
                 }
             }
         }
         removalWarningForCardsAtLocations(marked)
         dirty.removeAll()
+        
+        return result
     }
     
     func commit() {

@@ -14,6 +14,7 @@
 		561069FF1C5A5EA800CCCEC6 /* Move.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561069FE1C5A5EA800CCCEC6 /* Move.swift */; };
 		56106A011C5A6EF200CCCEC6 /* BoardLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56106A001C5A6EF200CCCEC6 /* BoardLocation.swift */; };
 		56106A031C5A6F1D00CCCEC6 /* Rank.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56106A021C5A6F1D00CCCEC6 /* Rank.swift */; };
+		5672F71D1C5FB89C0015AFAD /* Hand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5672F71C1C5FB89C0015AFAD /* Hand.swift */; };
 		569959001C5B82DD00B5F2C7 /* PreviewMotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 569958FF1C5B82DD00B5F2C7 /* PreviewMotion.swift */; };
 		56D8769C1C57AC13003C1880 /* Identifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D8769B1C57AC13003C1880 /* Identifier.swift */; };
 		56DE742C1C56535000C47093 /* FallMotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DE742B1C56535000C47093 /* FallMotion.swift */; };
@@ -86,6 +87,7 @@
 		561069FE1C5A5EA800CCCEC6 /* Move.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Move.swift; sourceTree = "<group>"; };
 		56106A001C5A6EF200CCCEC6 /* BoardLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardLocation.swift; sourceTree = "<group>"; };
 		56106A021C5A6F1D00CCCEC6 /* Rank.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rank.swift; sourceTree = "<group>"; };
+		5672F71C1C5FB89C0015AFAD /* Hand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hand.swift; sourceTree = "<group>"; };
 		569958FF1C5B82DD00B5F2C7 /* PreviewMotion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewMotion.swift; sourceTree = "<group>"; };
 		56D8769B1C57AC13003C1880 /* Identifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Identifier.swift; sourceTree = "<group>"; };
 		56DE742B1C56535000C47093 /* FallMotion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FallMotion.swift; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 				560ABB8B1C562E6C00E6D549 /* Card.swift */,
 				560ABB8D1C56458C00E6D549 /* Component.swift */,
 				644286081C597D9500668A9F /* Deck.swift */,
+				5672F71C1C5FB89C0015AFAD /* Hand.swift */,
 				647674A41C55FED8009F6F46 /* Generator.swift */,
 				560ABB8F1C56467200E6D549 /* GameFlow.swift */,
 				56D8769B1C57AC13003C1880 /* Identifier.swift */,
@@ -520,6 +523,7 @@
 				643C245C1C52D466003ACE44 /* AppDelegate.swift in Sources */,
 				560ABB8A1C56254700E6D549 /* Suit.swift in Sources */,
 				643C24C41C52D6F4003ACE44 /* Definition.swift in Sources */,
+				5672F71D1C5FB89C0015AFAD /* Hand.swift in Sources */,
 				643C24C61C52D709003ACE44 /* Resources.swift in Sources */,
 				643C24A91C52D6D0003ACE44 /* Color.swift in Sources */,
 				643C24BB1C52D6D0003ACE44 /* Random.swift in Sources */,

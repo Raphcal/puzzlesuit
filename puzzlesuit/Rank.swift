@@ -10,9 +10,9 @@ import Foundation
 
 enum Rank : Int {
     
-    case As, Two, Three, Four, Jack, Queen, King
+    case As, Two, Three, Four, Five, Jack, Queen, King
     
-    static let all = [Rank.As, .Two, .Three, .Four, .Jack, .Queen, .King]
+    static let all = [Rank.As, .Two, .Three, .Four, .Five, .Jack, .Queen, .King]
     
 }
 

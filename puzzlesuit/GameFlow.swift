@@ -38,6 +38,8 @@ class GameFlow {
     
     var controller : Controller = NoController()
     
+    var chainCount = 0
+    
     init() {
         self.board = Board()
         self.generator = Generator()
@@ -86,6 +88,7 @@ class GameFlow {
     
     private func updateNewHand() {
         self.hand = board.spritesForMainCard(nextHand[0], andExtraCard: nextHand[1])
+        self.chainCount = 0
 
         let main = self.hand[0]
         let extra = self.hand[1]
@@ -125,7 +128,7 @@ class GameFlow {
         board.resolve()
         
         if board.marked.count > 0 {
-            pause = 0.3
+            self.pause = 0.3
             self.nextState = .Commit
             self.state = .Pause
         } else {
@@ -151,15 +154,23 @@ class GameFlow {
         }
         
         if board.detached == 0 {
+            if chainCount > 1 {
+                NSLog("\(chainCount)x combo")
+            }
             self.state = .NewHand
         } else {
             self.state = .Chain
+            self.chainCount++
         }
     }
     
     private func updatePreviewSprite(sprite: Sprite, withCard card: Card) {
         sprite.animation = SingleFrameAnimation(definition: sprite.factory.definitions[card.suit.rawValue].animations[0])
         sprite.animation.frameIndex = card.rank.rawValue
+    }
+    
+    private func sendTokens() {
+        
     }
     
 }
