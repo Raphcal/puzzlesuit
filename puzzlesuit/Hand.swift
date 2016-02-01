@@ -19,18 +19,18 @@ enum Hand {
     func tokens() -> Int {
         switch self {
         case let .Flush(_, count):
-            return max(2 * count - 5, 0)
+            return max(2 * (count - 4), 0)
         case let .SameKind(rank, count, flush):
             let multiplier = flush ? 2 : 1
             let base : Int
             if rank == .As {
-                base = Board.columns
+                base = Board.columns * 2
             } else if rank.rawValue >= Rank.Jack.rawValue && rank.rawValue <= Rank.King.rawValue {
-                base = Board.columns / 2
+                base = Board.columns
             } else {
-                base = 2
+                base = Board.columns / 2
             }
-            return base * (count - 3) * multiplier
+            return base * (count - 2) * multiplier
         case let .Straight(count, flush):
             let multiplier : Float = flush ? 3 : 1
             let base : Float = 1 + 0.5 * Float(count - 5)
@@ -43,12 +43,12 @@ enum Hand {
         switch self {
         case let .Flush(suit, count):
             return "\(suit) suit \(count) flush"
-        case let .SameKind(_, count, flush):
-            let isFlush = flush ? " flush" : ""
-            return "\(count) of a kind\(isFlush)"
+        case let .SameKind(rank, count, flush):
+            let isFlush = flush ? "flush" : ""
+            return "\(count) of \(rank) \(isFlush)"
         case let .Straight(count, flush):
-            let isFlush = flush ? " flush" : ""
-            return "\(count) straight\(isFlush)"
+            let isFlush = flush ? "flush" : ""
+            return "\(count) straight \(isFlush)"
         }
     }
     

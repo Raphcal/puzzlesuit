@@ -38,6 +38,7 @@ class GameFlow {
     
     var controller : Controller = NoController()
     
+    var tokens = 0
     var chainCount = 0
     
     init() {
@@ -89,6 +90,7 @@ class GameFlow {
     private func updateNewHand() {
         self.hand = board.spritesForMainCard(nextHand[0], andExtraCard: nextHand[1])
         self.chainCount = 0
+        self.tokens = 0
 
         let main = self.hand[0]
         let extra = self.hand[1]
@@ -125,7 +127,15 @@ class GameFlow {
     }
     
     private func updateResolve() {
-        board.resolve()
+        let hands = board.resolve()
+        
+        for hand in hands {
+            self.tokens += hand.tokens()
+        }
+        
+        if !hands.isEmpty {
+            chainCount++
+        }
         
         if board.marked.count > 0 {
             self.pause = 0.3
@@ -157,10 +167,12 @@ class GameFlow {
             if chainCount > 1 {
                 NSLog("\(chainCount)x combo")
             }
+            if tokens > 0 {
+                NSLog("Total : \(tokens * chainCount)")
+            }
             self.state = .NewHand
         } else {
             self.state = .Chain
-            self.chainCount++
         }
     }
     
