@@ -165,9 +165,16 @@ class InstantCpu : BaseCpu, Cpu {
                 if other.suit == card.suit {
                     sameSuits = identifier.sameSuitAsCard(card, location: top, ignore: []).count
                 }
+                let columnLocationScore : Int
+                if column == 2 {
+                    columnLocationScore = top.y - Board.hiddenRows - Board.rows
+                } else {
+                    columnLocationScore = 0
+                }
+                
                 // TODO: Calculer les suites aussi.
                 
-                let score = sameKinds * 2 + sameSuits
+                let score = sameKinds * 2 + sameSuits + columnLocationScore
                 if score > bestScore {
                     bestScore = score
                     bestColumn = column

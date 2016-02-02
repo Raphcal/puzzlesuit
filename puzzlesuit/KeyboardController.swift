@@ -23,6 +23,7 @@ enum KeyCode : UInt16 {
     case C = 8
     case D = 2
     case F = 3
+    case M = 41
     case Q = 0
     case V = 9
     case W = 6
