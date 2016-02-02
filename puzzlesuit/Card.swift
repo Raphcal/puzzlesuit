@@ -24,18 +24,27 @@ struct Card : Entry {
         self.rank = rank
     }
     
-    init(sprite: Sprite) {
+    init?(sprite: Sprite) {
         if let suit = Suit(rawValue: sprite.definition.index), let rank = Rank(rawValue: sprite.animation.frameIndex) {
             self.suit = suit
             self.rank = rank
         } else {
-            self.suit = .Club
-            self.rank = .As
+            return nil
         }
     }
     
 }
 
 struct Chip : Entry {
-    // Pas de comportement particulier.
+    
+    init() {
+        // Pas d'objet à initialiser.
+    }
+    
+    init?(sprite: Sprite) {
+        if sprite.definition.index != Suit.all.count {
+            return nil
+        }
+    }
+    
 }

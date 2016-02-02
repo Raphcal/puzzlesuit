@@ -124,7 +124,8 @@ class RandomCpu : BaseCpu, Cpu {
 class InstantCpu : BaseCpu, Cpu {
     
     func handChanged(hand: [Card], nextHand: [Card]) {
-        // TODO: Écrire la méthode.
+        self.down = false
+        
         let board = flow.board
         
         var bestColumn = Random.next(Board.columns)
@@ -148,11 +149,11 @@ class InstantCpu : BaseCpu, Cpu {
                 if score > bestScore {
                     bestScore = score
                     bestColumn = column
+                    self.down = true
                 }
             }
         }
         
-        self.down = true
         self.target = BoardLocation(x: bestColumn, y: 0)
         self.targetDirection = Direction.all[Random.next(3)]
     }
