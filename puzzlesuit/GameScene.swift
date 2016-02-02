@@ -23,8 +23,8 @@ class GameScene : NSObject, Scene {
         let size = Spot(x: unit * GLfloat(Board.columns), y: unit * GLfloat(Board.rows))
         let generator = Generator(capacity: 256)
         
-        self.leftPlayerGameFlow = flowWithGenerator(generator, size: size, left: 16)
-        self.rightPlayerGameFlow = flowWithGenerator(generator, size: size, left: View.instance.width - 16 - size.x)
+        self.leftPlayerGameFlow = flowWithGenerator(generator, size: size, side: .Left)
+        self.rightPlayerGameFlow = flowWithGenerator(generator, size: size, side: .Right)
         
         leftPlayerGameFlow.controller = Input.instance
         rightPlayerGameFlow.controller = InstantCpu()
@@ -44,9 +44,9 @@ class GameScene : NSObject, Scene {
         factory.draw()
     }
 
-    private func flowWithGenerator(generator: Generator, size: Spot, left: GLfloat) -> GameFlow {
-        let board = Board(factory: factory, square: Square(left: left, top: 32, width: size.x, height: size.y))
-        return GameFlow(board: board, generator: generator)
+    private func flowWithGenerator(generator: Generator, size: Spot, side: Side) -> GameFlow {
+        let board = Board(factory: factory, square: Square(left: side.boardLeft(size), top: 32, width: size.x, height: size.y))
+        return GameFlow(side: side, board: board, generator: generator)
     }
     
 }

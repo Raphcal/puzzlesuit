@@ -16,6 +16,7 @@
 		56106A031C5A6F1D00CCCEC6 /* Rank.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56106A021C5A6F1D00CCCEC6 /* Rank.swift */; };
 		5672F71D1C5FB89C0015AFAD /* Hand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5672F71C1C5FB89C0015AFAD /* Hand.swift */; };
 		569959001C5B82DD00B5F2C7 /* PreviewMotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 569958FF1C5B82DD00B5F2C7 /* PreviewMotion.swift */; };
+		56C95A681C60D39E00997F12 /* Side.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561069FC1C5A4E3F00CCCEC6 /* Side.swift */; };
 		56D8769C1C57AC13003C1880 /* Identifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D8769B1C57AC13003C1880 /* Identifier.swift */; };
 		56DE742C1C56535000C47093 /* FallMotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DE742B1C56535000C47093 /* FallMotion.swift */; };
 		643C245C1C52D466003ACE44 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643C245B1C52D466003ACE44 /* AppDelegate.swift */; };
@@ -500,6 +501,7 @@
 				643C245E1C52D466003ACE44 /* ViewController.swift in Sources */,
 				643C24B41C52D6D0003ACE44 /* Map.swift in Sources */,
 				643C24C01C52D6D0003ACE44 /* SurfaceArray.m in Sources */,
+				56C95A681C60D39E00997F12 /* Side.swift in Sources */,
 				645E5EC91C54272900E29345 /* GameScene.swift in Sources */,
 				643C24861C52D615003ACE44 /* KeyboardListener.swift in Sources */,
 				643C24AF1C52D6D0003ACE44 /* FadeScene.swift in Sources */,

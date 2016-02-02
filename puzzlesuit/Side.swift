@@ -6,21 +6,37 @@
 //  Copyright © 2016 Raphaël Calabro. All rights reserved.
 //
 
-import Foundation
+import GLKit
 
-class Side {
+enum Side {
     
-    let controller : Controller
-    let board : Board
+    case Left, Right
     
-    init(controller: Controller, board: Board) {
-        self.controller = controller
-        self.board = board
+    func boardLeft(size: Spot) -> GLfloat {
+        switch self {
+        case .Left:
+            return 16
+        case .Right:
+            return View.instance.width - 16 - size.x
+        }
     }
     
-    func setMotionForMainSprite(main: Sprite, extraSprite extra: Sprite) {
-        main.motion = MainCardMotion(board: board, extra: extra)
-        extra.motion = ExtraCardMotion(board: board, main: main)
+    func oppositeSide() -> Side {
+        switch self {
+        case .Left:
+            return .Right
+        case .Right:
+            return .Left
+        }
+    }
+    
+    func event() -> Event {
+        switch self {
+        case .Left:
+            return .LeftSideSentChips
+        case .Right:
+            return .RightSideSentChips
+        }
     }
     
 }

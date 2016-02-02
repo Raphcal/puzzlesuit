@@ -9,8 +9,10 @@
 import Foundation
 
 enum Event : Int {
-    /// Dépassement du tableau.
-    case BoardOverflow
+    /// Le joueur de gauche vient d'envoyer des jetons au joueur de droite.
+    case LeftSideSentChips
+    /// Le joueur de droite vient d'envoyer des jetons au joueur de gauche.
+    case RightSideSentChips
     /// La connexion avec GameCenter a changée.
     case GameCenterStatusChanged
     /// Nombre d'événements.

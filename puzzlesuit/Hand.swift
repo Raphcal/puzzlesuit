@@ -16,7 +16,7 @@ enum Hand {
     
     // TODO: TWO_PAIRS ?
     
-    func tokens() -> Int {
+    func chips() -> Int {
         switch self {
         case let .Flush(_, count):
             return count - 4
@@ -41,13 +41,13 @@ enum Hand {
     func description() -> String {
         switch self {
         case let .Flush(suit, count):
-            return "\(suit) suit \(count) flush (\(tokens()))"
+            return "\(suit) suit \(count) flush (\(chips()))"
         case let .SameKind(rank, count, flush):
             let isFlush = flush ? " flush" : ""
-            return "\(count) of \(rank)\(isFlush) (\(tokens()))"
+            return "\(count) of \(rank)\(isFlush) (\(chips()))"
         case let .Straight(count, flush):
             let isFlush = flush ? " flush" : ""
-            return "\(count) straight\(isFlush) (\(tokens()))"
+            return "\(count) straight\(isFlush) (\(chips()))"
         }
     }
     

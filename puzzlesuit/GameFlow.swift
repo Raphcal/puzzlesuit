@@ -10,7 +10,7 @@ import Foundation
 
 enum GameFlowState {
     
-    case Initial, NewHand, Play, Chain, Resolve, Pause, Commit, Lost
+    case Initial, NewHand, Play, Chain, Resolve, Pause, Commit, ChipFall, Lost
     
 }
 
@@ -22,6 +22,7 @@ enum GameError : ErrorType {
 
 class GameFlow {
     
+    let side : Side
     let board : Board
     let generator : Generator
     let generatorState = GeneratorState()
@@ -38,16 +39,20 @@ class GameFlow {
     
     var controller : Controller = NoController()
     
-    var tokens = 0
+    var chips = 0
     var chainCount = 0
     
+    var receivedChips = 0
+    
     init() {
+        self.side = .Left
         self.board = Board()
         self.generator = Generator()
         self.nextHand = []
     }
     
-    init(board: Board, generator: Generator) {
+    init(side: Side, board: Board, generator: Generator) {
+        self.side = side
         self.board = board
         self.generator = generator
         self.nextHand = [generator.cardForState(generatorState), generator.cardForState(generatorState)]
@@ -69,6 +74,8 @@ class GameFlow {
             updatePause(timeSinceLastUpdate)
         case .Commit:
             updateCommit()
+        case .ChipFall:
+            updateChipFall()
         case .Lost:
             break
         }
@@ -85,12 +92,16 @@ class GameFlow {
         
         nextHandPreview.append(board.factory.sprite(0))
         nextHandPreview.append(board.factory.sprite(0))
+        
+        EventBus.instance.setListener({ (value) in
+            self.receivedChips += value as! Int
+            }, forEvent: side.oppositeSide().event(), parent: self)
     }
     
     private func updateNewHand() {
         self.hand = board.spritesForMainCard(nextHand[0], andExtraCard: nextHand[1])
         self.chainCount = 0
-        self.tokens = 0
+        self.chips = 0
 
         let main = self.hand[0]
         let extra = self.hand[1]
@@ -130,7 +141,7 @@ class GameFlow {
         let hands = board.resolve()
         
         for hand in hands {
-            self.tokens += hand.tokens()
+            self.chips += hand.chips()
         }
         
         if !hands.isEmpty {
@@ -167,13 +178,18 @@ class GameFlow {
             if chainCount > 1 {
                 NSLog("\(chainCount)x combo")
             }
-            if tokens > 0 {
-                NSLog("Total : \(tokens * chainCount)")
+            if chips > 0 {
+                sendChipsToOppositeSide(chips * chainCount)
             }
-            self.state = .NewHand
+            self.state = .ChipFall
         } else {
             self.state = .Chain
         }
+    }
+    
+    private func updateChipFall() {
+        // TODO: Faire tomber les jetons reçus.
+        self.state = .NewHand
     }
     
     private func updatePreviewSprite(sprite: Sprite, withCard card: Card) {
@@ -181,8 +197,14 @@ class GameFlow {
         sprite.animation.frameIndex = card.rank.rawValue
     }
     
-    private func sendTokens() {
-        
+    private func sendChipsToOppositeSide(chips: Int) {
+        let count : Int
+        if chips < Board.columns {
+            count = chips
+        } else {
+            count = (chips / Board.columns) * Board.columns
+        }
+        EventBus.instance.fireEvent(side.event(), withValue: count)
     }
     
 }
