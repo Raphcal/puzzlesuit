@@ -66,6 +66,8 @@ class Rotation {
         self.from = atan2(extra.y - main.y, extra.x - main.x)
         self.length = distance(float2(main.x, main.y), float2(extra.x, extra.y))
         
+        // TODO: S'il y a un mur ou un obstacle et que l'espace est suffisant de l'autre côté, déplacer main dans la direction opposée à l'obstacle
+        
         for i in 1..<4 {
             let rotation = GLfloat(M_PI_2) * direction.value() * GLfloat(i)
             let targetAngle = from + rotation

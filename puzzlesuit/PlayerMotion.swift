@@ -42,6 +42,7 @@ class MainCardMotion : Motion, Linked {
     }
     
     func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval, sprite: Sprite) {
+        // TODO: Faire descendre par case, plutôt que de façon fluide.
         let delta = GLfloat(timeSinceLastUpdate)
         let speed = controller.pressing(.Down) ? self.downSpeed : self.speed
         

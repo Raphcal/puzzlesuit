@@ -155,7 +155,6 @@ class InstantCpu : BaseCpu, Cpu {
         
         let identifier = Identifier(board: flow.board)
         for column in 0..<Board.columns {
-            // TODO: Prendre en compte la 2ème carte et les rotations.
             if let top = flow.board.topOfColumn(column), let other = board.cardAtLocation(top) {
                 var sameKinds = 0
                 var sameSuits = 0
@@ -165,12 +164,9 @@ class InstantCpu : BaseCpu, Cpu {
                 if other.suit == card.suit {
                     sameSuits = identifier.sameSuitAsCard(card, location: top, ignore: []).count
                 }
-                let columnLocationScore : Int
-                if column == 2 {
-                    columnLocationScore = top.y - Board.hiddenRows - Board.rows
-                } else {
-                    columnLocationScore = 0
-                }
+
+                // Voir s'il faut plutôt limiter à la colonne 2
+                let columnLocationScore = (top.y - Board.hiddenRows - Board.rows) / 4
                 
                 // TODO: Calculer les suites aussi.
                 
