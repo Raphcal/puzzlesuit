@@ -58,7 +58,7 @@ class Board : Square {
         if chips < Board.columns {
             for column in 0..<chips {
                 let sprite = spriteForChipInColumn(column, tailIndex: 0)
-                sprite.motion = FallMotion(board: self)
+                sprite.motion = FallMotion(board: self, tail: [], initialSpeed: 128)
             }
             detached += chips
         } else {
@@ -69,7 +69,7 @@ class Board : Square {
                 for index in 0..<count {
                     tail.append(spriteForChipInColumn(column, tailIndex: index))
                 }
-                tail[0].motion = FallMotion(board: self, tail: tail)
+                tail[0].motion = FallMotion(board: self, tail: tail, initialSpeed: 128)
             }
             
             detached += Board.columns

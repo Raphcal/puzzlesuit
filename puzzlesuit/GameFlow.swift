@@ -182,6 +182,8 @@ class GameFlow {
                 sendChipsToOppositeSide(chips * chainCount)
             }
             if receivedChips > 0 {
+                board.spritesForChips(receivedChips)
+                self.receivedChips = 0
                 self.state = .ChipFall
             } else {
                 self.state = .NewHand
@@ -192,10 +194,6 @@ class GameFlow {
     }
     
     private func updateChipFall() {
-        if receivedChips > 0 {
-            board.spritesForChips(receivedChips)
-            self.receivedChips = 0
-        }
         if board.detached == 0 {
             self.state = .NewHand
         }

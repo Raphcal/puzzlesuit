@@ -126,6 +126,28 @@ class InstantCpu : BaseCpu, Cpu {
     func handChanged(hand: [Card], nextHand: [Card]) {
         self.down = false
         
+        let main = bestLocationForCard(hand[0])
+        let extra = bestLocationForCard(hand[1])
+        
+        if abs(main.location.x - extra.location.x) == 1 {
+            // Les 2 meilleures cases sont voisines.
+            self.target = main.location
+            if main.location.x < extra.location.x {
+                self.targetDirection = .Right
+            } else {
+                self.targetDirection = .Left
+            }
+        } else if main.score > extra.score {
+            self.target = main.location
+            self.targetDirection = .Up
+        } else {
+            self.target = extra.location
+            self.targetDirection = .Down
+        }
+    }
+    
+    private func bestLocationForCard(card: Card) -> (location: BoardLocation, score: Int) {
+        // TODO: Éviter de faire une boucle par carte.
         let board = flow.board
         
         var bestColumn = Random.next(Board.columns)
@@ -134,14 +156,14 @@ class InstantCpu : BaseCpu, Cpu {
         let identifier = Identifier(board: flow.board)
         for column in 0..<Board.columns {
             // TODO: Prendre en compte la 2ème carte et les rotations.
-            if let top = flow.board.topOfColumn(column), let card = board.cardAtLocation(top) {
+            if let top = flow.board.topOfColumn(column), let other = board.cardAtLocation(top) {
                 var sameKinds = 0
                 var sameSuits = 0
-                if card.rank == hand[0].rank {
-                    sameKinds = identifier.sameKindsAsCard(hand[0], location: top, ignore: []).count
+                if other.rank == card.rank {
+                    sameKinds = identifier.sameKindsAsCard(card, location: top, ignore: []).count
                 }
-                if card.suit == hand[0].suit {
-                    sameSuits = identifier.sameSuitAsCard(hand[0], location: top, ignore: []).count
+                if other.suit == card.suit {
+                    sameSuits = identifier.sameSuitAsCard(card, location: top, ignore: []).count
                 }
                 // TODO: Calculer les suites aussi.
                 
@@ -154,8 +176,8 @@ class InstantCpu : BaseCpu, Cpu {
             }
         }
         
-        self.target = BoardLocation(x: bestColumn, y: 0)
-        self.targetDirection = Direction.all[Random.next(3)]
+        // TODO: Renvoyer nil quand aucun emplacement n'est considéré bon.
+        return (location: BoardLocation(x: bestColumn, y: 0), score: bestScore)
     }
     
 }
