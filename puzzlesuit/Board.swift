@@ -48,15 +48,32 @@ class Board : Square {
     }
     
     func spritesForMainCard(mainCard: Card, andExtraCard extraCard: Card) -> [Sprite] {
-        let main = spriteForCard(mainCard)
-        let extra = spriteForCard(extraCard)
-        
-        extra.y -= cardSize.y
-        
-        let sprites = [main, extra]
+        let sprites = [spriteForCard(mainCard, tailIndex: 0), spriteForCard(extraCard, tailIndex: 1)]
         detached += sprites.count
         
         return sprites
+    }
+    
+    func spritesForChips(chips: Int) {
+        if chips < Board.columns {
+            for column in 0..<chips {
+                let sprite = spriteForChipInColumn(column, tailIndex: 0)
+                sprite.motion = FallMotion(board: self)
+            }
+            detached += chips
+        } else {
+            let count = chips / Board.columns
+            
+            for column in 0..<Board.columns {
+                var tail = [Sprite]()
+                for index in 0..<count {
+                    tail.append(spriteForChipInColumn(column, tailIndex: index))
+                }
+                tail[0].motion = FallMotion(board: self, tail: tail)
+            }
+            
+            detached += Board.columns
+        }
     }
     
     func isSpriteAboveSomething(sprite: Sprite) -> Bool {
@@ -149,6 +166,7 @@ class Board : Square {
                 }
             }
         }
+        marked.appendContentsOf(chipLocationsAroundMarkedLocations())
         removalWarningForCardsAtLocations(marked)
         dirty.removeAll()
         
@@ -192,13 +210,24 @@ class Board : Square {
         return BoardLocation(x: Int((x - left + cardSize.x) / cardSize.x) - 1, y: Int((y - top + cardSize.y) / cardSize.y) + Board.hiddenRows - 1)
     }
     
-    private func spriteForCard(card: Card) -> Sprite {
+    private func spriteForCard(card: Card, tailIndex: Int) -> Sprite {
         let sprite = factory.sprite(card.suit.rawValue)
         sprite.animation = SingleFrameAnimation(definition: sprite.definition.animations[0])
         sprite.animation.frameIndex = card.rank.rawValue
         
         sprite.x = self.left + 2 * cardSize.x  + cardSize.x / 2
-        sprite.y = self.top - cardSize.y / 2
+        sprite.y = self.top - GLfloat(tailIndex) * cardSize.y - cardSize.y / 2
+        sprite.width = cardSize.x
+        sprite.height = cardSize.y
+        
+        return sprite
+    }
+    
+    private func spriteForChipInColumn(column: Int, tailIndex: Int) -> Sprite {
+        let sprite = factory.sprite(Suit.all.count)
+        
+        sprite.x = self.left + GLfloat(column) * cardSize.x  + cardSize.x / 2
+        sprite.y = self.top - GLfloat(tailIndex) * cardSize.y - cardSize.y / 2
         sprite.width = cardSize.x
         sprite.height = cardSize.y
         
@@ -208,6 +237,14 @@ class Board : Square {
     func cardAtLocation(location: BoardLocation) -> Card? {
         if location.x >= 0 && location.x < Board.columns && location.y >= 0 && location.y < Board.rows + Board.hiddenRows, let sprite = grid[location.index()] {
             return Card(sprite: sprite)
+        } else {
+            return nil
+        }
+    }
+    
+    func chipAtLocation(location: BoardLocation) -> Chip? {
+        if location.x >= 0 && location.x < Board.columns && location.y >= 0 && location.y < Board.rows + Board.hiddenRows, let sprite = grid[location.index()] {
+            return Chip(sprite: sprite)
         } else {
             return nil
         }
@@ -257,6 +294,24 @@ class Board : Square {
                 tail[0].motion = FallMotion(board: self, tail: tail)
             }
         }
+    }
+    
+    private func chipLocationsAroundMarkedLocations() -> [BoardLocation] {
+        var locations = [BoardLocation]()
+        
+        var done = [Bool](count: grid.count, repeatedValue: false)
+        
+        for location in marked {
+            for direction in Direction.all {
+                let neighbor = location + direction.location()
+                if chipAtLocation(neighbor) != nil && !done[neighbor.index()] {
+                    locations.append(neighbor)
+                    done[neighbor.index()] = true
+                }
+            }
+        }
+        
+        return locations
     }
     
 }

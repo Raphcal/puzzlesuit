@@ -181,15 +181,24 @@ class GameFlow {
             if chips > 0 {
                 sendChipsToOppositeSide(chips * chainCount)
             }
-            self.state = .ChipFall
+            if receivedChips > 0 {
+                self.state = .ChipFall
+            } else {
+                self.state = .NewHand
+            }
         } else {
             self.state = .Chain
         }
     }
     
     private func updateChipFall() {
-        // TODO: Faire tomber les jetons reçus.
-        self.state = .NewHand
+        if receivedChips > 0 {
+            board.spritesForChips(receivedChips)
+            self.receivedChips = 0
+        }
+        if board.detached == 0 {
+            self.state = .NewHand
+        }
     }
     
     private func updatePreviewSprite(sprite: Sprite, withCard card: Card) {
@@ -198,13 +207,7 @@ class GameFlow {
     }
     
     private func sendChipsToOppositeSide(chips: Int) {
-        let count : Int
-        if chips < Board.columns {
-            count = chips
-        } else {
-            count = (chips / Board.columns) * Board.columns
-        }
-        EventBus.instance.fireEvent(side.event(), withValue: count)
+        EventBus.instance.fireEvent(side.event(), withValue: chips)
     }
     
 }
