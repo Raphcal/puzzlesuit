@@ -27,7 +27,7 @@ class GameScene : NSObject, Scene {
         self.rightPlayerGameFlow = flowWithGenerator(generator, size: size, side: .Right)
         
         leftPlayerGameFlow.controller = Input.instance
-        rightPlayerGameFlow.controller = InstantCpu()
+        rightPlayerGameFlow.controller = InstantCpu(fastWhenGoodHandIsFound: false, sameKindScore: 0, sameSuitScore: 4, straightScore: 0, rowMalus: 1)
     }
     
     func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval) {
