@@ -26,8 +26,8 @@ class MainCardMotion : Motion, Linked {
     let board : Board
     let linkedSprite : Sprite
     
-    let speed : GLfloat = 32
-    let downSpeed : GLfloat = 96
+    let duration : NSTimeInterval = 0.5
+    var time : NSTimeInterval = 0
     
     var lateralMove : LateralMove?
     
@@ -42,12 +42,16 @@ class MainCardMotion : Motion, Linked {
     }
     
     func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval, sprite: Sprite) {
-        // TODO: Faire descendre par case, plutôt que de façon fluide.
-        let delta = GLfloat(timeSinceLastUpdate)
-        let speed = controller.pressing(.Down) ? self.downSpeed : self.speed
+        time += timeSinceLastUpdate
         
-        sprite.y += delta * speed
-        linkedSprite.y += delta * speed
+        let currentDuration = controller.pressing(.Down) ? duration / 10 : duration
+        let height = sprite.height / 2
+        
+        if time >= currentDuration {
+            sprite.y += height
+            linkedSprite.y += height
+            time = 0
+        }
         
         if let lateralMove = self.lateralMove {
             // Application du déplacement.

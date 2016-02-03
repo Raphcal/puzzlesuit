@@ -56,7 +56,9 @@ class Board : Square {
     
     func spritesForChips(chips: Int) {
         if chips < Board.columns {
-            for column in 0..<chips {
+            var columns = (0..<Board.columns).flatMap({ $0 })
+            for _ in 0..<chips {
+                let column = columns.removeAtIndex(Random.next(columns.count))
                 let sprite = spriteForChipInColumn(column, tailIndex: 0)
                 sprite.motion = FallMotion(board: self, tail: [], initialSpeed: 128)
             }
@@ -74,6 +76,11 @@ class Board : Square {
             
             detached += Board.columns
         }
+    }
+    
+    func isSpriteOnSomething(sprite: Sprite) -> Bool {
+        let location = locationForX(sprite.x, y: sprite.y)
+        return location.y >= (Board.rows + Board.hiddenRows) || grid[location.index()] != nil
     }
     
     func isSpriteAboveSomething(sprite: Sprite) -> Bool {
@@ -187,14 +194,14 @@ class Board : Square {
         return grid[location.index()] == nil
     }
     
-    /// Renvoi l'emplacement de la carte la plus haute de la colonne donnée.
+    /// Renvoi l'emplacement vide le plus bas de la colonne donnée.
     func topOfColumn(column: Int) -> BoardLocation? {
-        var location = BoardLocation(x: column, y: 0)
+        var location = BoardLocation(x: column, y: Board.rows + Board.hiddenRows - 1)
         
-        while grid[location.index()] == nil {
-            location += Direction.Down.location()
+        while grid[location.index()] != nil {
+            location += Direction.Up.location()
             
-            if location.y >= Board.rows + Board.hiddenRows {
+            if location.y < 0 {
                 return nil
             }
         }

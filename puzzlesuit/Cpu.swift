@@ -123,6 +123,21 @@ class RandomCpu : BaseCpu, Cpu {
 
 class InstantCpu : BaseCpu, Cpu {
     
+    let fastWhenGoodHandIsFound : Bool
+    
+    let sameKindScore : Int
+    let sameSuitScore : Int
+    let straightScore : Int
+    let rowMalus : Int
+    
+    init(fastWhenGoodHandIsFound: Bool = true, sameKindScore: Int = 2, sameSuitScore: Int = 1, straightScore: Int = 1, rowMalus : Int = 4) {
+        self.fastWhenGoodHandIsFound = fastWhenGoodHandIsFound
+        self.sameKindScore = sameKindScore
+        self.sameSuitScore = sameSuitScore
+        self.straightScore = straightScore
+        self.rowMalus = 4
+    }
+    
     func handChanged(hand: [Card], nextHand: [Card]) {
         self.down = false
         
@@ -155,26 +170,21 @@ class InstantCpu : BaseCpu, Cpu {
         
         let identifier = Identifier(board: flow.board)
         for column in 0..<Board.columns {
-            if let top = flow.board.topOfColumn(column), let other = board.cardAtLocation(top) {
-                var sameKinds = 0
-                var sameSuits = 0
-                if other.rank == card.rank {
-                    sameKinds = identifier.sameKindsAsCard(card, location: top, ignore: []).count
-                }
-                if other.suit == card.suit {
-                    sameSuits = identifier.sameSuitAsCard(card, location: top, ignore: []).count
-                }
+            if let top = board.topOfColumn(column) {
+                let sameKind = identifier.sameKindsAsCard(card, location: top, ignore: []).count - 1
+                let sameSuit = identifier.sameSuitAsCard(card, location: top, ignore: []).count - 1
+                let straight = identifier.straightIncludingCard(card, location: top, ignore: []).count - 1
 
                 // Voir s'il faut plutôt limiter à la colonne 2
-                let columnLocationScore = (top.y - Board.hiddenRows - Board.rows) / 4
+                let rowScore = (top.y - Board.hiddenRows - Board.rows) / rowMalus
                 
                 // TODO: Calculer les suites aussi.
                 
-                let score = sameKinds * 2 + sameSuits + columnLocationScore
+                let score = sameKind * sameKindScore + straight * straightScore + sameSuit * sameSuitScore + rowScore
                 if score > bestScore {
                     bestScore = score
                     bestColumn = column
-                    self.down = true
+                    self.down = fastWhenGoodHandIsFound
                 }
             }
         }
