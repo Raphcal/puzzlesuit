@@ -116,7 +116,6 @@ class RandomCpu : BaseCpu, Cpu {
     func handChanged(hand: [Card], nextHand: [Card]) {
         target = BoardLocation(x: Random.next(Board.columns), y: 0)
         targetDirection = Direction.circle[Random.next(Direction.circle.count)]
-        NSLog("Colonne \(target.x), rotation : \(targetDirection)")
     }
     
 }
@@ -198,8 +197,6 @@ class ZoneCpu : BaseCpu, Cpu {
     var zones = [Zone()]
     
     func handChanged(hand: [Card], nextHand: [Card]) {
-        NSLog("Coucou")
-        
         let zone = preferredZoneForHand(hand)
         
         // TODO: Diviser la zone en plus petites zones.
