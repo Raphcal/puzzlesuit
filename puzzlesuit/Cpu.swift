@@ -178,8 +178,6 @@ class InstantCpu : BaseCpu, Cpu {
                 // Voir s'il faut plutôt limiter à la colonne 2
                 let rowScore = (top.y - Board.hiddenRows - Board.rows) / rowMalus
                 
-                // TODO: Calculer les suites aussi.
-                
                 let score = sameKind * sameKindScore + straight * straightScore + sameSuit * sameSuitScore + rowScore
                 if score > bestScore {
                     bestScore = score
@@ -212,7 +210,7 @@ class ZoneCpu : BaseCpu, Cpu {
         }
         
         switch zone.aim! {
-        case let .Flush(suit):
+        case .Flush:
             self.target = flushTargetForHand(hand, inZone: zone, board: flow.board)
         default:
             break
