@@ -32,7 +32,7 @@ class GameFlow {
     var hand = [Sprite]()
     var nextHand : [Card]
     
-    var nextHandPreview = [Sprite]()
+    var preview = [Sprite]()
     
     var pause : NSTimeInterval = 0
     var nextState = GameFlowState.NewHand
@@ -90,8 +90,13 @@ class GameFlow {
             cpu.flow = self
         }
         
-        nextHandPreview.append(board.factory.sprite(0))
-        nextHandPreview.append(board.factory.sprite(0))
+        for index in 0..<2 {
+            let sprite = board.factory.sprite(0)
+            sprite.size = board.cardSize
+            sprite.x = side == .Left ? board.right + 32 : board.left - 32
+            sprite.y = board.top + sprite.height / 2 + GLfloat(index) * sprite.height
+            preview.append(sprite)
+        }
         
         EventBus.instance.setListener({ (value) in
             self.receivedChips += value as! Int
@@ -103,6 +108,7 @@ class GameFlow {
         self.chainCount = 0
         self.chips = 0
 
+        // Nouvelle main
         let main = self.hand[0]
         let extra = self.hand[1]
         main.motion = MainCardMotion(board: board, extra: extra, controller: controller)
@@ -110,6 +116,11 @@ class GameFlow {
         
         let hand = nextHand
         self.nextHand = [generator.cardForState(generatorState), generator.cardForState(generatorState)]
+        
+        // Aperçu de la main suivante
+        for index in 0..<preview.count {
+            updatePreviewSprite(preview[index], withCard: nextHand[index])
+        }
         
         (controller as? Cpu)?.handChanged(hand, nextHand: nextHand)
         
@@ -202,6 +213,8 @@ class GameFlow {
     private func updatePreviewSprite(sprite: Sprite, withCard card: Card) {
         sprite.animation = SingleFrameAnimation(definition: sprite.factory.definitions[card.suit.rawValue].animations[0])
         sprite.animation.frameIndex = card.rank.rawValue
+        
+        sprite.factory.updateLocationOfSprite(sprite)
     }
     
     private func sendChipsToOppositeSide(chips: Int) {
