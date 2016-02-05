@@ -103,11 +103,17 @@ class Square : Spot, Shape {
         get {
             return y - height / 2
         }
+        set {
+            self.y = newValue + height / 2
+        }
     }
     
     var bottom : GLfloat {
         get {
             return y + height / 2
+        }
+        set {
+            self.y = newValue - height / 2
         }
     }
     
@@ -115,11 +121,17 @@ class Square : Spot, Shape {
         get {
             return x - width / 2
         }
+        set {
+            self.x = newValue + width / 2
+        }
     }
     
     var right : GLfloat {
         get {
             return x + width / 2
+        }
+        set {
+            self.x = newValue - width / 2
         }
     }
     

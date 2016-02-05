@@ -22,6 +22,8 @@ enum GameError : ErrorType {
 
 class GameFlow {
     
+    let factory : SpriteFactory
+    
     let side : Side
     let board : Board
     let generator : Generator
@@ -42,20 +44,27 @@ class GameFlow {
     var chips = 0
     var chainCount = 0
     
-    var receivedChips = 0
+    var receivedChips = 0 {
+        didSet {
+            updateReceivedChipsPreview()
+        }
+    }
+    var chipPreview = [Sprite]()
     
     init() {
         self.side = .Left
         self.board = Board()
         self.generator = Generator()
         self.nextHand = []
+        self.factory = SpriteFactory()
     }
     
-    init(side: Side, board: Board, generator: Generator) {
+    init(side: Side, board: Board, generator: Generator, factory: SpriteFactory) {
         self.side = side
         self.board = board
         self.generator = generator
         self.nextHand = [generator.cardForState(generatorState), generator.cardForState(generatorState)]
+        self.factory = factory
     }
     
     func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval) {
@@ -91,10 +100,14 @@ class GameFlow {
         }
         
         for index in 0..<2 {
-            let sprite = board.factory.sprite(0)
+            let sprite = factory.sprite(0)
             sprite.size = board.cardSize
-            sprite.x = side == .Left ? board.right + board.cardSize.x * 3 / 2 : board.left - board.cardSize.x * 3 / 2
-            sprite.y = board.top + sprite.height / 2 + GLfloat(index) * sprite.height
+            if side == .Left {
+                sprite.left = board.right + board.cardSize.x
+            } else {
+                sprite.right = board.left - board.cardSize.x
+            }
+            sprite.top = board.top + sprite.height - GLfloat(index) * sprite.height
             preview.append(sprite)
         }
         
@@ -215,6 +228,25 @@ class GameFlow {
         sprite.animation.frameIndex = card.rank.rawValue
         
         sprite.factory.updateLocationOfSprite(sprite)
+    }
+    
+    private func updateReceivedChipsPreview() {
+        for sprite in chipPreview {
+            sprite.destroy()
+        }
+        chipPreview.removeAll()
+        
+        if receivedChips < Board.columns {
+            for index in 0..<receivedChips {
+                let preview = factory.sprite(5)
+                preview.width /= 2
+                preview.height /= 2
+                preview.left = board.left + preview.width * GLfloat(index)
+                preview.bottom = board.top - 4
+                factory.updateLocationOfSprite(preview)
+                self.chipPreview.append(preview)
+            }
+        }
     }
     
     private func sendChipsToOppositeSide(chips: Int) {

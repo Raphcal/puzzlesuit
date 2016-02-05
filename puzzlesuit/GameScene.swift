@@ -13,7 +13,8 @@ class GameScene : NSObject, Scene {
     var director : Director!
     var backgroundColor = Color(red: 1, green: 1, blue: 1)
     
-    let factory = SpriteFactory(capacity: 255)
+    let boardFactory = SpriteFactory(capacity: 192)
+    let uiFactory = SpriteFactory(capacity: 64)
     
     let unit : GLfloat = 16
     var leftPlayerGameFlow = GameFlow()
@@ -47,7 +48,8 @@ class GameScene : NSObject, Scene {
         // Limitation du lag
         let time = min(timeSinceLastUpdate, 0.1)
         
-        factory.updateWithTimeSinceLastUpdate(time)
+        boardFactory.updateWithTimeSinceLastUpdate(time)
+        uiFactory.updateWithTimeSinceLastUpdate(time)
         
         leftPlayerGameFlow.updateWithTimeSinceLastUpdate(time)
         rightPlayerGameFlow.updateWithTimeSinceLastUpdate(time)
@@ -55,13 +57,14 @@ class GameScene : NSObject, Scene {
     
     func draw() {
         grid?.drawFrom(0, to: 1)
-        factory.draw()
+        boardFactory.draw()
         grid?.drawFrom(1, to: 2)
+        uiFactory.draw()
     }
 
     private func flowWithGenerator(generator: Generator, size: Spot, side: Side) -> GameFlow {
-        let board = Board(factory: factory, square: Square(left: side.boardLeft(size), top: 32, width: size.x, height: size.y))
-        return GameFlow(side: side, board: board, generator: generator)
+        let board = Board(factory: boardFactory, square: Square(left: side.boardLeft(size), top: 32, width: size.x, height: size.y))
+        return GameFlow(side: side, board: board, generator: generator, factory: uiFactory)
     }
     
 }
