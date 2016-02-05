@@ -243,6 +243,7 @@ class GameFlow {
         let redChip = chipStack * Board.columns
         
         var total = receivedChips
+        var left = board.left
         for var index = 0; total > 0; index++ {
             let definition : Int
             
@@ -260,10 +261,13 @@ class GameFlow {
             let preview = factory.sprite(definition)
             preview.width /= 2
             preview.height /= 2
-            preview.left = board.left + (preview.width + rightMargin) * GLfloat(index)
+            preview.left = left
             preview.bottom = board.top - bottomMargin
             factory.updateLocationOfSprite(preview)
-            self.chipPreview.append(preview)
+            
+            left += preview.width + rightMargin
+            
+            chipPreview.append(preview)
         }
     }
     

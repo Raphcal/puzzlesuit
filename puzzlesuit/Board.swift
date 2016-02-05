@@ -100,6 +100,10 @@ class Board : Square {
         }
         
         var location = locationForPoint(sprite)
+        while location.y >= Board.rows + Board.hiddenRows {
+            location += Direction.Up.location()
+        }
+        
         while grid[location.index()] != nil {
             location += Direction.Up.location()
             
