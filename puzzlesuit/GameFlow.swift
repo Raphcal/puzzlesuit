@@ -236,16 +236,34 @@ class GameFlow {
         }
         chipPreview.removeAll()
         
-        if receivedChips < Board.columns {
-            for index in 0..<receivedChips {
-                let preview = factory.sprite(5)
-                preview.width /= 2
-                preview.height /= 2
-                preview.left = board.left + preview.width * GLfloat(index)
-                preview.bottom = board.top - 4
-                factory.updateLocationOfSprite(preview)
-                self.chipPreview.append(preview)
+        let bottomMargin : GLfloat = 4
+        let rightMargin : GLfloat = 1
+        
+        let chipStack = Board.columns
+        let redChip = chipStack * Board.columns
+        
+        var total = receivedChips
+        for var index = 0; total > 0; index++ {
+            let definition : Int
+            
+            if total >= redChip {
+                total -= redChip
+                definition = 7
+            } else if total >= chipStack {
+                total -= chipStack
+                definition = 6
+            } else {
+                total--
+                definition = 5
             }
+            
+            let preview = factory.sprite(definition)
+            preview.width /= 2
+            preview.height /= 2
+            preview.left = board.left + (preview.width + rightMargin) * GLfloat(index)
+            preview.bottom = board.top - bottomMargin
+            factory.updateLocationOfSprite(preview)
+            self.chipPreview.append(preview)
         }
     }
     
