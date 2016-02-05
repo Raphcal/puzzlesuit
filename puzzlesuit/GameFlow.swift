@@ -93,7 +93,7 @@ class GameFlow {
         for index in 0..<2 {
             let sprite = board.factory.sprite(0)
             sprite.size = board.cardSize
-            sprite.x = side == .Left ? board.right + 32 : board.left - 32
+            sprite.x = side == .Left ? board.right + board.cardSize.x * 3 / 2 : board.left - board.cardSize.x * 3 / 2
             sprite.y = board.top + sprite.height / 2 + GLfloat(index) * sprite.height
             preview.append(sprite)
         }

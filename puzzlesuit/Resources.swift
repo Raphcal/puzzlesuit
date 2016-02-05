@@ -23,7 +23,7 @@ class Resources {
     var grid = Grid()
     
     init() {
-        for texture in ["atlas"] {
+        for texture in ["atlas", "Basique-32"] {
             do {
                 if let url = NSBundle.mainBundle().URLForResource(texture, withExtension: "png") {
                     self.textures[texture] = try GLKTextureLoader.textureWithContentsOfURL(url, options: [GLKTextureLoaderOriginBottomLeft: false, GLKTextureLoaderApplyPremultiplication: true])

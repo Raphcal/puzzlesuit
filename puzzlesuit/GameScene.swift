@@ -19,6 +19,8 @@ class GameScene : NSObject, Scene {
     var leftPlayerGameFlow = GameFlow()
     var rightPlayerGameFlow = GameFlow()
     
+    var grid : Grid?
+    
     func load() {
         let size = Spot(x: unit * GLfloat(Board.columns), y: unit * GLfloat(Board.rows))
         let generator = Generator(capacity: 256)
@@ -28,6 +30,17 @@ class GameScene : NSObject, Scene {
         
         leftPlayerGameFlow.controller = Input.instance
         rightPlayerGameFlow.controller = InstantCpu(fastWhenGoodHandIsFound: false, sameKindScore: 0, sameSuitScore: 4, straightScore: 0, rowMalus: 1)
+        
+        if let palette = Palette(resource: "palette0"), let map = Map(resource: "map1") {
+            palette.loadTexture()
+            self.grid = Grid(palette: palette, map: map)
+        }
+    }
+    
+    func unload() {
+        if let grid = self.grid {
+            Resources.releaseTexture(grid.palette.texture)
+        }
     }
     
     func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval) {
@@ -41,7 +54,9 @@ class GameScene : NSObject, Scene {
     }
     
     func draw() {
+        grid?.drawFrom(0, to: 1)
         factory.draw()
+        grid?.drawFrom(1, to: 2)
     }
 
     private func flowWithGenerator(generator: Generator, size: Spot, side: Side) -> GameFlow {

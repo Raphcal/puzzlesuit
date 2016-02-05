@@ -16,7 +16,7 @@ class Surfaces : NSObject {
     static let vertexesByQuad = 6
     static let coordinatesByVertice = 3
     static let coordinatesByTexture = 2
-    static let tileSize : Float = 32
+    static let tileSize : Float = 16
     
     static let colorComposants = 4
     

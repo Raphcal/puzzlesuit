@@ -36,7 +36,7 @@ class Grid : NSObject {
         drawFrom(0, to: map.layers.count)
     }
     
-    private func drawFrom(from: Int, to: Int) {
+    func drawFrom(from: Int, to: Int) {
         Draws.bindTexture(palette.texture)
         
         for index in from..<to {
