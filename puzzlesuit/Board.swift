@@ -134,47 +134,14 @@ class Board : Square {
     func resolve() -> [Hand] {
         var result = [Hand]()
         
+        let identifier = Identifier(board: self)
+        
         for location in dirty {
             if let card = cardAtLocation(location) {
-                let identifier = Identifier(board: self)
+                let hands = identifier.handsForCard(card, atLocation: location, ignore: marked)
                 
-                // Vérification des suites.
-                let straight = identifier.straightIncludingCard(card, location: location, ignore: marked)
-                if straight.count >= 5 {
-                    result.append(.Straight(count: straight.count, flush: identifier.isFlush(straight)))
-                    NSLog(result.last!.description())
-                    marked.appendContentsOf(straight)
-                }
-                
-                // Vérification des brelans / carrés / etc.
-                let sameKinds = identifier.sameKindsAsCard(card, location: location, ignore: marked)
-                
-                if sameKinds.count >= 3 {
-                    result.append(.SameKind(rank: cardAtLocation(sameKinds[0])!.rank, count: sameKinds.count, flush: identifier.isFlush(sameKinds)))
-                    NSLog(result.last!.description())
-                    marked.appendContentsOf(sameKinds)
-                }
-                
-                #if TWO_PAIRS
-                    // Vérification des doubles pairs.
-                    if sameKinds.count == 2 {
-                        let pairs = identifier.pairsAroundLocations(sameKinds, ignore: marked)
-                        
-                        if pairs.count > 0 {
-                            NSLog("\(pairs.count / 2 + 1) pairs")
-                            marked.appendContentsOf(sameKinds)
-                            marked.appendContentsOf(pairs)
-                        }
-                    }
-                #endif
-                
-                // Vérification des couleurs.
-                let sameSuit = identifier.sameSuitAsCard(card, location: location, ignore: marked)
-                if sameSuit.count >= 5 {
-                    result.append(.Flush(suit: cardAtLocation(sameSuit[0])!.suit, count: sameSuit.count))
-                    NSLog(result.last!.description())
-                    marked.appendContentsOf(sameSuit)
-                }
+                result.appendContentsOf(hands.hands)
+                marked.appendContentsOf(hands.locations)
             }
         }
         marked.appendContentsOf(chipLocationsAroundMarkedLocations())

@@ -54,6 +54,49 @@ class Identifier {
         self.status = [Bool](count: board.grid.count, repeatedValue: false)
     }
     
+    func handsForCard(card: Card, atLocation location: BoardLocation, ignore: [BoardLocation] = []) -> (hands: [Hand], locations: [BoardLocation]) {
+        var hands = [Hand]()
+        var locations = ignore
+        
+        // Vérification des suites.
+        let straight = straightIncludingCard(card, location: location, ignore: locations)
+        if straight.count >= 5 {
+            hands.append(.Straight(count: straight.count, flush: isFlush(straight)))
+            locations.appendContentsOf(straight)
+        }
+        
+        // Vérification des brelans / carrés / etc.
+        let sameKinds = sameKindsAsCard(card, location: location, ignore: locations)
+        
+        if sameKinds.count >= 3 {
+            let first = board.cardAtLocation(sameKinds[0])!
+            hands.append(.SameKind(rank: first.rank, count: sameKinds.count, flush: isFlush(sameKinds)))
+            locations.appendContentsOf(sameKinds)
+        }
+        
+        #if TWO_PAIRS
+            // Vérification des doubles pairs.
+            if sameKinds.count == 2 {
+                let pairs = identifier.pairsAroundLocations(sameKinds, ignore: ignore)
+                
+                if pairs.count > 0 {
+                    locations.appendContentsOf(sameKinds)
+                    locations.appendContentsOf(pairs)
+                }
+            }
+        #endif
+        
+        // Vérification des couleurs.
+        let sameSuit = sameSuitAsCard(card, location: location, ignore: ignore)
+        if sameSuit.count >= 5 {
+            let first = board.cardAtLocation(sameKinds[0])!
+            hands.append(.Flush(suit: first.suit, count: sameSuit.count))
+            locations.appendContentsOf(sameSuit)
+        }
+        
+        return (hands: hands, locations: locations)
+    }
+    
     func sameKindsAsCard(card: Card, location: BoardLocation, ignore: [BoardLocation]) -> [BoardLocation] {
         ignoreLocations(ignore)
         findCardsMatching(Matcher(rank: card.rank), at: location)
