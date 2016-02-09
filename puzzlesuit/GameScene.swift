@@ -32,7 +32,7 @@ class GameScene : NSObject, Scene {
         leftPlayerGameFlow.controller = Input.instance
         rightPlayerGameFlow.controller = InstantCpu(fastWhenGoodHandIsFound: false, sameKindScore: 0, sameSuitScore: 4, straightScore: 0, rowMalus: 1)
         
-        if let palette = Palette(resource: "palette0"), let map = Map(resource: "map1") {
+        if let palette = Palette(resource: "palette0"), let map = Map(resource: "map0") {
             palette.loadTexture()
             self.grid = Grid(palette: palette, map: map)
         }
@@ -58,7 +58,7 @@ class GameScene : NSObject, Scene {
     func draw() {
         grid?.drawFrom(0, to: 1)
         boardFactory.draw()
-        grid?.drawFrom(1, to: 2)
+        grid?.drawFrom(1, to: 3)
         uiFactory.draw()
     }
 
