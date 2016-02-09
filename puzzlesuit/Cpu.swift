@@ -192,6 +192,62 @@ class InstantCpu : BaseCpu, Cpu {
     
 }
 
+class HandCpu : BaseCpu, Cpu {
+    
+    func handChanged(hand: [Card], nextHand: [Card]) {
+        self.down = true
+        
+        let main = bestLocationForCard(hand[0])
+        let extra = bestLocationForCard(hand[1])
+        
+        if abs(main.location.x - extra.location.x) == 1 {
+            // Les 2 meilleures cases sont voisines.
+            self.target = main.location
+            if main.location.x < extra.location.x {
+                self.targetDirection = .Right
+            } else {
+                self.targetDirection = .Left
+            }
+        } else if main.score > extra.score {
+            self.target = main.location
+            self.targetDirection = .Up
+        } else {
+            self.target = extra.location
+            self.targetDirection = .Down
+        }
+    }
+    
+    private func bestLocationForCard(card: Card) -> (location: BoardLocation, score: Int) {
+        let board = flow.board
+        
+        var bestColumn = Random.next(Board.columns)
+        var bestScore = 0
+        
+        let identifier = Identifier(board: flow.board)
+        for column in 0..<Board.columns {
+            if let top = board.topOfColumn(column) {
+                // TODO: Calculer un score (positif) pour la hauteur (plus c'est bas, plus le score est élevé)
+                
+                let hands = identifier.handsForCard(card, atLocation: top).hands
+                
+                var score = 0
+                for hand in hands {
+                    score += hand.chips()
+                }
+                
+                if score > bestScore {
+                    bestScore = score
+                    bestColumn = column
+                }
+            }
+        }
+        
+        // TODO: Renvoyer nil quand aucun emplacement n'est considéré bon.
+        return (location: BoardLocation(x: bestColumn, y: 0), score: bestScore)
+    }
+    
+}
+
 class ZoneCpu : BaseCpu, Cpu {
     
     var zones = [Zone()]
