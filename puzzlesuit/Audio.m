@@ -76,15 +76,7 @@
 }
 
 - (void)loadAllSounds {
-    [self loadSound:SoundBubble1 fromResource:@"bulle1" withExtension:@"aif"];
-    [self loadSound:SoundBubble2 fromResource:@"bulle2" withExtension:@"aif"];
-    [self loadSound:SoundBubble3 fromResource:@"bulle3" withExtension:@"aif"];
-    [self loadSound:SoundDie fromResource:@"Die"];
-    [self loadSound:SoundExplosion fromResource:@"Explosion"];
-    [self loadSound:SoundHit fromResource:@"hit" withExtension:@"aif"];
-    [self loadSound:SoundJump fromResource:@"Jump"];
-    [self loadSound:SoundSplash fromResource:@"Splash"];
-    [self loadSound:SoundTreasure fromResource:@"Treasure"];
+    // Pas de sons.
 }
 
 - (void)loadSound:(Sound)sound fromResource:(NSString * _Nonnull)name {

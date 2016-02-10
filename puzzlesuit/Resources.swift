@@ -23,6 +23,8 @@ class Resources {
     var grid = Grid()
     
     init() {
+        NSLog("GL Error = \(glGetError())")
+        
         for texture in ["atlas", "Basique-32"] {
             do {
                 if let url = NSBundle.mainBundle().URLForResource(texture, withExtension: "png") {

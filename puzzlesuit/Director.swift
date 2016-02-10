@@ -27,7 +27,7 @@ class Director : NSObject {
         View.instance.applyZoom()
         
         self.fade = FadeScene()
-        self.scene = GameScene()
+        self.scene = TitleScene()
         scene.director = self
         fade.director = self
         scene.load?()
