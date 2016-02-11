@@ -68,6 +68,7 @@
 		645E5EC91C54272900E29345 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 645E5EC81C54272900E29345 /* GameScene.swift */; };
 		647674A51C55FED8009F6F46 /* Generator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 647674A41C55FED8009F6F46 /* Generator.swift */; };
 		64C969B51C5AB091008C0300 /* Cpu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C969B41C5AB091008C0300 /* Cpu.swift */; };
+		64E4DB1A1C6A8BEF00FA17B5 /* Opponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64E4DB191C6A8BEF00FA17B5 /* Opponent.swift */; };
 		64F517A91C556E3D006FB2AE /* PlayerMotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64F517A81C556E3D006FB2AE /* PlayerMotion.swift */; };
 		64F517AB1C556F8F006FB2AE /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64F517AA1C556F8F006FB2AE /* Board.swift */; };
 /* End PBXBuildFile section */
@@ -152,6 +153,7 @@
 		645E5EC81C54272900E29345 /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		647674A41C55FED8009F6F46 /* Generator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Generator.swift; sourceTree = "<group>"; };
 		64C969B41C5AB091008C0300 /* Cpu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cpu.swift; sourceTree = "<group>"; };
+		64E4DB191C6A8BEF00FA17B5 /* Opponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Opponent.swift; sourceTree = "<group>"; };
 		64F517A81C556E3D006FB2AE /* PlayerMotion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerMotion.swift; sourceTree = "<group>"; };
 		64F517AA1C556F8F006FB2AE /* Board.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -186,6 +188,7 @@
 				647674A41C55FED8009F6F46 /* Generator.swift */,
 				560ABB8F1C56467200E6D549 /* GameFlow.swift */,
 				56D8769B1C57AC13003C1880 /* Identifier.swift */,
+				64E4DB191C6A8BEF00FA17B5 /* Opponent.swift */,
 				56106A021C5A6F1D00CCCEC6 /* Rank.swift */,
 				561069FC1C5A4E3F00CCCEC6 /* Side.swift */,
 				560ABB891C56254700E6D549 /* Suit.swift */,
@@ -530,6 +533,7 @@
 				64F517A91C556E3D006FB2AE /* PlayerMotion.swift in Sources */,
 				643C24B61C52D6D0003ACE44 /* Menu.swift in Sources */,
 				643C24A61C52D6D0003ACE44 /* Animation.swift in Sources */,
+				64E4DB1A1C6A8BEF00FA17B5 /* Opponent.swift in Sources */,
 				561069FF1C5A5EA800CCCEC6 /* Move.swift in Sources */,
 				643C24B51C52D6D0003ACE44 /* Math.swift in Sources */,
 				643C24B11C52D6D0003ACE44 /* Input.swift in Sources */,
