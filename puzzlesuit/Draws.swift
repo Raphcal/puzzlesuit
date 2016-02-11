@@ -17,10 +17,8 @@ class Draws {
     }
     
     static func freeTexture(texture: GLKTextureInfo) {
-        let pointer = UnsafeMutablePointer<GLuint>.alloc(1)
-        pointer[0] = texture.name
-        glDeleteTextures(1, pointer)
-        pointer.destroy()
+        var name = texture.name
+        glDeleteTextures(1, &name)
     }
     
     static func drawWithVertexPointer(vertexPointer: UnsafeMutablePointer<GLfloat>, texCoordPointer: UnsafeMutablePointer<GLfloat>, count: GLsizei) {
