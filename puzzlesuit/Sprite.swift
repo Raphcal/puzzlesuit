@@ -18,15 +18,8 @@ enum SpriteType : Int {
 
 class Sprite : Square {
     
-    static let snowyDefinition = 0
-    static let whiteDefinition = 1
-    static let bubbleDefinition = 2
-    static let explosionDefinition = 7
-    static let countGUIDefinition = 11
-    static let lifeGUIDefinition = 12
+    static let countGUIDefinition = 8
     static let cursorDefinition = 25
-    static let splashDefinition = 26
-    static let buttonGUIDefinition = 30
     
     // MARK: Propriétés
     

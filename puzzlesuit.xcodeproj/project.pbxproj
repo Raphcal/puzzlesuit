@@ -19,6 +19,8 @@
 		567F80AA1C64C52D0061C869 /* palette0.pal in Resources */ = {isa = PBXBuildFile; fileRef = 567F80A91C64C52D0061C869 /* palette0.pal */; };
 		569959001C5B82DD00B5F2C7 /* PreviewMotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 569958FF1C5B82DD00B5F2C7 /* PreviewMotion.swift */; };
 		56C95A681C60D39E00997F12 /* Side.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561069FC1C5A4E3F00CCCEC6 /* Side.swift */; };
+		56CB43C11C6CB57E0053EAAC /* Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56CB43C01C6CB57E0053EAAC /* Text.swift */; };
+		56D0B42D1C6B61E200E16407 /* TitleScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D0B42C1C6B61E200E16407 /* TitleScene.swift */; };
 		56D8769C1C57AC13003C1880 /* Identifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D8769B1C57AC13003C1880 /* Identifier.swift */; };
 		56DE742C1C56535000C47093 /* FallMotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DE742B1C56535000C47093 /* FallMotion.swift */; };
 		642A04881C6A7ADA00CF6048 /* map0.map in Resources */ = {isa = PBXBuildFile; fileRef = 642A04871C6A7ACE00CF6048 /* map0.map */; };
@@ -96,6 +98,8 @@
 		567F80A31C64C21C0061C869 /* Basique-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Basique-32.png"; sourceTree = "<group>"; };
 		567F80A91C64C52D0061C869 /* palette0.pal */ = {isa = PBXFileReference; lastKnownFileType = file; path = palette0.pal; sourceTree = "<group>"; };
 		569958FF1C5B82DD00B5F2C7 /* PreviewMotion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewMotion.swift; sourceTree = "<group>"; };
+		56CB43C01C6CB57E0053EAAC /* Text.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Text.swift; sourceTree = "<group>"; };
+		56D0B42C1C6B61E200E16407 /* TitleScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleScene.swift; sourceTree = "<group>"; };
 		56D8769B1C57AC13003C1880 /* Identifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Identifier.swift; sourceTree = "<group>"; };
 		56DE742B1C56535000C47093 /* FallMotion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FallMotion.swift; sourceTree = "<group>"; };
 		642A04871C6A7ACE00CF6048 /* map0.map */ = {isa = PBXFileReference; explicitFileType = compiled; fileEncoding = 4; path = map0.map; sourceTree = "<group>"; };
@@ -272,6 +276,7 @@
 				643C24921C52D6D0003ACE44 /* Hitbox.swift */,
 				643C249F1C52D6D0003ACE44 /* Sprite.swift */,
 				643C24A01C52D6D0003ACE44 /* SpriteFactory.swift */,
+				56CB43C01C6CB57E0053EAAC /* Text.swift */,
 			);
 			name = Sprite;
 			sourceTree = "<group>";
@@ -315,6 +320,7 @@
 				643C248F1C52D6D0003ACE44 /* EmptyScene.swift */,
 				643C24911C52D6D0003ACE44 /* FadeScene.swift */,
 				645E5EC81C54272900E29345 /* GameScene.swift */,
+				56D0B42C1C6B61E200E16407 /* TitleScene.swift */,
 			);
 			name = Scene;
 			sourceTree = "<group>";
@@ -441,7 +447,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 643C24531C52D466003ACE44 /* Build configuration list for PBXProject "PuzzleSuit" */;
+			buildConfigurationList = 643C24531C52D466003ACE44 /* Build configuration list for PBXProject "puzzlesuit" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -514,6 +520,7 @@
 				643C24AE1C52D6D0003ACE44 /* EventBus.swift in Sources */,
 				64F517AB1C556F8F006FB2AE /* Board.swift in Sources */,
 				643C245E1C52D466003ACE44 /* ViewController.swift in Sources */,
+				56CB43C11C6CB57E0053EAAC /* Text.swift in Sources */,
 				643C24B41C52D6D0003ACE44 /* Map.swift in Sources */,
 				643C24C01C52D6D0003ACE44 /* SurfaceArray.m in Sources */,
 				56C95A681C60D39E00997F12 /* Side.swift in Sources */,
@@ -541,6 +548,7 @@
 				643C245C1C52D466003ACE44 /* AppDelegate.swift in Sources */,
 				560ABB8A1C56254700E6D549 /* Suit.swift in Sources */,
 				643C24C41C52D6F4003ACE44 /* Definition.swift in Sources */,
+				56D0B42D1C6B61E200E16407 /* TitleScene.swift in Sources */,
 				5672F71D1C5FB89C0015AFAD /* Hand.swift in Sources */,
 				643C24C61C52D709003ACE44 /* Resources.swift in Sources */,
 				643C24A91C52D6D0003ACE44 /* Color.swift in Sources */,
@@ -718,7 +726,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		643C24531C52D466003ACE44 /* Build configuration list for PBXProject "PuzzleSuit" */ = {
+		643C24531C52D466003ACE44 /* Build configuration list for PBXProject "puzzlesuit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				643C24701C52D466003ACE44 /* Debug */,

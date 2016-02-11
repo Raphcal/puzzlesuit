@@ -12,16 +12,6 @@
 #pragma mark Sound
 
 typedef NS_ENUM(NSInteger, Sound) {
-    // SoundBell,
-    SoundBubble1,
-    SoundBubble2,
-    SoundBubble3,
-    SoundDie,
-    SoundExplosion,
-    SoundHit,
-    SoundJump,
-    SoundSplash,
-    SoundTreasure,
     /// Nombre d'entrées dans l'enum.
     SoundCount
 };
