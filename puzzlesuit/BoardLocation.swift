@@ -17,6 +17,18 @@ struct BoardLocation {
         return y * Board.columns + x
     }
     
+    static func centerOfLocations(locations: [BoardLocation]) -> BoardLocation {
+        var x = 0
+        var y = 0
+        
+        for location in locations {
+            x += location.x
+            y += location.y
+        }
+        
+        return BoardLocation(x: x / locations.count, y: y / locations.count)
+    }
+    
 }
 
 func + (left: BoardLocation, right: BoardLocation) -> BoardLocation {

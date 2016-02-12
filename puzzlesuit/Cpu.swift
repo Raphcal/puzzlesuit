@@ -122,23 +122,28 @@ class RandomCpu : BaseCpu, Cpu {
 
 class InstantCpu : BaseCpu, Cpu {
     
+    let fast : Bool
     let fastWhenGoodHandIsFound : Bool
     
     let sameKindScore : Int
     let sameSuitScore : Int
     let straightScore : Int
-    let rowMalus : Int
+    let rowScore : Int
     
-    init(fastWhenGoodHandIsFound: Bool = true, sameKindScore: Int = 2, sameSuitScore: Int = 1, straightScore: Int = 1, rowMalus : Int = 4) {
-        self.fastWhenGoodHandIsFound = fastWhenGoodHandIsFound
+    let preferSides : Bool
+    
+    init(fast: Bool = false, fastWhenGoodHandIsFound: Bool = false, sameKindScore: Int = 0, sameSuitScore: Int = 0, straightScore: Int = 0, rowScore : Int = 0, preferSides: Bool = false) {
+        self.fast = fast
+        self.fastWhenGoodHandIsFound = fast || fastWhenGoodHandIsFound
         self.sameKindScore = sameKindScore
         self.sameSuitScore = sameSuitScore
         self.straightScore = straightScore
-        self.rowMalus = 4
+        self.rowScore = rowScore
+        self.preferSides = preferSides
     }
     
     func handChanged(hand: [Card], nextHand: [Card]) {
-        self.down = false
+        self.down = fast
         
         let main = bestLocationForCard(hand[0])
         let extra = bestLocationForCard(hand[1])
@@ -164,7 +169,7 @@ class InstantCpu : BaseCpu, Cpu {
         // TODO: Éviter de faire une boucle par carte.
         let board = flow.board
         
-        var bestColumn = Random.next(Board.columns)
+        var bestColumn = preferSides ? Random.next(2) * Board.columns : Random.next(Board.columns)
         var bestScore = 0
         
         let identifier = Identifier(board: flow.board)
@@ -175,9 +180,13 @@ class InstantCpu : BaseCpu, Cpu {
                 let straight = identifier.straightIncludingCard(card, location: top, ignore: []).count - 1
 
                 // Voir s'il faut plutôt limiter à la colonne 2
-                let rowScore = (top.y - Board.hiddenRows - Board.rows) / rowMalus
+                let row = top.y - Board.hiddenRows
                 
-                let score = sameKind * sameKindScore + straight * straightScore + sameSuit * sameSuitScore + rowScore
+                let score = sameKind * sameKindScore
+                    + straight * straightScore
+                    + sameSuit * sameSuitScore
+                    + row * rowScore
+                
                 if score > bestScore {
                     bestScore = score
                     bestColumn = column
@@ -228,11 +237,11 @@ class HandCpu : BaseCpu, Cpu {
             if let top = board.topOfColumn(column) {
                 // TODO: Calculer un score (positif) pour la hauteur (plus c'est bas, plus le score est élevé)
                 
-                let hands = identifier.handsForCard(card, atLocation: top).hands
+                let hands = identifier.handsForCard(card, atLocation: top)
                 
                 var score = 0
                 for hand in hands {
-                    score += hand.chips()
+                    score += hand.hand.chips()
                 }
                 
                 if score > bestScore {

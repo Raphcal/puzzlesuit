@@ -138,10 +138,12 @@ class Board : Square {
         
         for location in dirty {
             if let card = cardAtLocation(location) {
-                let hands = identifier.handsForCard(card, atLocation: location, ignore: marked)
+                let hands = identifier.handsForCard(card, atLocation: location, locations: marked)
                 
-                result.appendContentsOf(hands.hands)
-                marked.appendContentsOf(hands.locations)
+                for hand in hands {
+                    result.append(hand.hand)
+                    // TODO: Afficher le nom de la main en sprite
+                }
             }
         }
         marked.appendContentsOf(chipLocationsAroundMarkedLocations())

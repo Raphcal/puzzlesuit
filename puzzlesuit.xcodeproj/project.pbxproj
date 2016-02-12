@@ -14,6 +14,7 @@
 		561069FF1C5A5EA800CCCEC6 /* Move.swift in Sources */ = {isa = PBXBuildFile; fileRef = 561069FE1C5A5EA800CCCEC6 /* Move.swift */; };
 		56106A011C5A6EF200CCCEC6 /* BoardLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56106A001C5A6EF200CCCEC6 /* BoardLocation.swift */; };
 		56106A031C5A6F1D00CCCEC6 /* Rank.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56106A021C5A6F1D00CCCEC6 /* Rank.swift */; };
+		5651824D1C6E462900F5FF3F /* DialogScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5651824C1C6E462900F5FF3F /* DialogScene.swift */; };
 		5672F71D1C5FB89C0015AFAD /* Hand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5672F71C1C5FB89C0015AFAD /* Hand.swift */; };
 		567F80A61C64C21C0061C869 /* Basique-32.png in Resources */ = {isa = PBXBuildFile; fileRef = 567F80A31C64C21C0061C869 /* Basique-32.png */; };
 		567F80AA1C64C52D0061C869 /* palette0.pal in Resources */ = {isa = PBXBuildFile; fileRef = 567F80A91C64C52D0061C869 /* palette0.pal */; };
@@ -94,6 +95,7 @@
 		561069FE1C5A5EA800CCCEC6 /* Move.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Move.swift; sourceTree = "<group>"; };
 		56106A001C5A6EF200CCCEC6 /* BoardLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardLocation.swift; sourceTree = "<group>"; };
 		56106A021C5A6F1D00CCCEC6 /* Rank.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rank.swift; sourceTree = "<group>"; };
+		5651824C1C6E462900F5FF3F /* DialogScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialogScene.swift; sourceTree = "<group>"; };
 		5672F71C1C5FB89C0015AFAD /* Hand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hand.swift; sourceTree = "<group>"; };
 		567F80A31C64C21C0061C869 /* Basique-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Basique-32.png"; sourceTree = "<group>"; };
 		567F80A91C64C52D0061C869 /* palette0.pal */ = {isa = PBXFileReference; lastKnownFileType = file; path = palette0.pal; sourceTree = "<group>"; };
@@ -318,6 +320,7 @@
 				643C24901C52D6D0003ACE44 /* EventBus.swift */,
 				643C249E1C52D6D0003ACE44 /* Scene.swift */,
 				643C248F1C52D6D0003ACE44 /* EmptyScene.swift */,
+				5651824C1C6E462900F5FF3F /* DialogScene.swift */,
 				643C24911C52D6D0003ACE44 /* FadeScene.swift */,
 				645E5EC81C54272900E29345 /* GameScene.swift */,
 				56D0B42C1C6B61E200E16407 /* TitleScene.swift */,
@@ -518,6 +521,7 @@
 				643C24B01C52D6D0003ACE44 /* Hitbox.swift in Sources */,
 				643C24C11C52D6D0003ACE44 /* Surfaces.swift in Sources */,
 				643C24AE1C52D6D0003ACE44 /* EventBus.swift in Sources */,
+				5651824D1C6E462900F5FF3F /* DialogScene.swift in Sources */,
 				64F517AB1C556F8F006FB2AE /* Board.swift in Sources */,
 				643C245E1C52D466003ACE44 /* ViewController.swift in Sources */,
 				56CB43C11C6CB57E0053EAAC /* Text.swift in Sources */,

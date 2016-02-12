@@ -11,7 +11,7 @@ import GLKit
 class FallMotion : Motion {
     
     var speed : GLfloat
-    let acceleration : GLfloat = 48
+    let acceleration : GLfloat = 300
     let board : Board
     
     /// Ensemble des sprites situés au dessus de celui-ci et qui vont chuter en même temps.
@@ -28,8 +28,8 @@ class FallMotion : Motion {
     }
     
     func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval, sprite: Sprite) {
-        self.speed += acceleration * GLfloat(timeSinceLastUpdate)
         let step = GLfloat(timeSinceLastUpdate) * speed
+        self.speed += acceleration * GLfloat(timeSinceLastUpdate)
         
         let sprites : [Sprite]
         

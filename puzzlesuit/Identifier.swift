@@ -54,14 +54,13 @@ class Identifier {
         self.status = [Bool](count: board.grid.count, repeatedValue: false)
     }
     
-    func handsForCard(card: Card, atLocation location: BoardLocation, ignore: [BoardLocation] = []) -> (hands: [Hand], locations: [BoardLocation]) {
-        var hands = [Hand]()
-        var locations = ignore
+    func handsForCard(card: Card, atLocation location: BoardLocation, var locations: [BoardLocation] = []) -> [(hand: Hand, location: BoardLocation)] {
+        var hands = [(hand: Hand, location: BoardLocation)]()
         
         // Vérification des suites.
         let straight = straightIncludingCard(card, location: location, ignore: locations)
         if straight.count >= 5 {
-            hands.append(.Straight(count: straight.count, flush: isFlush(straight)))
+            hands.append((.Straight(count: straight.count, flush: isFlush(straight)), BoardLocation.centerOfLocations(straight)))
             locations.appendContentsOf(straight)
         }
         
@@ -70,14 +69,14 @@ class Identifier {
         
         if sameKinds.count >= 3 {
             let first = board.cardAtLocation(sameKinds[0])!
-            hands.append(.SameKind(rank: first.rank, count: sameKinds.count, flush: isFlush(sameKinds)))
+            hands.append((.SameKind(rank: first.rank, count: sameKinds.count, flush: isFlush(sameKinds)), BoardLocation.centerOfLocations(sameKinds)))
             locations.appendContentsOf(sameKinds)
         }
         
         #if TWO_PAIRS
             // Vérification des doubles pairs.
             if sameKinds.count == 2 {
-                let pairs = identifier.pairsAroundLocations(sameKinds, ignore: ignore)
+                let pairs = identifier.pairsAroundLocations(sameKinds, ignore: locations)
                 
                 if pairs.count > 0 {
                     locations.appendContentsOf(sameKinds)
@@ -87,14 +86,14 @@ class Identifier {
         #endif
         
         // Vérification des couleurs.
-        let sameSuit = sameSuitAsCard(card, location: location, ignore: ignore)
+        let sameSuit = sameSuitAsCard(card, location: location, ignore: locations)
         if sameSuit.count >= 5 {
             let first = board.cardAtLocation(sameKinds[0])!
-            hands.append(.Flush(suit: first.suit, count: sameSuit.count))
+            hands.append((.Flush(suit: first.suit, count: sameSuit.count), BoardLocation.centerOfLocations(sameSuit)))
             locations.appendContentsOf(sameSuit)
         }
         
-        return (hands: hands, locations: locations)
+        return hands
     }
     
     func sameKindsAsCard(card: Card, location: BoardLocation, ignore: [BoardLocation]) -> [BoardLocation] {

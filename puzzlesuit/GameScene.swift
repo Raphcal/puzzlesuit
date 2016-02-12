@@ -30,7 +30,7 @@ class GameScene : NSObject, Scene {
         self.rightPlayerGameFlow = flowWithGenerator(generator, size: size, side: .Right)
         
         leftPlayerGameFlow.controller = Input.instance
-        rightPlayerGameFlow.controller = InstantCpu(fastWhenGoodHandIsFound: false, sameKindScore: 0, sameSuitScore: 4, straightScore: 0, rowMalus: 1)
+        rightPlayerGameFlow.controller = Opponent.Second.controller
         
         if let palette = Palette(resource: "palette0"), let map = Map(resource: "map0") {
             palette.loadTexture()
