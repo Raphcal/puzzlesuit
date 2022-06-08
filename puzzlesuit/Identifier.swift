@@ -31,10 +31,10 @@ class Matcher {
     }
     
     func matches(card: Card) -> Bool {
-        if let suit = self.suit where suit != card.suit {
+        if let suit = self.suit, suit != card.suit {
             return false
         }
-        if let rank = self.rank where rank != card.rank {
+        if let rank = self.rank, rank != card.rank {
             return false
         }
         return true
@@ -51,26 +51,31 @@ class Identifier {
     
     init(board: Board) {
         self.board = board
-        self.status = [Bool](count: board.grid.count, repeatedValue: false)
+        self.status = [Bool](repeating: false, count: board.grid.count)
     }
-    
-    func handsForCard(card: Card, atLocation location: BoardLocation, var locations: [BoardLocation] = []) -> [(hand: Hand, location: BoardLocation)] {
+
+    func handsForCard(card: Card, atLocation location: BoardLocation) -> [(hand: Hand, location: BoardLocation)] {
+        var locations = [BoardLocation]()
+        return handsForCard(card: card, atLocation: location, locations: &locations)
+    }
+
+    func handsForCard(card: Card, atLocation location: BoardLocation, locations: inout [BoardLocation]) -> [(hand: Hand, location: BoardLocation)] {
         var hands = [(hand: Hand, location: BoardLocation)]()
         
         // Vérification des suites.
-        let straight = straightIncludingCard(card, location: location, ignore: locations)
+        let straight = straightIncludingCard(card: card, location: location, ignore: locations)
         if straight.count >= 5 {
-            hands.append((.Straight(count: straight.count, flush: isFlush(straight)), BoardLocation.centerOfLocations(straight)))
-            locations.appendContentsOf(straight)
+            hands.append((.Straight(count: straight.count, flush: isFlush(locations: straight)), BoardLocation.centerOfLocations(locations: straight)))
+            locations.append(contentsOf: straight)
         }
         
         // Vérification des brelans / carrés / etc.
-        let sameKinds = sameKindsAsCard(card, location: location, ignore: locations)
+        let sameKinds = sameKindsAsCard(card: card, location: location, ignore: locations)
         
         if sameKinds.count >= 3 {
-            let first = board.cardAtLocation(sameKinds[0])!
-            hands.append((.SameKind(rank: first.rank, count: sameKinds.count, flush: isFlush(sameKinds)), BoardLocation.centerOfLocations(sameKinds)))
-            locations.appendContentsOf(sameKinds)
+            let first = board.cardAtLocation(location: sameKinds[0])!
+            hands.append((.SameKind(rank: first.rank, count: sameKinds.count, flush: isFlush(locations: sameKinds)), BoardLocation.centerOfLocations(locations: sameKinds)))
+            locations.append(contentsOf: sameKinds)
         }
         
         #if TWO_PAIRS
@@ -79,48 +84,48 @@ class Identifier {
                 let pairs = identifier.pairsAroundLocations(sameKinds, ignore: locations)
                 
                 if pairs.count > 0 {
-                    locations.appendContentsOf(sameKinds)
-                    locations.appendContentsOf(pairs)
+                    locations.append(contentsOf: sameKinds)
+                    locations.append(contentsOf: pairs)
                 }
             }
         #endif
         
         // Vérification des couleurs.
-        let sameSuit = sameSuitAsCard(card, location: location, ignore: locations)
+        let sameSuit = sameSuitAsCard(card: card, location: location, ignore: locations)
         if sameSuit.count >= 5 {
-            let first = board.cardAtLocation(sameKinds[0])!
-            hands.append((.Flush(suit: first.suit, count: sameSuit.count), BoardLocation.centerOfLocations(sameSuit)))
-            locations.appendContentsOf(sameSuit)
+            let first = board.cardAtLocation(location: sameKinds[0])!
+            hands.append((.Flush(suit: first.suit, count: sameSuit.count), BoardLocation.centerOfLocations(locations: sameSuit)))
+            locations.append(contentsOf: sameSuit)
         }
         
         return hands
     }
     
     func sameKindsAsCard(card: Card, location: BoardLocation, ignore: [BoardLocation]) -> [BoardLocation] {
-        ignoreLocations(ignore)
-        findCardsMatching(Matcher(rank: card.rank), at: location)
+        ignoreLocations(locations: ignore)
+        findCardsMatching(matcher: Matcher(rank: card.rank), at: location)
         return result()
     }
     
     func pairsAroundLocations(locations: [BoardLocation], ignore: [BoardLocation]) -> [BoardLocation] {
-        ignoreLocations(ignore)
-        findPairsAround(locations[0], notInLocation: locations[1])
-        findPairsAround(locations[1], notInLocation: locations[0])
+        ignoreLocations(locations: ignore)
+        findPairsAround(location: locations[0], notInLocation: locations[1])
+        findPairsAround(location: locations[1], notInLocation: locations[0])
         return result()
     }
     
     func sameSuitAsCard(card: Card, location: BoardLocation, ignore: [BoardLocation]) -> [BoardLocation] {
-        ignoreLocations(ignore)
-        findCardsMatching(Matcher(suit: card.suit), at: location)
+        ignoreLocations(locations: ignore)
+        findCardsMatching(matcher: Matcher(suit: card.suit), at: location)
         return result()
     }
     
     func straightIncludingCard(card: Card, location: BoardLocation, ignore: [BoardLocation]) -> [BoardLocation] {
-        ignoreLocations(ignore)
+        ignoreLocations(locations: ignore)
     
-        locations.appendContentsOf(findStraightFromRank(card.rank, suit: card.suit, next: -1, at: location))
+        locations.append(contentsOf: findStraightFromRank(rank: card.rank, suit: card.suit, next: -1, at: location))
         locations.append(location)
-        locations.appendContentsOf(findStraightFromRank(card.rank, suit: card.suit, next: 1, at: location))
+        locations.append(contentsOf: findStraightFromRank(rank: card.rank, suit: card.suit, next: 1, at: location))
         
         return result()
     }
@@ -129,7 +134,7 @@ class Identifier {
         var reference : Card? = nil
         
         for location in locations {
-            if let card = board.cardAtLocation(location) {
+            if let card = board.cardAtLocation(location: location) {
                 if let other = reference {
                     if card.suit != other.suit {
                         return false
@@ -151,8 +156,8 @@ class Identifier {
         for direction in [Direction.Left, .Up, .Right, .Down] {
             let nextLocation = location + direction.location()
             
-            if nextLocation != other && canGoTo(direction, origin: location), let card = board.cardAtLocation(nextLocation) {
-                findCardsMatching(Matcher(rank: card.rank), at: nextLocation, from: direction.reverse())
+            if nextLocation != other && canGoTo(to: direction, origin: location), let card = board.cardAtLocation(location: nextLocation) {
+                findCardsMatching(matcher: Matcher(rank: card.rank), at: nextLocation, from: direction.reverse())
             }
             
             if locations.count == oldLocations.count + 1 {
@@ -168,13 +173,13 @@ class Identifier {
         status[origin.index()] = true
         
         for direction in [Direction.Left, .Up, .Right, .Down] {
-            goTo(direction, from: from, origin: origin, matcher: matcher)
+            goTo(to: direction, from: from, origin: origin, matcher: matcher)
         }
     }
     
     private func goTo(to: Direction, from: Direction?, origin: BoardLocation, matcher: Matcher) {
-        if from != to && canGoTo(to, origin: origin), let other = board.cardAtLocation(origin + to.location()) where matcher.matches(other) {
-            findCardsMatching(matcher, at: origin + to.location(), from: to.reverse())
+        if from != to && canGoTo(to: to, origin: origin), let other = board.cardAtLocation(location: origin + to.location()), matcher.matches(card: other) {
+            findCardsMatching(matcher: matcher, at: origin + to.location(), from: to.reverse())
         }
     }
     
@@ -190,11 +195,11 @@ class Identifier {
             var maximum = [BoardLocation]()
             
             for to in [Direction.Left, .Up, .Right, .Down] {
-                if from != to && canGoTo(to, origin: origin), let other = board.cardAtLocation(origin + to.location()) where other.rank == nextRank {
-                    let result = findStraightFromRank(nextRank, suit: suit, next: next, at: origin + to.location(), from: to.reverse())
+                if from != to && canGoTo(to: to, origin: origin), let other = board.cardAtLocation(location: origin + to.location()), other.rank == nextRank {
+                    let result = findStraightFromRank(rank: nextRank, suit: suit, next: next, at: origin + to.location(), from: to.reverse())
                     
-                    let sameSuitCount = result.reduce(0, combine: { (count, location) -> Int in
-                        if let card = board.cardAtLocation(location) where card.suit == suit {
+                    let sameSuitCount = result.reduce(0, { (count, location) -> Int in
+                        if let card = board.cardAtLocation(location: location), card.suit == suit {
                             return count + 1
                         } else {
                             return count
@@ -207,7 +212,7 @@ class Identifier {
                     }
                 }
             }
-            locations.appendContentsOf(maximum)
+            locations.append(contentsOf: maximum)
         }
         return locations
     }
@@ -239,7 +244,7 @@ class Identifier {
     }
     
     private func reset() {
-        self.status = [Bool](count: board.grid.count, repeatedValue: false)
+        self.status = [Bool](repeating: false, count: board.grid.count)
         self.locations.removeAll()
     }
     

@@ -13,140 +13,141 @@ class Surfaces : NSObject {
     
     // 384 x 224
     
-    static let vertexesByQuad = 6
-    static let coordinatesByVertice = 3
-    static let coordinatesByTexture = 2
-    static let tileSize : Float = 16
+    @objc static let vertexesByQuad = 6
+    @objc static let coordinatesByVertice = 3
+    @objc static let coordinatesByTexture = 2
+    @objc static let tileSize : Float = 16
     
-    static let colorComposants = 4
+    @objc static let colorComposants = 4
     
-    static func setQuad(buffer: UnsafeMutablePointer<GLfloat>, sprite: Sprite) {
-        setQuad(buffer, index: sprite.reference, width: sprite.width, height: sprite.height, left: sprite.left, top: sprite.top)
+    @objc static func setQuad(buffer: UnsafeMutablePointer<GLfloat>, sprite: Sprite) {
+        setQuad(buffer: buffer, index: sprite.reference, width: sprite.width, height: sprite.height, left: sprite.left, top: sprite.top)
     }
     
-    static func setQuad(buffer : UnsafeMutablePointer<GLfloat>, index : Int, width : GLfloat, height : GLfloat, left : GLfloat, top : GLfloat, distance : GLfloat = 0) {
-        var entry = index * coordinatesByVertice * vertexesByQuad
+    @objc static func setQuad(buffer : UnsafeMutablePointer<GLfloat>, index : Int, width : GLfloat, height : GLfloat, left : GLfloat, top : GLfloat, distance : GLfloat = 0) {
+        let entry = index * coordinatesByVertice * vertexesByQuad
         
         let invertedTop = -top
         
         // bas gauche
-        buffer[entry++] = left
-        buffer[entry++] = invertedTop - height
-        buffer[entry++] = distance
+        buffer[entry + 0] = left
+        buffer[entry + 1] = invertedTop - height
+        buffer[entry + 2] = distance
         
         // (idem)
-        buffer[entry++] = left
-        buffer[entry++] = invertedTop - height
-        buffer[entry++] = distance
+        buffer[entry + 3] = left
+        buffer[entry + 4] = invertedTop - height
+        buffer[entry + 5] = distance
         
         // bas droite
-        buffer[entry++] = left + width
-        buffer[entry++] = invertedTop - height
-        buffer[entry++] = distance
+        buffer[entry + 6] = left + width
+        buffer[entry + 7] = invertedTop - height
+        buffer[entry + 8] = distance
         
         // haut gauche
-        buffer[entry++] = left
-        buffer[entry++] = invertedTop
-        buffer[entry++] = distance
+        buffer[entry + 9] = left
+        buffer[entry + 10] = invertedTop
+        buffer[entry + 11] = distance
         
         // haut droite
-        buffer[entry++] = left + width
-        buffer[entry++] = invertedTop
-        buffer[entry++] = distance
+        buffer[entry + 12] = left + width
+        buffer[entry + 13] = invertedTop
+        buffer[entry + 14] = distance
         
         // (idem)
-        buffer[entry++] = left + width
-        buffer[entry++] = invertedTop
-        buffer[entry] = distance
+        buffer[entry + 15] = left + width
+        buffer[entry + 16] = invertedTop
+        buffer[entry + 17] = distance
     }
     
-    static func setQuadWithRotation(rotation: GLfloat, buffer: UnsafeMutablePointer<GLfloat>, sprite: Sprite) {
-        setQuadWithRotation(sprite.rotate(rotation), buffer: buffer, sprite: sprite)
+    @objc static func setQuadWithRotation(rotation: GLfloat, buffer: UnsafeMutablePointer<GLfloat>, sprite: Sprite) {
+        setQuadWithRotation(rotatedSquare: sprite.rotate(rotation: rotation), buffer: buffer, sprite: sprite)
     }
     
-    static func setQuadWithRotation(rotation: GLfloat, pivot: Spot, buffer: UnsafeMutablePointer<GLfloat>, sprite: Sprite) {
-        setQuadWithRotation(sprite.rotate(rotation, withPivot: pivot), buffer: buffer, sprite: sprite)
+    @objc static func setQuadWithRotation(rotation: GLfloat, pivot: Spot, buffer: UnsafeMutablePointer<GLfloat>, sprite: Sprite) {
+        setQuadWithRotation(rotatedSquare: sprite.rotate(rotation: rotation, withPivot: pivot), buffer: buffer, sprite: sprite)
     }
     
     private static func setQuadWithRotation(rotatedSquare: Quadrilateral, buffer: UnsafeMutablePointer<GLfloat>, sprite: Sprite) {
-        var entry = sprite.reference * coordinatesByVertice * vertexesByQuad
+        let entry = sprite.reference * coordinatesByVertice * vertexesByQuad
         let distance : GLfloat = 0
         
         // bas gauche
-        buffer[entry++] = rotatedSquare.bottomLeft.x
-        buffer[entry++] = -rotatedSquare.bottomLeft.y
-        buffer[entry++] = distance
+        buffer[entry + 0] = rotatedSquare.bottomLeft.x
+        buffer[entry + 1] = -rotatedSquare.bottomLeft.y
+        buffer[entry + 2] = distance
         
         // (idem)
-        buffer[entry++] = rotatedSquare.bottomLeft.x
-        buffer[entry++] = -rotatedSquare.bottomLeft.y
-        buffer[entry++] = distance
+        buffer[entry + 3] = rotatedSquare.bottomLeft.x
+        buffer[entry + 4] = -rotatedSquare.bottomLeft.y
+        buffer[entry + 5] = distance
         
         // bas droite
-        buffer[entry++] = rotatedSquare.bottomRight.x
-        buffer[entry++] = -rotatedSquare.bottomRight.y
-        buffer[entry++] = distance
+        buffer[entry + 6] = rotatedSquare.bottomRight.x
+        buffer[entry + 7] = -rotatedSquare.bottomRight.y
+        buffer[entry + 8] = distance
         
         // haut gauche
-        buffer[entry++] = rotatedSquare.topLeft.x
-        buffer[entry++] = -rotatedSquare.topLeft.y
-        buffer[entry++] = distance
+        buffer[entry + 9] = rotatedSquare.topLeft.x
+        buffer[entry + 10] = -rotatedSquare.topLeft.y
+        buffer[entry + 11] = distance
         
         // haut droite
-        buffer[entry++] = rotatedSquare.topRight.x
-        buffer[entry++] = -rotatedSquare.topRight.y
-        buffer[entry++] = distance
+        buffer[entry + 12] = rotatedSquare.topRight.x
+        buffer[entry + 13] = -rotatedSquare.topRight.y
+        buffer[entry + 14] = distance
         
         // (idem)
-        buffer[entry++] = rotatedSquare.topRight.x
-        buffer[entry++] = -rotatedSquare.topRight.y
-        buffer[entry] = distance
+        buffer[entry + 15] = rotatedSquare.topRight.x
+        buffer[entry + 16] = -rotatedSquare.topRight.y
+        buffer[entry + 17] = distance
     }
     
-    static func setTile(buffer : UnsafeMutablePointer<GLfloat>, index : Int, width : GLfloat, height : GLfloat, x : GLfloat, y : GLfloat, mirror : Bool) {
+    @objc static func setTile(buffer : UnsafeMutablePointer<GLfloat>, index : Int, width : GLfloat, height : GLfloat, x : GLfloat, y : GLfloat, mirror : Bool) {
         if !mirror {
-            setTile(buffer, index: index, width: width, height: height, left: x, top: y)
+            setTile(buffer: buffer, index: index, width: width, height: height, left: x, top: y)
         } else {
-            setTile(buffer, index: index, width: -width, height: height, left: x + width, top: y)
+            setTile(buffer: buffer, index: index, width: -width, height: height, left: x + width, top: y)
         }
     }
     
-    static func setTile(buffer : UnsafeMutablePointer<GLfloat>, index : Int, width : GLfloat, height : GLfloat, left : GLfloat, top : GLfloat) {
-        var entry = index * coordinatesByTexture * vertexesByQuad
+    @objc static func setTile(buffer : UnsafeMutablePointer<GLfloat>, index : Int, width : GLfloat, height : GLfloat, left : GLfloat, top : GLfloat) {
+        let entry = index * coordinatesByTexture * vertexesByQuad
         
         // Bas gauche
-        buffer[entry++] = left
-        buffer[entry++] = top + height
+        buffer[entry + 0] = left
+        buffer[entry + 1] = top + height
         
         // (idem)
-        buffer[entry++] = left
-        buffer[entry++] = top + height
+        buffer[entry + 2] = left
+        buffer[entry + 3] = top + height
         
         // Bas droite
-        buffer[entry++] = width + left
-        buffer[entry++] = top + height
+        buffer[entry + 4] = width + left
+        buffer[entry + 5] = top + height
         
         // Haut gauche
-        buffer[entry++] = left
-        buffer[entry++] = top
+        buffer[entry + 6] = left
+        buffer[entry + 7] = top
         
         // Haut droite
-        buffer[entry++] = width + left
-        buffer[entry++] = top
+        buffer[entry + 8] = width + left
+        buffer[entry + 9] = top
         
         // (idem)
-        buffer[entry++] = width + left
-        buffer[entry] = top
+        buffer[entry + 10] = width + left
+        buffer[entry + 11] = top
     }
     
-    static func setBlackColor(buffer: UnsafeMutablePointer<GLfloat>, index: Int, to: Int, alpha: GLfloat) {
+    @objc static func setBlackColor(buffer: UnsafeMutablePointer<GLfloat>, index: Int, to: Int, alpha: GLfloat) {
         var entry = index
-        
+
         while entry < to {
-            buffer[entry++] = 0
-            buffer[entry++] = 0
-            buffer[entry++] = 0
-            buffer[entry++] = alpha
+            buffer[entry + 0] = 0
+            buffer[entry + 1] = 0
+            buffer[entry + 2] = 0
+            buffer[entry + 3] = alpha
+            entry += 4
         }
     }
 }

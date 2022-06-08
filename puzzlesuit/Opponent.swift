@@ -27,7 +27,7 @@ enum Opponent {
             case .First:
                 return InstantCpu(sameSuitScore: 1, rowScore: 1)
             case .Second:
-                return InstantCpu(fastWhenGoodHandIsFound: true, preferSides: true, sameSuitScore: 1)
+                return InstantCpu(fastWhenGoodHandIsFound: true, sameSuitScore: 1, preferSides: true)
             default:
                 return InstantCpu(fast: true, sameSuitScore: 1, rowScore: 1)
             }

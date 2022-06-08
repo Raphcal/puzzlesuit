@@ -21,14 +21,14 @@ class Text : Spot, Shape {
         let _ = Text(factory: factory, x: point.x, y: point.y, text: text)
     }
     
-    let zero = Text.integerFromCharacter("0")
-    let nine = Text.integerFromCharacter("9")
-    let upperCaseA = Text.integerFromCharacter("A")
-    let upperCaseZ = Text.integerFromCharacter("Z")
-    let lowerCaseA = Text.integerFromCharacter("a")
-    let lowerCaseZ = Text.integerFromCharacter("z")
-    let semicolon = Text.integerFromCharacter(":")
-    let space = Text.integerFromCharacter(" ")
+    let zero = Text.integerFromCharacter(c: "0")
+    let nine = Text.integerFromCharacter(c: "9")
+    let upperCaseA = Text.integerFromCharacter(c: "A")
+    let upperCaseZ = Text.integerFromCharacter(c: "Z")
+    let lowerCaseA = Text.integerFromCharacter(c: "a")
+    let lowerCaseZ = Text.integerFromCharacter(c: "z")
+    let semicolon = Text.integerFromCharacter(c: ":")
+    let space = Text.integerFromCharacter(c: " ")
     
     let digitAnimation = 0
     let upperCaseAnimation = 1
@@ -51,11 +51,11 @@ class Text : Spot, Shape {
         didSet {
             switch alignment {
             case .Left:
-                reflowTextFromX(x)
+                reflowTextFromX(x: x)
             case .Center:
-                reflowTextFromX(x - width / 2)
+                reflowTextFromX(x: x - width / 2)
             case .Right:
-                reflowTextFromX(x - width)
+                reflowTextFromX(x: x - width)
             }
         }
     }
@@ -106,7 +106,7 @@ class Text : Spot, Shape {
         super.init()
     }
     
-    /* -- Désactivé car nécessite de garder un pointeur sur les textes pour ne pas qu'ils s'effacent.
+    /* Désactivé car nécessite de garder un pointeur sur les textes pour ne pas qu'ils s'effacent.
     deinit {
     for sprite in sprites {
     sprite.destroy()
@@ -124,13 +124,13 @@ class Text : Spot, Shape {
     
     func setBlinking(blinking: Bool) {
         for sprite in sprites {
-            sprite.setBlinking(blinking)
+            sprite.setBlinking(blinking: blinking)
         }
     }
     
-    func setBlinkingWithRate(blinkRate: NSTimeInterval) {
+    func setBlinkingWithRate(blinkRate: TimeInterval) {
         for sprite in sprites {
-            sprite.setBlinkingWithRate(blinkRate)
+            sprite.setBlinkingWithRate(blinkRate: blinkRate)
         }
     }
     
@@ -141,7 +141,7 @@ class Text : Spot, Shape {
         for sprite in sprites {
             sprite.x += differenceX
             sprite.y += differenceY
-            factory.updateLocationOfSprite(sprite)
+            factory.updateLocationOfSprite(sprite: sprite)
         }
         
         self.x = location.x
@@ -162,8 +162,9 @@ class Text : Spot, Shape {
                 width += spaceWidth
             } else {
                 // Création d'un sprite par lettre pour afficher le texte donné.
-                let sprite = spriteForIndex(index++)
-                setFrameOfSprite(sprite, toCharacter: Int8(c))
+                let sprite = spriteForIndex(index: index)
+                index += 1
+                setFrameOfSprite(sprite: sprite, toCharacter: Int8(c))
                 sprite.topLeft = Spot(x: x, y: self.y)
                 
                 sprites.append(sprite)
@@ -190,7 +191,7 @@ class Text : Spot, Shape {
         if index < sprites.count {
             sprite = sprites[index]
         } else {
-            sprite = factory.sprite(Sprite.countGUIDefinition)
+            sprite = factory.sprite(definition: Sprite.countGUIDefinition)
             sprites.append(sprite)
         }
         
@@ -201,30 +202,30 @@ class Text : Spot, Shape {
         if value >= zero && value <= nine {
             // Chiffre.
             sprite.animation = SingleFrameAnimation(definition: sprite.definition.animations[digitAnimation])
-            sprite.animation.frameIndex = value - zero
+            sprite.animation.frameIndex = Int(value - zero)
             
-            resizeSprite(sprite)
+            resizeSprite(sprite: sprite)
             
         } else if value >= upperCaseA && value <= upperCaseZ {
             // Lettre majuscule.
             sprite.animation = SingleFrameAnimation(definition: sprite.definition.animations[upperCaseAnimation])
-            sprite.animation.frameIndex = value - upperCaseA
+            sprite.animation.frameIndex = Int(value - upperCaseA)
             
-            resizeSprite(sprite)
+            resizeSprite(sprite: sprite)
             
         } else if value >= lowerCaseA && value <= lowerCaseZ {
             // Lettre minuscule.
             sprite.animation = SingleFrameAnimation(definition: sprite.definition.animations[lowerCaseAnimation])
-            sprite.animation.frameIndex = value - lowerCaseA
+            sprite.animation.frameIndex = Int(value - lowerCaseA)
             
-            resizeSprite(sprite)
+            resizeSprite(sprite: sprite)
             
         } else if value == semicolon {
             // "Deux points".
             sprite.animation = SingleFrameAnimation(definition: sprite.definition.animations[semicolonAnimation])
             sprite.animation.frameIndex = 0
             
-            resizeSprite(sprite)
+            resizeSprite(sprite: sprite)
             
         } else {
             // Espace ou lettre non supportée.
@@ -241,9 +242,9 @@ class Text : Spot, Shape {
     private class func integerFromCharacter(c: Character) -> Int8 {
         let string = String(c)
         let nsString = NSString(string: string)
-        let utf8Pointer = nsString.UTF8String
+        let utf8Pointer = nsString.utf8String
         
-        return utf8Pointer[0]
+        return utf8Pointer![0]
     }
     
     private func reflowTextFromX(x: GLfloat) {
@@ -251,7 +252,7 @@ class Text : Spot, Shape {
         
         for sprite in sprites {
             sprite.x -= difference
-            factory.updateLocationOfSprite(sprite)
+            factory.updateLocationOfSprite(sprite: sprite)
         }
     }
     

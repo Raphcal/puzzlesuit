@@ -51,7 +51,7 @@ class Map : NSObject {
         self.height = maxHeight
     }
     
-    init(inputStream : NSInputStream) {
+    init(inputStream : InputStream) {
         self.backgroundColor = Streams.readColor(inputStream)
         
         let count = Streams.readInt(inputStream)
@@ -79,7 +79,7 @@ class Map : NSObject {
     }
     
     convenience init?(resource : String) {
-        if let url = NSBundle.mainBundle().URLForResource(resource, withExtension: Map.fileExtension), let inputStream = NSInputStream(URL: url) {
+        if let url = Bundle.main.url(forResource: resource, withExtension: Map.fileExtension), let inputStream = InputStream(url: url) {
             inputStream.open()
             self.init(inputStream: inputStream)
             inputStream.close()
@@ -113,11 +113,11 @@ class Map : NSObject {
             
             for y in top..<bottom {
                 for x in left..<right {
-                    let tile = layer.tileAtX(x, y: y)
+                    let tile = layer.tileAtX(x: x, y: y)
                     tiles.append(tile)
                     
                     if tile != nil {
-                        count++
+                        count += 1
                     }
                 }
             }
@@ -168,15 +168,15 @@ class Layer {
         
         var length = 0
         for tile in tiles {
-            if tile > -1 {
-                length++
+            if let tile = tile, tile > -1 {
+                length += 1
             }
         }
         self.length = length
         self.topLeft = (x: 0, y: 0)
     }
     
-    init(inputStream : NSInputStream) {
+    init(inputStream : InputStream) {
         self.name = Streams.readString(inputStream)
         self.width = Streams.readInt(inputStream)
         self.height = Streams.readInt(inputStream)
@@ -194,7 +194,7 @@ class Layer {
             
             if tile > -1 {
                 tiles.append(tile)
-                length++
+                length += 1
             } else {
                 tiles.append(nil)
             }
@@ -214,11 +214,11 @@ class Layer {
     }
     
     func tileAtPoint(point: Spot) -> Int? {
-        return tileAtX(Int(point.x / Surfaces.tileSize), y: Int(point.y / Surfaces.tileSize))
+        return tileAtX(x: Int(point.x / Surfaces.tileSize), y: Int(point.y / Surfaces.tileSize))
     }
     
     func pointInTileAtPoint(point: Spot) -> Spot {
-        return Spot(x: modulo(point.x, divisor: Surfaces.tileSize), y: modulo(point.y, divisor: Surfaces.tileSize))
+        return Spot(x: modulo(value: point.x, divisor: Surfaces.tileSize), y: modulo(value: point.y, divisor: Surfaces.tileSize))
     }
     
     private func modulo(value: GLfloat, divisor: GLfloat) -> GLfloat {

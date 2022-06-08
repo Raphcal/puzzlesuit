@@ -19,7 +19,7 @@ enum Event : Int {
     case Count
 }
 
-typealias EventListener = (value: Any?) -> Void
+typealias EventListener = (_ value: Any?) -> Void
 
 class EventBus {
     
@@ -28,27 +28,27 @@ class EventBus {
     private var listeners : [EventBusEntry]
     
     init() {
-        self.listeners = [EventBusEntry](count: Event.Count.rawValue, repeatedValue: EventBusEntry())
+        self.listeners = [EventBusEntry](repeating: EventBusEntry(), count: Event.Count.rawValue)
     }
     
-    func setListener(listener: EventListener, forEvent event: Event, parent: AnyObject) {
+    func setListener(listener: @escaping EventListener, forEvent event: Event, parent: AnyObject) {
         listeners[event.rawValue] = EventBusEntry(listener: listener, parent: parent)
     }
     
     func fireEvent(event: Event, withValue value: Any? = nil) {
         if let listener = listeners[event.rawValue].listener {
-            listener(value: value)
+            listener(value)
         }
     }
     
     func removeListernersForEvent(event: Event, parent: AnyObject) {
-        if let savedParent = listeners[event.rawValue].parent where unsafeAddressOf(savedParent) == unsafeAddressOf(parent) {
+        if let savedParent = listeners[event.rawValue].parent, ObjectIdentifier(savedParent) == ObjectIdentifier(parent) {
             self.listeners[event.rawValue] = EventBusEntry()
         }
     }
     
     func removeAllListeners() {
-        self.listeners = [EventBusEntry](count: Event.Count.rawValue, repeatedValue: EventBusEntry())
+        self.listeners = [EventBusEntry](repeating: EventBusEntry(), count: Event.Count.rawValue)
     }
     
 }
@@ -62,7 +62,7 @@ struct EventBusEntry {
         // Vide.
     }
     
-    init(listener: EventListener, parent: AnyObject) {
+    init(listener: @escaping EventListener, parent: AnyObject) {
         self.listener = listener
         self.parent = parent
     }

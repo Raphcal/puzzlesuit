@@ -27,7 +27,7 @@ class FallMotion : Motion {
         // Pas de chargement.
     }
     
-    func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval, sprite: Sprite) {
+    func update(timeSinceLastUpdate: TimeInterval, sprite: Sprite) {
         let step = GLfloat(timeSinceLastUpdate) * speed
         self.speed += acceleration * GLfloat(timeSinceLastUpdate)
         
@@ -41,12 +41,12 @@ class FallMotion : Motion {
         
         for other in sprites {
             other.y += step
-            sprite.factory.updateLocationOfSprite(other)
+            sprite.factory.updateLocationOfSprite(sprite: other)
         }
         
-        if board.isSpriteAboveSomething(sprite) {
+        if board.isSpriteAboveSomething(sprite: sprite) {
             sprite.motion = NoMotion()
-            board.attachSprite(sprite, tail: tail)
+            board.attachSprite(sprite: sprite, tail: tail)
         }
     }
     

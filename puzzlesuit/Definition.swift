@@ -43,7 +43,7 @@ class SpriteDefinition : Equatable {
         self.distance = .Behind
     }
     
-    init(inputStream : NSInputStream, index: Int) {
+    init(inputStream : InputStream, index: Int) {
         self.index = index
         self.name = Streams.readNullableString(inputStream)
         self.width = Streams.readInt(inputStream)
@@ -74,7 +74,7 @@ class SpriteDefinition : Equatable {
         self.animations = animations
     }
     
-    class func definitionsFromInputStream(inputStream : NSInputStream) -> [SpriteDefinition] {
+    class func definitionsFromInputStream(inputStream : InputStream) -> [SpriteDefinition] {
         var definitions : [SpriteDefinition] = []
         
         let definitionCount = Streams.readInt(inputStream)
@@ -86,9 +86,9 @@ class SpriteDefinition : Equatable {
     }
     
     class func definitionsFromResource(resource: String) -> [SpriteDefinition]? {
-        if let url = NSBundle.mainBundle().URLForResource(resource, withExtension: fileExtension), let inputStream = NSInputStream(URL: url) {
+        if let url = Bundle.main.url(forResource: resource, withExtension: fileExtension), let inputStream = InputStream(url: url) {
             inputStream.open()
-            let definitions = definitionsFromInputStream(inputStream)
+            let definitions = definitionsFromInputStream(inputStream: inputStream)
             inputStream.close()
             
             return definitions
@@ -125,7 +125,7 @@ class AnimationDefinition {
         self.looping = false
     }
     
-    init(inputStream : NSInputStream) {
+    init(inputStream : InputStream) {
         self.name = Streams.readString(inputStream)
         self.frequency = Streams.readInt(inputStream)
         self.looping = Streams.readBoolean(inputStream)
@@ -170,7 +170,7 @@ class AnimationDefinition {
         }
     }
     
-    func toAnimation(onEnd: () -> Void) -> Animation {
+    func toAnimation(onEnd: @escaping () -> Void) -> Animation {
         return PlayOnceAnimation(definition: self, onEnd: onEnd)
     }
 }

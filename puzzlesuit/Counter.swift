@@ -40,13 +40,15 @@ class Counter : Spot {
     }
     
     private func updateDigits() {
-        self.digits.removeAll(keepCapacity: true)
+        self.digits.removeAll(keepingCapacity: true)
         
         if(value <= 0) {
             digits.append(0)
         } else {
-            for var number = value; number > 0; number /= 10 {
+            var number = value
+            while number > 0 {
                 digits.append(number % 10)
+                number /= 10
             }
         }
         
@@ -56,7 +58,7 @@ class Counter : Spot {
     private func displayValue() {
         while sprites.count > digits.count {
             sprites[sprites.count - 1].destroy()
-            sprites.removeAtIndex(sprites.count - 1)
+            sprites.remove(at: sprites.count - 1)
         }
         while sprites.count < digits.count {
             sprites.append(createDigit())
@@ -74,7 +76,7 @@ class Counter : Spot {
     }
     
     private func createDigit() -> Sprite {
-        let sprite = factory.sprite(Sprite.countGUIDefinition)
+        let sprite = factory.sprite(definition: Sprite.countGUIDefinition)
         
         let definition = sprite.animation.definition
         let animation = SingleFrameAnimation(definition: definition)

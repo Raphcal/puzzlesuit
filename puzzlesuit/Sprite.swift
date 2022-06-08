@@ -25,13 +25,13 @@ class Sprite : Square {
     
     override var center : Spot {
         didSet {
-            factory.updateLocationOfSprite(self)
+            factory.updateLocationOfSprite(sprite: self)
         }
     }
     
     override var topLeft : Spot {
         didSet {
-            factory.updateLocationOfSprite(self)
+            factory.updateLocationOfSprite(sprite: self)
         }
     }
     
@@ -90,7 +90,7 @@ class Sprite : Square {
         
         super.init(left: 0, top: 0, width: GLfloat(definition.width), height: GLfloat(definition.height))
         
-        if unsafeAddressOf(animation.frame.hitbox) != unsafeAddressOf(Square.empty) {
+        if ObjectIdentifier(animation.frame.hitbox) != ObjectIdentifier(Square.empty) {
             self.hitbox = SpriteHitbox(sprite: self)
         } else {
             self.hitbox = SimpleHitbox(center: self, width: self.width, height: self.height)
@@ -99,14 +99,14 @@ class Sprite : Square {
     
     // MARK: Gestion des mises à jour
     
-    func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval) {
-        motion.updateWithTimeSinceLastUpdate(timeSinceLastUpdate, sprite: self)
-        animation.updateWithTimeSinceLastUpdate(timeSinceLastUpdate)
-        animation.draw(self)
+    func update(timeSinceLastUpdate: TimeInterval) {
+        motion.update(timeSinceLastUpdate: timeSinceLastUpdate, sprite: self)
+        animation.update(timeSinceLastUpdate: timeSinceLastUpdate)
+        animation.draw(sprite: self)
     }
     
     func isLookingTowardPoint(point: Spot) -> Bool {
-        return direction.isSameValue(point.x - self.x)
+        return direction.isSameValue(value: point.x - self.x)
     }
     
     // MARK: Méthodes de suppression du sprite
@@ -116,52 +116,52 @@ class Sprite : Square {
         
         if definition.animations[AnimationName.Disappear.rawValue].frames.count > 0 {
             self.type = .Decoration
-            setAnimation(AnimationName.Disappear, onEnd: { self.factory.removeSprite(self) })
+            setAnimation(name: AnimationName.Disappear, onEnd: { self.factory.removeSprite(sprite: self) })
             self.motion = NoMotion.instance
             
         } else {
-            factory.removeSprite(self)
+            factory.removeSprite(sprite: self)
         }
     }
     
     func explode(definition: Int) {
         self.removed = true
         
-        let explosion = factory.sprite(definition)
+        let explosion = factory.sprite(definition: definition)
         explosion.center = self.center
         explosion.motion = NoMotion.instance
-        explosion.setAnimation(.Stand, onEnd: { self.factory.removeSprite(explosion) })
+        explosion.setAnimation(name: .Stand, onEnd: { self.factory.removeSprite(sprite: explosion) })
         
-        factory.removeSprite(self)
+        factory.removeSprite(sprite: self)
     }
     
     // MARK: Gestion des animations
     
     func setAnimation(name: AnimationName) {
-        setAnimation(name, force: false)
+        setAnimation(name: name, force: false)
     }
     
     func setAnimation(name: AnimationName, force: Bool) {
         if name != currentAnimation || force {
             let nextAnimation = definition.animations[name.rawValue].toAnimation()
-            self.animation = animation.transitionToNextAnimation(nextAnimation)
+            self.animation = animation.transitionToNextAnimation(nextAnimation: nextAnimation)
             self.currentAnimation = name
         }
     }
     
-    func setAnimation(name: AnimationName, onEnd: () -> Void) {
-        let nextAnimation = definition.animations[name.rawValue].toAnimation(onEnd)
-        self.animation = animation.transitionToNextAnimation(nextAnimation)
+    func setAnimation(name: AnimationName, onEnd: @escaping () -> Void) {
+        let nextAnimation = definition.animations[name.rawValue].toAnimation(onEnd: onEnd)
+        self.animation = animation.transitionToNextAnimation(nextAnimation: nextAnimation)
         self.currentAnimation = name
     }
     
-    func setBlinkingWithDuration(duration: NSTimeInterval) {
+    func setBlinkingWithDuration(duration: TimeInterval) {
         self.animation = BlinkingAnimation(animation: animation, blinkRate: 0.2, duration: duration) { animation in
             self.animation = animation
         }
     }
     
-    func setBlinkingWithRate(blinkRate: NSTimeInterval) {
+    func setBlinkingWithRate(blinkRate: TimeInterval) {
         self.animation = BlinkingAnimation(animation: animation, blinkRate: blinkRate)
     }
     

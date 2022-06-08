@@ -35,7 +35,7 @@ extension Hitbox {
     }
     
     func collidesWith(square: Square) -> Bool {
-        return collidesWith(SimpleHitbox(center: square, width: square.width, height: square.height))
+        return collidesWith(other: SimpleHitbox(center: square, width: square.width, height: square.height))
     }
     
     func collidesWith(other: Hitbox) -> Bool {
@@ -44,7 +44,7 @@ extension Hitbox {
     }
     
     func collidesWith(sprite: Sprite) -> Bool {
-        return collidesWith(sprite.hitbox)
+        return collidesWith(other: sprite.hitbox)
     }
     
     func bottomHitbox() -> Hitbox {
@@ -251,7 +251,7 @@ class RotatedHitbox : Hitbox {
         let top = hitbox.top
         let square = Square(left: left, top: top, width: hitbox.right - left, height: hitbox.bottom - top)
         
-        let rotatedSquare = square.rotate(rotation, withPivot: pivot).enclosingSquare()
+        let rotatedSquare = square.rotate(rotation: rotation, withPivot: pivot).enclosingSquare()
         
         self.x = rotatedSquare.x
         self.y = rotatedSquare.y

@@ -11,15 +11,15 @@ import Cocoa
 class KeyboardListener: NSWindowController {
     
     override func awakeFromNib() {
-        (NSApplication.sharedApplication().delegate as? AppDelegate)?.window = self.window
+        (NSApplication.shared.delegate as? AppDelegate)?.window = self.window
     }
-    
-    override func keyDown(theEvent: NSEvent) {
-        KeyboardInputSource.instance.keyDown(theEvent.keyCode)
+
+    override func keyDown(with event: NSEvent) {
+        KeyboardInputSource.instance.keyDown(keyCode: event.keyCode)
     }
-    
-    override func keyUp(theEvent: NSEvent) {
-        KeyboardInputSource.instance.keyUp(theEvent.keyCode)
+
+    override func keyUp(with event: NSEvent) {
+        KeyboardInputSource.instance.keyUp(keyCode: event.keyCode)
     }
     
     // NOTE: Surcharger flagsChanged pour gérer shift, ctrl, etc.

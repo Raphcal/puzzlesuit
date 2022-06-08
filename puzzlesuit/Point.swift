@@ -172,7 +172,7 @@ class Square : Spot, Shape {
     
     /// Calcule la rotation à appliquer pour l'angle donné.
     static func rotationForAngle(angle: GLfloat, direction: Direction) -> GLfloat {
-        var degree = angle * 180 / GLfloat(M_PI)
+        var degree = angle * 180 / GLfloat.pi
         if direction == .Left {
             degree -= 180
         }
@@ -181,12 +181,12 @@ class Square : Spot, Shape {
         }
         let step : GLfloat = 22.5
         degree = nearbyint(degree / step) * step
-        return degree * GLfloat(M_PI) / 180
+        return degree * GLfloat.pi / 180
     }
     
     func rotate(rotation: GLfloat) -> Quadrilateral {
         let distance = sqrt(width * width + height * height) / 2
-        let quarter = GLfloat(M_PI_4)
+        let quarter = GLfloat.pi / 4
         return Quadrilateral(
             topLeft: Spot(x: x + cos(-quarter * 3 + rotation) * distance, y: y + sin(-quarter * 3 + rotation) * distance),
             topRight: Spot(x: x + cos(-quarter + rotation) * distance, y: y + sin(-quarter + rotation) * distance),
@@ -197,8 +197,8 @@ class Square : Spot, Shape {
     
     func rotate(rotation: GLfloat, withPivot pivot: Spot) -> Quadrilateral {
         var vertices = [Spot]()
-        let reference = float2(pivot.x, pivot.y)
-        for vertex in [float2(left, top), float2(right, top), float2(left, bottom), float2(right, bottom)] {
+        let reference = SIMD2<Float>(pivot.x, pivot.y)
+        for vertex in [SIMD2<Float>(left, top), SIMD2<Float>(right, top), SIMD2<Float>(left, bottom), SIMD2<Float>(right, bottom)] {
             let length = distance(vertex, reference)
             let angle : GLfloat = atan2(vertex.y - reference.y, vertex.x - reference.x)
             vertices.append(Spot(x: pivot.x + cos(angle + rotation) * length, y: pivot.y + sin(angle + rotation) * length))

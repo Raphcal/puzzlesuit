@@ -10,8 +10,8 @@ import GLKit
 
 class LateralMove {
     
-    let duration : NSTimeInterval = 0.1
-    var time : NSTimeInterval = 0
+    let duration : TimeInterval = 0.1
+    var time : TimeInterval = 0
     
     let main: Sprite
     let extra: Sprite
@@ -24,13 +24,13 @@ class LateralMove {
         self.main = main
         self.extra = extra
         self.distance = main.width * direction.value()
-        
-        if !board.canMoveToPoint(Spot(x: main.x + distance, y: main.y)) || !board.canMoveToPoint(Spot(x: extra.x + distance, y: extra.y)) {
+
+        if !board.canMoveToPoint(point: Spot(x: main.x + distance, y: main.y)) || !board.canMoveToPoint(point: Spot(x: extra.x + distance, y: extra.y)) {
             return nil
         }
     }
     
-    func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval) {
+    func update(timeSinceLastUpdate: TimeInterval) {
         let oldProgression = GLfloat(time / duration)
         
         self.time += timeSinceLastUpdate
@@ -47,8 +47,8 @@ class LateralMove {
 
 class Rotation {
     
-    let duration : NSTimeInterval = 0.1
-    var time : NSTimeInterval = 0
+    let duration : TimeInterval = 0.1
+    var time : TimeInterval = 0
     
     let center : Spot
     let sprite : Sprite
@@ -64,25 +64,25 @@ class Rotation {
         self.center = main
         self.sprite = extra
         self.from = atan2(extra.y - main.y, extra.x - main.x)
-        self.length = distance(float2(main.x, main.y), float2(extra.x, extra.y))
+        self.length = distance(SIMD2<Float>(main.x, main.y), SIMD2<Float>(extra.x, extra.y))
         
         for i in 1..<4 {
-            let rotation = GLfloat(M_PI_2) * direction.value() * GLfloat(i)
+            let rotation = GLfloat.pi / 2 * direction.value() * GLfloat(i)
             let targetAngle = from + rotation
             let targetPoint = Spot(x: main.x + cos(targetAngle) * length, y: main.y + sin(targetAngle) * length)
             
-            if board.canMoveToPoint(targetPoint) {
+            if board.canMoveToPoint(point: targetPoint) {
                 self.count = i * Int(direction.value())
                 self.rotation = rotation
                 return
             }
             
             if main.x == extra.x {
-                let inverseRotation = GLfloat(M_PI_2) * direction.reverse().value() * GLfloat(i)
+                let inverseRotation = GLfloat.pi / 2 * direction.reverse().value() * GLfloat(i)
                 let inverseAngle = from + inverseRotation
                 let inversePoint = Spot(x: main.x + cos(inverseAngle) * length, y: main.y + sin(inverseAngle) * length)
                 
-                if board.canMoveToPoint(inversePoint) {
+                if board.canMoveToPoint(point: inversePoint) {
                     main.x = inversePoint.x
                     self.count = i * Int(direction.value())
                     self.rotation = rotation
@@ -96,7 +96,7 @@ class Rotation {
         return nil
     }
     
-    func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval) {
+    func update(timeSinceLastUpdate: TimeInterval) {
         self.time += timeSinceLastUpdate
         let progression = min(GLfloat(time / duration), 1)
         

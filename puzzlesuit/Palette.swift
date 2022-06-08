@@ -8,20 +8,21 @@
 
 import GLKit
 
+@objc
 class Palette : NSObject {
     
     static let fileExtension = "pal"
     
-    let textureName : String
-    let tileSize : Int
-    let columns : Int
-    let padding : Int
+    @objc let textureName : String
+    @objc let tileSize : Int
+    @objc let columns : Int
+    @objc let padding : Int
     let functions : [[UInt8]?]
-    
-    var tileWidth : GLfloat = 0
-    var tileHeight : GLfloat = 0
-    var paddingX : GLfloat = 0
-    var paddingY : GLfloat = 0
+
+    @objc var tileWidth : GLfloat = 0
+    @objc var tileHeight : GLfloat = 0
+    @objc var paddingX : GLfloat = 0
+    @objc var paddingY : GLfloat = 0
     
     var texture = GLKTextureInfo() {
         didSet {
@@ -42,7 +43,7 @@ class Palette : NSObject {
         super.init()
     }
     
-    init(inputStream : NSInputStream) {
+    init(inputStream : InputStream) {
         self.textureName = Streams.readString(inputStream)
         self.columns = Streams.readInt(inputStream)
         self.tileSize = Streams.readInt(inputStream)
@@ -58,7 +59,7 @@ class Palette : NSObject {
     }
     
     convenience init?(resource : String) {
-        if let url = NSBundle.mainBundle().URLForResource(resource, withExtension: Palette.fileExtension), let inputStream = NSInputStream(URL: url) {
+        if let url = Bundle.main.url(forResource: resource, withExtension: Palette.fileExtension), let inputStream = InputStream(url: url) {
             inputStream.open()
             self.init(inputStream: inputStream)
             inputStream.close()
@@ -71,7 +72,7 @@ class Palette : NSObject {
     
     func loadTexture() {
         do {
-            self.texture = try Resources.textureForResource(textureName + "-32", withExtension: "png")
+            self.texture = try Resources.textureForResource(name: textureName + "-32", withExtension: "png")
         } catch let error as NSError {
             NSLog("Erreur lors du chargement de la texture %@-32.png : %@", textureName, error)
         }

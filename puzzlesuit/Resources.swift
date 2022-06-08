@@ -8,7 +8,7 @@
 
 import GLKit
 
-enum ResourceLoadError : ErrorType {
+enum ResourceLoadError : Error {
     case URLNotFound
 }
 
@@ -23,15 +23,15 @@ class Resources {
     
     init() {
         do {
-            self.textureAtlas = try Resources.textureForResource("atlas", withExtension: "png")
+            self.textureAtlas = try Resources.textureForResource(name: "atlas", withExtension: "png")
         } catch {
             NSLog("Erreur de chargement de la texture des sprites \(error)")
             self.textureAtlas = GLKTextureInfo()
         }
         
-        if let url = NSBundle.mainBundle().URLForResource("atlas", withExtension: "sprites"), let inputStream = NSInputStream(URL: url) {
+        if let url = Bundle.main.url(forResource: "atlas", withExtension: "sprites"), let inputStream = InputStream(url: url) {
             inputStream.open()
-            self.definitions = SpriteDefinition.definitionsFromInputStream(inputStream)
+            self.definitions = SpriteDefinition.definitionsFromInputStream(inputStream: inputStream)
             inputStream.close()
         } else {
             NSLog("Erreur de chargement des définitions.")
@@ -45,19 +45,19 @@ class Resources {
             NSLog("Erreur OpenGL : \(error)")
         }
         
-        if let url = NSBundle.mainBundle().URLForResource(name, withExtension: ext) {
+        if let url = Bundle.main.url(forResource: name, withExtension: ext) {
             #if os(iOS)
                 let premultiplication = false
             #else
                 let premultiplication = true
             #endif
-            return try GLKTextureLoader.textureWithContentsOfURL(url, options: [GLKTextureLoaderOriginBottomLeft: false, GLKTextureLoaderApplyPremultiplication: premultiplication])
+            return try GLKTextureLoader.texture(withContentsOf: url, options: [GLKTextureLoaderOriginBottomLeft: false, GLKTextureLoaderApplyPremultiplication: NSNumber(booleanLiteral: premultiplication)])
         } else {
             throw ResourceLoadError.URLNotFound
         }
     }
     
-    static func releaseTexture(texture: GLKTextureInfo) {
+    static func release(texture: GLKTextureInfo) {
         Draws.freeTexture(texture)
     }
     

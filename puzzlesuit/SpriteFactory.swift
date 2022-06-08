@@ -15,7 +15,7 @@ enum Distance : Int {
 /// Gère la création, l'affichage et la mise à jour d'un ensemble de sprites.
 class SpriteFactory {
     
-    // static let operationQueue = NSOperationQueue()
+    // static let operationQueue = OperationQueue()
     
     let capacity : Int
     
@@ -74,30 +74,30 @@ class SpriteFactory {
     
     // MARK: Gestion des mises à jour
     
-    func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval) {
+    func update(timeSinceLastUpdate: TimeInterval) {
         for sprite in sprites {
-            sprite.updateWithTimeSinceLastUpdate(timeSinceLastUpdate)
+            sprite.update(timeSinceLastUpdate: timeSinceLastUpdate)
         }
         
         for sprite in removalPending {
-            if let index = sprites.indexOf(sprite) {
-                sprites.removeAtIndex(index)
+            if let index = sprites.firstIndex(of: sprite) {
+                sprites.remove(at: index)
                 let reference = sprite.reference
-                pools[sprite.definition.distance.rawValue].releaseReference(reference)
-                vertexPointer.clearQuadAtIndex(reference)
-                texCoordPointer.clearQuadAtIndex(reference)
+                pools[sprite.definition.distance.rawValue].releaseReference(reference: reference)
+                vertexPointer.clearQuad(at: reference)
+                texCoordPointer.clearQuad(at: reference)
             } else {
                 NSLog("removalPending: Sprite \(sprite.reference) non trouvé.")
             }
         }
-        removalPending.removeAll(keepCapacity: true)
+        removalPending.removeAll(keepingCapacity: true)
     }
     
     func updateCollisionsForSprite(player: Sprite) {
-        self.collisions.removeAll(keepCapacity: true)
+        self.collisions.removeAll(keepingCapacity: true)
         
         for sprite in types[.Collidable]! {
-            if sprite.definition != player.definition && sprite.hitbox.collidesWith(player.hitbox) {
+            if sprite.definition != player.definition && sprite.hitbox.collidesWith(other: player.hitbox) {
                 self.collisions.append(sprite)
             }
         }
@@ -124,17 +124,17 @@ class SpriteFactory {
     // MARK: Création de sprites
     
     func sprite(definition: Int) -> Sprite {
-        return sprite(definitions[definition])
+        return sprite(definition: definitions[definition])
     }
     
     func sprite(definition: Int, x: GLfloat, y: GLfloat) -> Sprite {
-        let sprite = self.sprite(definitions[definition])
+        let sprite = self.sprite(definition: definitions[definition])
         sprite.topLeft = Spot(x: x, y: y)
         return sprite
     }
     
     func sprite(parent: Sprite, animation: AnimationName, frame: Int) -> Sprite {
-        let sprite = self.sprite(parent.definition, after: parent)
+        let sprite = self.sprite(definition: parent.definition, after: parent)
         
         sprite.animation = SingleFrameAnimation(definition: parent.definition.animations[animation.rawValue])
         sprite.animation.frameIndex = frame
@@ -147,14 +147,14 @@ class SpriteFactory {
     }
     
     func sprite(definition: SpriteDefinition, after: Sprite? = nil) -> Sprite {
-        let reference = pools[definition.distance.rawValue].next(after?.reference)
+        let reference = pools[definition.distance.rawValue].next(other: after?.reference)
         let sprite = Sprite(reference: reference, definition: definition, parent: self)
         self.sprites.append(sprite)
         
         if definition.type == .Player {
-            appendSprite(sprite, toType: .Player)
+            appendSprite(sprite: sprite, toType: .Player)
         } else if definition.type.hasCollisions() {
-            appendSprite(sprite, toType: .Collidable)
+            appendSprite(sprite: sprite, toType: .Collidable)
         }
         
         return sprite
@@ -168,15 +168,15 @@ class SpriteFactory {
         
         let definition = sprite.definition
         if definition.type == .Player {
-            removeSprite(sprite, fromType: .Player)
+            removeSprite(sprite: sprite, fromType: .Player)
         } else if definition.type.hasCollisions() {
-            removeSprite(sprite, fromType: .Collidable)
+            removeSprite(sprite: sprite, fromType: .Collidable)
         }
     }
     
     func clear() {
         for sprite in sprites {
-            removeSprite(sprite)
+            removeSprite(sprite: sprite)
         }
     }
     
@@ -196,8 +196,8 @@ class SpriteFactory {
     private func removeSprite(sprite: Sprite, fromType type: SpriteType) {
         var sprites = self.types[type]!
         
-        if let index = sprites.indexOf(sprite) {
-            sprites.removeAtIndex(index)
+        if let index = sprites.firstIndex(of: sprite) {
+            sprites.remove(at: index)
         }
         
         self.types[type] = sprites
@@ -206,7 +206,7 @@ class SpriteFactory {
     // MARK: Gestion des surfaces OpenGL
     
     func updateLocationOfSprite(sprite: Sprite) {
-        Surfaces.setQuad(vertexPointer.memory, sprite: sprite)
+        Surfaces.setQuad(buffer: vertexPointer.memory, sprite: sprite)
     }
     
     func setTextureOfReference(reference: Int, x: Int, y: Int, width: Int, height: Int, mirror: Bool) {
@@ -215,11 +215,11 @@ class SpriteFactory {
         let xInTexture = GLfloat(x) / GLfloat(textureAtlas.width)
         let yInTexture = GLfloat(y) / GLfloat(textureAtlas.width)
         
-        Surfaces.setTile(texCoordPointer.memory, index: reference, width: widthInTexture, height: heightInTexture, x: xInTexture, y: yInTexture, mirror: mirror)
+        Surfaces.setTile(buffer: texCoordPointer.memory, index: reference, width: widthInTexture, height: heightInTexture, x: xInTexture, y: yInTexture, mirror: mirror)
     }
     
     func clearTextureOfSprite(sprite: Sprite) {
-        texCoordPointer.clearQuadAtIndex(sprite.reference)
+        texCoordPointer.clearQuad(at: sprite.reference)
     }
     
 }

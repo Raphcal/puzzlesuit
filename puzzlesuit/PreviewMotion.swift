@@ -14,7 +14,7 @@ class PreviewMotion : Motion {
         // Pas d'initialisation.
     }
     
-    func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval, sprite: Sprite) {
+    func update(timeSinceLastUpdate: TimeInterval, sprite: Sprite) {
         // TODO: Écrire la méthode.
     }
     

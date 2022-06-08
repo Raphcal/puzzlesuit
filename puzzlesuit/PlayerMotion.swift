@@ -26,8 +26,8 @@ class MainCardMotion : Motion, Linked {
     let board : Board
     let linkedSprite : Sprite
     
-    let duration : NSTimeInterval = 0.5
-    var time : NSTimeInterval = 0
+    let duration : TimeInterval = 0.5
+    var time : TimeInterval = 0
     
     var lateralMove : LateralMove?
     
@@ -41,10 +41,10 @@ class MainCardMotion : Motion, Linked {
         // Pas de chargement.
     }
     
-    func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval, sprite: Sprite) {
+    func update(timeSinceLastUpdate: TimeInterval, sprite: Sprite) {
         time += timeSinceLastUpdate
         
-        let currentDuration = controller.pressing(.Down) ? duration / 10 : duration
+        let currentDuration = controller.pressing(button: .Down) ? duration / 10 : duration
         let height = sprite.height / 2
         
         if time >= currentDuration {
@@ -55,19 +55,19 @@ class MainCardMotion : Motion, Linked {
         
         if let lateralMove = self.lateralMove {
             // Application du déplacement.
-            lateralMove.updateWithTimeSinceLastUpdate(timeSinceLastUpdate)
+            lateralMove.update(timeSinceLastUpdate: timeSinceLastUpdate)
             if lateralMove.ended {
                 self.lateralMove = nil
             }
-        } else if controller.pressed(.Left) {
+        } else if controller.pressed(button: .Left) {
             // Déplacement à gauche
             self.lateralMove = LateralMove(main: sprite, extra: linkedSprite, direction: .Left, board: board)
-        } else if controller.pressed(.Right) {
+        } else if controller.pressed(button: .Right) {
             // Déplacement à droite
             self.lateralMove = LateralMove(main: sprite, extra: linkedSprite, direction: .Right, board: board)
         }
         
-        sprite.factory.updateLocationOfSprite(sprite)
+        sprite.factory.updateLocationOfSprite(sprite: sprite)
     }
     
 }
@@ -97,21 +97,21 @@ class ExtraCardMotion : Motion, Linked, CanRotate {
         // Pas de chargement.
     }
     
-    func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval, sprite: Sprite) {
+    func update(timeSinceLastUpdate: TimeInterval, sprite: Sprite) {
         if let rotation = self.rotation {
             // Application de la rotation.
-            rotation.updateWithTimeSinceLastUpdate(timeSinceLastUpdate)
-            if rotation.ended, let index = Direction.circle.indexOf(self.direction) {
+            rotation.update(timeSinceLastUpdate: timeSinceLastUpdate)
+            if rotation.ended, let index = Direction.circle.firstIndex(of: self.direction) {
                 self.direction = Direction.circle[(index + rotation.count + Direction.circle.count) % Direction.circle.count]
                 self.rotation = nil
             }
-        } else if controller.pressed(.RotateLeft) {
+        } else if controller.pressed(button: .RotateLeft) {
             self.rotation = Rotation(main: linkedSprite, extra: sprite, direction: .Left, board: board)
-        } else if controller.pressed(.RotateRight) {
+        } else if controller.pressed(button: .RotateRight) {
             self.rotation = Rotation(main: linkedSprite, extra: sprite, direction: .Right, board: board)
         }
         
-        sprite.factory.updateLocationOfSprite(sprite)
+        sprite.factory.updateLocationOfSprite(sprite: sprite)
     }
     
 }

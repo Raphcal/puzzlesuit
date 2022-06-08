@@ -28,7 +28,7 @@
     ALvoid *_data[SoundCount];
     
     AVAudioPlayer *_player;
-    void(^_completionBlock)();
+    void(^_completionBlock)(void);
     
 }
 
@@ -143,7 +143,7 @@
     }
 }
 
-- (void)playOnceStreamAtURL:(NSURL * _Nonnull)url withCompletionBlock:(void (^)())block {
+- (void)playOnceStreamAtURL:(NSURL * _Nonnull)url withCompletionBlock:(void (^)(void))block {
     [self stopStream];
     
     NSError *error = nil;

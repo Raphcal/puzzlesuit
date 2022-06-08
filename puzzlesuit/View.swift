@@ -10,7 +10,7 @@ import GLKit
 
 class View : NSObject {
     
-    static let instance = View()
+    @objc static let instance = View()
     
     var width : GLfloat
     var height : GLfloat
@@ -42,7 +42,7 @@ class View : NSObject {
         self.height = screenHeight * ratio
     }
     
-    func applyZoom() {
+    @objc func applyZoom() {
         glLoadIdentity()
         #if os(iOS)
             glOrthof(0, zoomedWidth, 0, zoomedHeight, -1, 1)
@@ -51,7 +51,7 @@ class View : NSObject {
         #endif
     }
     
-    func updateViewWithBounds(bounds: CGRect) {
+    @objc func updateViewWith(bounds: CGRect) {
         #if VIEW_UPDATE_WITH_ZOOM
             let zoom = max(
                 Float(bounds.width) / (12 * 32),

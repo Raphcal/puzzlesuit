@@ -38,11 +38,11 @@ class KeyboardInputSource {
     var listeners = [UInt16:KeyboardController]()
     
     func keyDown(keyCode: UInt16) {
-        listeners[keyCode]?.keyDown(keyCode)
+        listeners[keyCode]?.keyDown(keyCode: keyCode)
     }
     
     func keyUp(keyCode: UInt16) {
-        listeners[keyCode]?.keyUp(keyCode)
+        listeners[keyCode]?.keyUp(keyCode: keyCode)
     }
 
 }
@@ -56,9 +56,9 @@ class KeyboardController : Controller {
     var previousStates = [GamePadButton:Bool]()
     
     var direction : GLfloat {
-        if pressing(.Right) {
+        if pressing(button: .Right) {
             return 1
-        } else if pressing(.Left) {
+        } else if pressing(button: .Left) {
             return -1
         } else {
             return 0
@@ -67,7 +67,7 @@ class KeyboardController : Controller {
     
     init(buttons: [KeyCode:GamePadButton]) {
         for button in buttons {
-            let keyCode = key(button.0)
+            let keyCode = key(keyCode: button.0)
             buttonForKeyCode[keyCode] = button.1
             previousStates[button.1] = false
             KeyboardInputSource.instance.listeners[keyCode] = self
@@ -87,7 +87,7 @@ class KeyboardController : Controller {
     }
     
     func pressed(button: GamePadButton) -> Bool {
-        let wasPressed = previousStates[button]!
+        let wasPressed = previousStates[button] == true
         let pressed = buttons.contains(button)
         previousStates[button] = pressed
         
@@ -128,7 +128,7 @@ class KeyboardController : Controller {
     
     func removeListenersForKeys() {
         for keyCode in self.buttonForKeyCode.keys {
-            KeyboardInputSource.instance.listeners.removeValueForKey(keyCode)
+            KeyboardInputSource.instance.listeners.removeValue(forKey: keyCode)
         }
     }
     

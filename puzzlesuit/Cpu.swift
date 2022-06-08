@@ -67,9 +67,9 @@ class BaseCpu : Controller {
         
         switch button {
         case .Left:
-            return board.locationForPoint(flow.hand[0]).x > target.x
+            return board.locationForPoint(point: flow.hand[0]).x > target.x
         case .Right:
-            return board.locationForPoint(flow.hand[0]).x < target.x
+            return board.locationForPoint(point: flow.hand[0]).x < target.x
         case .RotateLeft:
             switch currentDirection {
             case .Up:
@@ -114,8 +114,8 @@ class BaseCpu : Controller {
 class RandomCpu : BaseCpu, Cpu {
     
     func handChanged(hand: [Card], nextHand: [Card]) {
-        target = BoardLocation(x: Random.next(Board.columns), y: 0)
-        targetDirection = Direction.circle[Random.next(Direction.circle.count)]
+        target = BoardLocation(x: Random.next(range: Board.columns), y: 0)
+        targetDirection = Direction.circle[Random.next(range: Direction.circle.count)]
     }
     
 }
@@ -145,8 +145,8 @@ class InstantCpu : BaseCpu, Cpu {
     func handChanged(hand: [Card], nextHand: [Card]) {
         self.down = fast
         
-        let main = bestLocationForCard(hand[0])
-        let extra = bestLocationForCard(hand[1])
+        let main = bestLocationForCard(card: hand[0])
+        let extra = bestLocationForCard(card: hand[1])
         
         if abs(main.location.x - extra.location.x) == 1 {
             // Les 2 meilleures cases sont voisines.
@@ -169,15 +169,15 @@ class InstantCpu : BaseCpu, Cpu {
         // TODO: Éviter de faire une boucle par carte.
         let board = flow.board
         
-        var bestColumn = preferSides ? Random.next(2) * Board.columns : Random.next(Board.columns)
+        var bestColumn = preferSides ? Random.next(range: 2) * Board.columns : Random.next(range: Board.columns)
         var bestScore = 0
         
         let identifier = Identifier(board: flow.board)
         for column in 0..<Board.columns {
-            if let top = board.topOfColumn(column) {
-                let sameKind = identifier.sameKindsAsCard(card, location: top, ignore: []).count - 1
-                let sameSuit = identifier.sameSuitAsCard(card, location: top, ignore: []).count - 1
-                let straight = identifier.straightIncludingCard(card, location: top, ignore: []).count - 1
+            if let top = board.topOfColumn(column: column) {
+                let sameKind = identifier.sameKindsAsCard(card: card, location: top, ignore: []).count - 1
+                let sameSuit = identifier.sameSuitAsCard(card: card, location: top, ignore: []).count - 1
+                let straight = identifier.straightIncludingCard(card: card, location: top, ignore: []).count - 1
 
                 // Voir s'il faut plutôt limiter à la colonne 2
                 let row = top.y - Board.hiddenRows
@@ -206,8 +206,8 @@ class HandCpu : BaseCpu, Cpu {
     func handChanged(hand: [Card], nextHand: [Card]) {
         self.down = true
         
-        let main = bestLocationForCard(hand[0])
-        let extra = bestLocationForCard(hand[1])
+        let main = bestLocationForCard(card: hand[0])
+        let extra = bestLocationForCard(card: hand[1])
         
         if abs(main.location.x - extra.location.x) == 1 {
             // Les 2 meilleures cases sont voisines.
@@ -229,15 +229,15 @@ class HandCpu : BaseCpu, Cpu {
     private func bestLocationForCard(card: Card) -> (location: BoardLocation, score: Int) {
         let board = flow.board
         
-        var bestColumn = Random.next(Board.columns)
+        var bestColumn = Random.next(range: Board.columns)
         var bestScore = 0
         
         let identifier = Identifier(board: flow.board)
         for column in 0..<Board.columns {
-            if let top = board.topOfColumn(column) {
+            if let top = board.topOfColumn(column: column) {
                 // TODO: Calculer un score (positif) pour la hauteur (plus c'est bas, plus le score est élevé)
                 
-                let hands = identifier.handsForCard(card, atLocation: top)
+                let hands = identifier.handsForCard(card: card, atLocation: top)
                 
                 var score = 0
                 for hand in hands {
@@ -262,18 +262,18 @@ class ZoneCpu : BaseCpu, Cpu {
     var zones = [Zone()]
     
     func handChanged(hand: [Card], nextHand: [Card]) {
-        let zone = preferredZoneForHand(hand)
+        let zone = preferredZoneForHand(hand: hand)
         
         // TODO: Diviser la zone en plus petites zones.
         let allCards = hand + nextHand
         
         if zone.aim == nil {
-            zone.aim = aimForCards(allCards)
+            zone.aim = aimForCards(cards: allCards)
         }
         
         switch zone.aim! {
         case .Flush:
-            self.target = flushTargetForHand(hand, inZone: zone, board: flow.board)
+            self.target = flushTargetForHand(hand: hand, inZone: zone, board: flow.board)
         default:
             break
         }
@@ -294,10 +294,10 @@ class ZoneCpu : BaseCpu, Cpu {
             
             for card in hand {
                 if card.suit == zone.preferredSuit {
-                    suitCount++
+                    suitCount += 1
                 }
                 if card.rank == zone.preferredRank {
-                    rankCount++
+                    rankCount += 1
                 }
             }
             
@@ -321,23 +321,23 @@ class ZoneCpu : BaseCpu, Cpu {
     }
     
     private func aimForCards(cards: [Card]) -> Aim {
-        var suits = [Int](count: Suit.all.count, repeatedValue: 0)
-        var ranks = [Int](count: Rank.all.count, repeatedValue: 0)
+        var suits = [Int](repeating: 0, count: Suit.all.count)
+        var ranks = [Int](repeating: 0, count: Rank.all.count)
         
         for card in cards {
-            suits[card.suit.rawValue]++
-            ranks[card.rank.rawValue]++
+            suits[card.suit.rawValue] += 1
+            ranks[card.rank.rawValue] += 1
         }
         
-        let maxSuitCount = suits.maxElement()!
-        let maxRankCount = ranks.maxElement()!
+        let maxSuitCount = suits.max()!
+        let maxRankCount = ranks.max()!
         
         // TODO: Gérer les suites (straight).
         
         if maxSuitCount > maxRankCount {
-            return .Flush(suit: Suit(rawValue: suits.indexOf(maxSuitCount)!)!)
+            return .Flush(suit: Suit(rawValue: suits.firstIndex(of: maxSuitCount)!)!)
         } else {
-            return .SameKinds(rank: Rank(rawValue: ranks.indexOf(maxRankCount)!)!)
+            return .SameKinds(rank: Rank(rawValue: ranks.firstIndex(of: maxRankCount)!)!)
         }
     }
     

@@ -15,7 +15,7 @@ protocol Motion {
     func load(sprite : Sprite)
     
     /// Calcul et application du mouvement pour le sprite donné.
-    func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval, sprite: Sprite)
+    func update(timeSinceLastUpdate: TimeInterval, sprite: Sprite)
     
 }
 
@@ -28,7 +28,7 @@ class NoMotion : Motion {
         // Pas de chargement.
     }
     
-    func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval, sprite: Sprite) {
+    func update(timeSinceLastUpdate: TimeInterval, sprite: Sprite) {
         // Pas de mouvement.
     }
     

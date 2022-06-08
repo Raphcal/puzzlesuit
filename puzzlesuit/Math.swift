@@ -11,24 +11,24 @@ import GLKit
 class Math {
 
 	static func smoothStep(from: GLfloat, to: GLfloat, value: GLfloat) -> GLfloat {
-		return pow(sin(GLfloat(M_PI / 2) * min(max(value - from, 0) / to, 1)), 2)
+		return pow(sin(GLfloat.pi / 2 * min(max(value - from, 0) / to, 1)), 2)
 	}
     
-    static func smoothStep(from: NSTimeInterval, to: NSTimeInterval, value: NSTimeInterval) -> NSTimeInterval {
-        return pow(sin(NSTimeInterval(M_PI / 2) * min(max(value - from, 0) / to, 1)), 2)
+    static func smoothStep(from: TimeInterval, to: TimeInterval, value: TimeInterval) -> TimeInterval {
+        return pow(sin((TimeInterval.pi / 2) * min(max(value - from, 0) / to, 1)), 2)
     }
 	
 	static func toRadian(degree: GLfloat) -> GLfloat {
-		return degree * GLfloat(M_PI / 180)
+        return degree * GLfloat.pi / 180
 	}
 	
 	static func toDegree(radian: GLfloat) -> GLfloat {
-		return radian * GLfloat(180 / M_PI)
+        return radian * 180 / .pi
 	}
     
     static func differenceBetweenAngle(angle: GLfloat, andAngle other: GLfloat) -> GLfloat {
         let difference = other - angle
-        let π = GLfloat(M_PI)
+        let π = GLfloat.pi
         
         if difference < -π {
             return difference + π * 2

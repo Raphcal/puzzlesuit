@@ -14,7 +14,7 @@ enum AnimationName : Int {
 
 protocol Animation {
     
-    func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval)
+    func update(timeSinceLastUpdate: TimeInterval)
     func draw(sprite: Sprite)
     func transitionToNextAnimation(nextAnimation: Animation) -> Animation
     
@@ -54,7 +54,7 @@ class Frame {
         self.hitbox = Square.empty
     }
     
-    init(inputStream : NSInputStream) {
+    init(inputStream : InputStream) {
         self.x = Streams.readInt(inputStream)
         self.y = Streams.readInt(inputStream)
         self.width = Streams.readInt(inputStream)
@@ -73,7 +73,7 @@ class Frame {
     }
     
     func draw(sprite: Sprite) {
-        sprite.factory.setTextureOfReference(sprite.reference, x: x, y: y, width: width, height: height, mirror: sprite.direction.isMirror())
+        sprite.factory.setTextureOfReference(reference: sprite.reference, x: x, y: y, width: width, height: height, mirror: sprite.direction.isMirror())
     }
     
 }
@@ -102,7 +102,7 @@ class NoAnimation : Animation {
         self.frame = frame
     }
     
-    func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval) {
+    func update(timeSinceLastUpdate: TimeInterval) {
         // Pas de traitement
     }
     
@@ -132,11 +132,11 @@ class SingleFrameAnimation : Animation {
     }
     var frame : Frame
     var speed : Float = 1
-    var frequency : NSTimeInterval
+    var frequency : TimeInterval
     
     init(definition: AnimationDefinition) {
         self.definition = definition
-        self.frequency = 1 / NSTimeInterval(definition.frequency)
+        self.frequency = 1 / TimeInterval(definition.frequency)
         self.frameIndex = 0
         if definition.frames.count > 0 {
             self.frame = definition.frames[0]
@@ -149,12 +149,12 @@ class SingleFrameAnimation : Animation {
         self.init(definition: sprite.definition.animations[animation.rawValue])
     }
     
-    func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval) {
+    func update(timeSinceLastUpdate: TimeInterval) {
         // Pas de traitement
     }
     
     func draw(sprite: Sprite) {
-        frame.draw(sprite)
+        frame.draw(sprite: sprite)
     }
     
     func transitionToNextAnimation(nextAnimation: Animation) -> Animation {
@@ -169,15 +169,15 @@ class SingleFrameAnimation : Animation {
 
 class LoopingAnimation : SingleFrameAnimation {
     
-    var time : NSTimeInterval = 0
+    var time : TimeInterval = 0
     
-    override func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval) {
-        time += timeSinceLastUpdate * NSTimeInterval(speed)
+    override func update(timeSinceLastUpdate: TimeInterval) {
+        time += timeSinceLastUpdate * TimeInterval(speed)
         
         if time >= frequency {
             let elapsedFrames = Int(time / frequency)
             self.frameIndex = (frameIndex + elapsedFrames) % definition.frames.count
-            time -= NSTimeInterval(elapsedFrames) * frequency
+            time -= TimeInterval(elapsedFrames) * frequency
         }
     }
     
@@ -198,7 +198,7 @@ class PlayOnceAnimation : SingleFrameAnimation {
         super.init(definition: definition)
     }
     
-    init(definition: AnimationDefinition, onEnd: () -> Void) {
+    init(definition: AnimationDefinition, onEnd: @escaping () -> Void) {
         self.onEnd = onEnd
         self.startDate = NSDate()
         self.called = false
@@ -206,8 +206,8 @@ class PlayOnceAnimation : SingleFrameAnimation {
         super.init(definition: definition)
     }
     
-    override func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval) {
-        let timeSinceStart = NSDate().timeIntervalSinceDate(startDate)
+    override func update(timeSinceLastUpdate: TimeInterval) {
+        let timeSinceStart = NSDate().timeIntervalSince(startDate as Date)
         let frame = Int(timeSinceStart / frequency)
         
         if frame < definition.frames.count {
@@ -234,11 +234,11 @@ class BlinkingAnimation : Animation {
     static let Pair = 2
     
     var animation : Animation
-    let onEnd : ((animation: Animation) -> Void)?
-    let duration : NSTimeInterval
+    let onEnd : ((_ animation: Animation) -> Void)?
+    let duration : TimeInterval
     
-    var time : NSTimeInterval = 0
-    let blinkRate : NSTimeInterval
+    var time : TimeInterval = 0
+    let blinkRate : TimeInterval
     
     private var visible = true
     
@@ -272,31 +272,31 @@ class BlinkingAnimation : Animation {
         }
     }
     
-    init(animation: Animation, blinkRate: NSTimeInterval = 0.2, duration: NSTimeInterval = 0, onEnd:((animation: Animation) -> Void)? = nil) {
+    init(animation: Animation, blinkRate: TimeInterval = 0.2, duration: TimeInterval = 0, onEnd:((_ animation: Animation) -> Void)? = nil) {
         self.animation = animation
         self.onEnd = onEnd
         self.duration = duration
         self.blinkRate = blinkRate
     }
     
-    func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval) {
+    func update(timeSinceLastUpdate: TimeInterval) {
         self.time += timeSinceLastUpdate
         
         let frame = Int(time / blinkRate)
         self.visible = (frame % BlinkingAnimation.Pair) == 0
         
-        if let onEnd = self.onEnd where time >= duration {
-            onEnd(animation: animation)
+        if let onEnd = self.onEnd, time >= duration {
+            onEnd(animation)
         }
         
-        animation.updateWithTimeSinceLastUpdate(timeSinceLastUpdate)
+        animation.update(timeSinceLastUpdate: timeSinceLastUpdate)
     }
     
     func draw(sprite: Sprite) {
         if visible {
-            animation.draw(sprite)
+            animation.draw(sprite: sprite)
         } else {
-            sprite.factory.clearTextureOfSprite(sprite)
+            sprite.factory.clearTextureOfSprite(sprite: sprite)
         }
     }
     

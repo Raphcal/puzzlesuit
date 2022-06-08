@@ -31,7 +31,7 @@ typedef NS_ENUM(NSInteger, Sound) {
 - (void)playStreamAtURL:(NSURL * _Nonnull)url;
 
 /// Lecture d'une musique de fond et exécution d'un 
-- (void)playOnceStreamAtURL:(NSURL * _Nonnull)url withCompletionBlock:(void (^ _Nonnull)()) block;
+- (void)playOnceStreamAtURL:(NSURL * _Nonnull)url withCompletionBlock:(void (^ _Nonnull)(void)) block;
 
 /// Arrêt de la musique de fond en cours de lecture.
 - (void)stopStream;

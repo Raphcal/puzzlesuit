@@ -14,7 +14,7 @@ class EmptyScene : NSObject, Scene {
     var director : Director!
     var backgroundColor = Color()
     
-    func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval) {
+    func update(timeSinceLastUpdate: TimeInterval) {
         // Pas de mise à jour.
     }
     

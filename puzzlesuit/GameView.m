@@ -69,6 +69,7 @@
 }
 
 - (void)reshape {
+    [super reshape];
     CGLLockContext([[self openGLContext] CGLContextObj]);
     
     CGRect bounds = self.bounds;

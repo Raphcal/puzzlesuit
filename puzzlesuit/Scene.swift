@@ -14,19 +14,19 @@ import Foundation
     var backgroundColor : Color { get set }
     
     /// Chargement initial de la scène. Appelé lors d'une transition vers cette scène.
-    optional func load()
+    @objc optional func load()
     
     /// Rechargement de la scène. La scène est déjà affiché mais elle doit être rechargée (exemple : mort).
-    optional func reload()
+    @objc optional func reload()
     
     /// Libération de la scène. Appelé lors de la transition vers une autre scène.
-    optional func unload()
+    @objc optional func unload()
     
     /// La vue devient la scène principale du directeur.
-    optional func willAppear()
+    @objc optional func willAppear()
     
     /// Gestion de la mise à jour de la scène.
-    func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval)
+    func update(timeSinceLastUpdate: TimeInterval)
     
     /// Affichage de la scène.
     func draw()
@@ -35,7 +35,7 @@ import Foundation
 
 protocol PreloadableScene : Scene {
     
-    func loadInBackground(operationQueue: NSOperationQueue)
+    func loadInBackground(operationQueue: OperationQueue)
     
 }
 
@@ -59,7 +59,7 @@ class NoFade : NSObject, Fade {
         // Pas de dessin.
     }
     
-    func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval) {
+    func update(timeSinceLastUpdate: TimeInterval) {
         // Pas de mise à jour.
     }
     

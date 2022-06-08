@@ -11,7 +11,7 @@ import GLKit
 class Camera : Square {
     
     static let instance = Camera()
-    static let defaultMoveTime : NSTimeInterval = 1
+    static let defaultMoveTime : TimeInterval = 1
     
     /// Cadre dans lequel se déplace la caméra.
     var frame : Square
@@ -29,8 +29,8 @@ class Camera : Square {
         super.init(left: 0, top: 0, width: width, height: height)
     }
     
-    func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval) {
-        let center = motion.locationWithTimeSinceLastUpdate(timeSinceLastUpdate)
+    func update(timeSinceLastUpdate: TimeInterval) {
+        let center = motion.locationWithTimeSinceLastUpdate(timeSinceLastUpdate: timeSinceLastUpdate)
         
         self.x = max(min(center.x, frame.right - width / 2), frame.left + width / 2)
         self.y = max(min(center.y, frame.bottom - height / 2), frame.top + height / 2) + offsetY
@@ -42,11 +42,11 @@ class Camera : Square {
     }
     
     func isSpriteInView(sprite: Sprite) -> Bool {
-        return SimpleHitbox(center: self, width: width + sprite.width, height: height + sprite.height).collidesWith(sprite)
+        return SimpleHitbox(center: self, width: width + sprite.width, height: height + sprite.height).collidesWith(sprite: sprite)
     }
     
     func removeSpriteIfOutOfView(sprite: Sprite) {
-        if !isSpriteInView(sprite) {
+        if !isSpriteInView(sprite: sprite) {
             sprite.destroy()
         }
     }
@@ -55,7 +55,7 @@ class Camera : Square {
 
 protocol CameraMotion {
     
-    func locationWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval) -> Spot
+    func locationWithTimeSinceLastUpdate(timeSinceLastUpdate: TimeInterval) -> Spot
  
     func to(other: CameraMotion) -> CameraMotion
     
@@ -63,7 +63,7 @@ protocol CameraMotion {
 
 class NoCameraMotion : CameraMotion {
     
-    func locationWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval) -> Spot {
+    func locationWithTimeSinceLastUpdate(timeSinceLastUpdate: TimeInterval) -> Spot {
         return Camera.instance
     }
     

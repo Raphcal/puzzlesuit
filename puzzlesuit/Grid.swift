@@ -33,7 +33,7 @@ class Grid : NSObject {
     // MARK: Affichage.
     
     func draw() {
-        drawFrom(0, to: map.layers.count)
+        drawFrom(from: 0, to: map.layers.count)
     }
     
     func drawFrom(from: Int, to: Int) {
@@ -57,9 +57,9 @@ class Grid : NSObject {
             
             for y in 0..<layer.height {
                 for x in 0..<layer.width {
-                    if let tile = layer.tileAtX(x, y: y) {
+                    if let tile = layer.tileAtX(x: x, y: y) {
                         vertexPointer.appendQuad(x + layer.topLeft.x, y: y + layer.topLeft.y)
-                        texCoordPointer.appendTile(tile, fromPalette: palette)
+                        texCoordPointer.appendTile(tile, from: palette)
                     }
                 }
             }
@@ -111,9 +111,9 @@ class Backdrop {
             
             for y in top..<top + Backdrop.height {
                 for x in left..<left + Backdrop.width {
-                    if let tile = layer.tileAtX(x % layer.width, y: y % layer.height) {
+                    if let tile = layer.tileAtX(x: x % layer.width, y: y % layer.height) {
                         vertexPointer.appendQuad(Surfaces.tileSize, height: Surfaces.tileSize, left: GLfloat(x) * Surfaces.tileSize - cameraLeft, top: GLfloat(y) * Surfaces.tileSize - cameraTop, distance: 0)
-                        texCoordPointer.appendTile(tile, fromPalette: palette)
+                        texCoordPointer.appendTile(tile, from: palette)
                     }
                 }
             }

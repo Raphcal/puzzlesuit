@@ -8,7 +8,7 @@
 
 import GLKit
 
-typealias MenuItemListener = (item: MenuItem) -> Void
+typealias MenuItemListener = (_ item: MenuItem) -> Void
 
 protocol MenuItem {
     
@@ -86,7 +86,7 @@ class Menu {
     
     init(factory: SpriteFactory, layout: Layout? = nil) {
         self.factory = factory
-        self.cursor = factory.sprite(Sprite.cursorDefinition)
+        self.cursor = factory.sprite(definition: Sprite.cursorDefinition)
         self.layout = layout
     }
     
@@ -95,30 +95,30 @@ class Menu {
         item.value = value
         item.text.alignment = alignment
         
-        if let location = layout?.pointForItem(item) {
-            item.text.moveToLocation(location)
+        if let location = layout?.pointForItem(item: item) {
+            item.text.moveToLocation(location: location)
         }
         
         self.items.append(item)
         
         if selection == -1 {
-            selectItemAtIndex(0)
+            selectItemAtIndex(index: 0)
         }
     }
     
     func update() {
         if Input.instance.touches.count == 1 {
             let touch = Input.instance.touches.values.first!
-            if let index = itemIndexForTouch(touch) {
-                selectItemAtIndex(index)
-                onSelection?(item: selectedItem)
+            if let index = itemIndexForTouch(touch: touch) {
+                selectItemAtIndex(index: index)
+                onSelection?(selectedItem)
             }
-        } else if Input.instance.pressed(.Down) {
-            selectItemAtIndex(selection + 1)
-        } else if Input.instance.pressed(.Up) {
-            selectItemAtIndex(selection - 1)
-        } else if Input.instance.pressed(.Start) {
-            onSelection?(item: selectedItem)
+        } else if Input.instance.pressed(button: .Down) {
+            selectItemAtIndex(index: selection + 1)
+        } else if Input.instance.pressed(button: .Up) {
+            selectItemAtIndex(index: selection - 1)
+        } else if Input.instance.pressed(button: .Start) {
+            onSelection?(selectedItem)
         }
     }
     
@@ -134,7 +134,7 @@ class Menu {
         let point = Spot(x: touch.x * ratio, y: touch.y * ratio)
         
         for index in 0..<items.count {
-            if SimpleHitbox(square: items[index].square).collidesWith(point) {
+            if SimpleHitbox(square: items[index].square).collidesWith(point: point) {
                 return index
             }
         }

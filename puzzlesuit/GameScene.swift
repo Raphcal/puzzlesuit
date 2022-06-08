@@ -26,8 +26,8 @@ class GameScene : NSObject, Scene {
         let size = Spot(x: unit * GLfloat(Board.columns), y: unit * GLfloat(Board.rows))
         let generator = Generator(capacity: 256)
         
-        self.leftPlayerGameFlow = flowWithGenerator(generator, size: size, side: .Left)
-        self.rightPlayerGameFlow = flowWithGenerator(generator, size: size, side: .Right)
+        self.leftPlayerGameFlow = flow(generator: generator, size: size, side: .Left)
+        self.rightPlayerGameFlow = flow(generator: generator, size: size, side: .Right)
         
         leftPlayerGameFlow.controller = Input.instance
         rightPlayerGameFlow.controller = Opponent.Second.controller
@@ -40,30 +40,30 @@ class GameScene : NSObject, Scene {
     
     func unload() {
         if let grid = self.grid {
-            Resources.releaseTexture(grid.palette.texture)
+            Resources.release(texture: grid.palette.texture)
         }
     }
     
-    func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval) {
+    func update(timeSinceLastUpdate: TimeInterval) {
         // Limitation du lag
         let time = min(timeSinceLastUpdate, 0.1)
         
-        boardFactory.updateWithTimeSinceLastUpdate(time)
-        uiFactory.updateWithTimeSinceLastUpdate(time)
+        boardFactory.update(timeSinceLastUpdate: time)
+        uiFactory.update(timeSinceLastUpdate: time)
         
-        leftPlayerGameFlow.updateWithTimeSinceLastUpdate(time)
-        rightPlayerGameFlow.updateWithTimeSinceLastUpdate(time)
+        leftPlayerGameFlow.update(timeSinceLastUpdate: time)
+        rightPlayerGameFlow.update(timeSinceLastUpdate: time)
     }
     
     func draw() {
-        grid?.drawFrom(0, to: 1)
+        grid?.drawFrom(from: 0, to: 1)
         boardFactory.draw()
-        grid?.drawFrom(1, to: 3)
+        grid?.drawFrom(from: 1, to: 3)
         uiFactory.draw()
     }
 
-    private func flowWithGenerator(generator: Generator, size: Spot, side: Side) -> GameFlow {
-        let board = Board(factory: boardFactory, square: Square(left: side.boardLeft(size), top: 32, width: size.x, height: size.y))
+    private func flow(generator: Generator, size: Spot, side: Side) -> GameFlow {
+        let board = Board(factory: boardFactory, square: Square(left: side.boardLeft(size: size), top: 32, width: size.x, height: size.y))
         return GameFlow(side: side, board: board, generator: generator, factory: uiFactory)
     }
     

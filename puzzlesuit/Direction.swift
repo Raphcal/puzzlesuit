@@ -17,7 +17,7 @@ enum Direction : Int {
     private static let values : [GLfloat] = [-1, 1, -1, 1]
     private static let reverses : [Direction] = [.Right, .Left, .Down, .Up]
     private static let axes : [Axe] = [.Horizontal, .Horizontal, .Vertical, .Vertical]
-    private static let angles : [GLfloat] = [GLfloat(M_PI), 0, GLfloat(M_PI + M_PI_2), GLfloat(M_PI_2)]
+    private static let angles : [GLfloat] = [GLfloat.pi, 0, GLfloat.pi + .pi / 2, GLfloat.pi / 2]
     private static let locations = [BoardLocation(x: -1, y: 0), BoardLocation(x: 1, y: 0), BoardLocation(x: 0, y: -1), BoardLocation(x: 0, y: 1)]
     
     func value() -> GLfloat {

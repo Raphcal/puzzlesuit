@@ -14,7 +14,7 @@ enum GameFlowState {
     
 }
 
-enum GameError : ErrorType {
+enum GameError : Error {
     
     case Lost
     
@@ -36,7 +36,7 @@ class GameFlow {
     
     var preview = [Sprite]()
     
-    var pause : NSTimeInterval = 0
+    var pause : TimeInterval = 0
     var nextState = GameFlowState.NewHand
     
     var controller : Controller = NoController()
@@ -63,11 +63,11 @@ class GameFlow {
         self.side = side
         self.board = board
         self.generator = generator
-        self.nextHand = [generator.cardForState(generatorState), generator.cardForState(generatorState)]
+        self.nextHand = [generator.cardForState(state: generatorState), generator.cardForState(state: generatorState)]
         self.factory = factory
     }
     
-    func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval) {
+    func update(timeSinceLastUpdate: TimeInterval) {
         switch state {
         case .Initial:
             updateInitial()
@@ -80,7 +80,7 @@ class GameFlow {
         case .Resolve:
             updateResolve()
         case .Pause:
-            updatePause(timeSinceLastUpdate)
+            updatePause(timeSinceLastUpdate: timeSinceLastUpdate)
         case .Commit:
             updateCommit()
         case .ChipFall:
@@ -100,7 +100,7 @@ class GameFlow {
         }
         
         for index in 0..<2 {
-            let sprite = factory.sprite(0)
+            let sprite = factory.sprite(definition: 0)
             sprite.size = board.cardSize
             if side == .Left {
                 sprite.left = board.right + board.cardSize.x
@@ -111,13 +111,13 @@ class GameFlow {
             preview.append(sprite)
         }
         
-        EventBus.instance.setListener({ (value) in
+        EventBus.instance.setListener(listener: { (value) in
             self.receivedChips += value as! Int
             }, forEvent: side.oppositeSide().event(), parent: self)
     }
     
     private func updateNewHand() {
-        self.hand = board.spritesForMainCard(nextHand[0], andExtraCard: nextHand[1])
+        self.hand = board.spritesForMainCard(mainCard: nextHand[0], andExtraCard: nextHand[1])
         self.chainCount = 0
         self.chips = 0
 
@@ -128,14 +128,14 @@ class GameFlow {
         extra.motion = ExtraCardMotion(board: board, main: main, controller: controller)
         
         let hand = nextHand
-        self.nextHand = [generator.cardForState(generatorState), generator.cardForState(generatorState)]
+        self.nextHand = [generator.cardForState(state: generatorState), generator.cardForState(state: generatorState)]
         
         // Aperçu de la main suivante
         for index in 0..<preview.count {
-            updatePreviewSprite(preview[index], withCard: nextHand[index])
+            updatePreviewSprite(sprite: preview[index], withCard: nextHand[index])
         }
         
-        (controller as? Cpu)?.handChanged(hand, nextHand: nextHand)
+        (controller as? Cpu)?.handChanged(hand: hand, nextHand: nextHand)
         
         self.state = .Play
     }
@@ -144,10 +144,10 @@ class GameFlow {
         for sprite in hand {
             let rotating = (sprite.motion as? CanRotate)?.rotating == true
             
-            if !rotating && board.isSpriteAboveSomething(sprite) {
+            if !rotating && board.isSpriteAboveSomething(sprite: sprite) {
                 (sprite.motion as? Linked)?.linkedSprite.motion = FallMotion(board: board)
                 sprite.motion = NoMotion()
-                board.attachSprite(sprite)
+                board.attachSprite(sprite: sprite)
                 hand.removeAll()
                 
                 self.state = .Chain
@@ -169,7 +169,7 @@ class GameFlow {
         }
         
         if !hands.isEmpty {
-            chainCount++
+            chainCount += 1
         }
         
         if board.marked.count > 0 {
@@ -181,7 +181,7 @@ class GameFlow {
         }
     }
     
-    private func updatePause(timeSinceLastUpdate: NSTimeInterval) {
+    private func updatePause(timeSinceLastUpdate: TimeInterval) {
         self.pause -= timeSinceLastUpdate
         
         if pause < 0 {
@@ -203,10 +203,10 @@ class GameFlow {
                 NSLog("\(chainCount)x combo")
             }
             if chips > 0 {
-                sendChipsToOppositeSide(chips * chainCount)
+                sendChipsToOppositeSide(chips: chips * chainCount)
             }
             if receivedChips > 0 {
-                board.spritesForChips(receivedChips)
+                board.spritesForChips(chips: receivedChips)
                 self.receivedChips = 0
                 self.state = .ChipFall
             } else {
@@ -227,7 +227,7 @@ class GameFlow {
         sprite.animation = SingleFrameAnimation(definition: sprite.factory.definitions[card.suit.rawValue].animations[0])
         sprite.animation.frameIndex = card.rank.rawValue
         
-        sprite.factory.updateLocationOfSprite(sprite)
+        sprite.factory.updateLocationOfSprite(sprite: sprite)
     }
     
     private func updateReceivedChipsPreview() {
@@ -244,9 +244,10 @@ class GameFlow {
         
         var total = receivedChips
         var left = board.left
-        for var index = 0; total > 0; index++ {
+        var index = 0
+        while total > 0 {
             let definition : Int
-            
+
             if total >= redChip {
                 total -= redChip
                 definition = 7
@@ -254,25 +255,26 @@ class GameFlow {
                 total -= chipStack
                 definition = 6
             } else {
-                total--
+                total -= 1
                 definition = 5
             }
-            
-            let preview = factory.sprite(definition)
+
+            let preview = factory.sprite(definition: definition)
             preview.width /= 2
             preview.height /= 2
             preview.left = left
             preview.bottom = board.top - bottomMargin
-            factory.updateLocationOfSprite(preview)
-            
+            factory.updateLocationOfSprite(sprite: preview)
+
             left += preview.width + rightMargin
-            
+
             chipPreview.append(preview)
+            index += 1
         }
     }
     
     private func sendChipsToOppositeSide(chips: Int) {
-        EventBus.instance.fireEvent(side.event(), withValue: chips)
+        EventBus.instance.fireEvent(event: side.event(), withValue: chips)
     }
     
 }

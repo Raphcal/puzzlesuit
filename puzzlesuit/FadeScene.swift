@@ -22,22 +22,22 @@ class FadeScene : NSObject, Fade {
     var firstScene : Bool = true
     
     var progress : GLfloat = 0
-    var time : NSTimeInterval = 0
-    let duration : NSTimeInterval = 1
+    var time : TimeInterval = 0
+    let duration : TimeInterval = 1
     
     let vertexPointer : UnsafeMutablePointer<GLfloat>
     let colorPointer : UnsafeMutablePointer<GLfloat>
     
     override init() {
-        self.vertexPointer = UnsafeMutablePointer<GLfloat>.alloc(Surfaces.vertexesByQuad * Surfaces.coordinatesByVertice)
-        self.colorPointer = UnsafeMutablePointer<GLfloat>.alloc(Surfaces.vertexesByQuad * Surfaces.colorComposants)
+        self.vertexPointer = UnsafeMutablePointer<GLfloat>.allocate(capacity: Surfaces.vertexesByQuad * Surfaces.coordinatesByVertice)
+        self.colorPointer = UnsafeMutablePointer<GLfloat>.allocate(capacity: Surfaces.vertexesByQuad * Surfaces.colorComposants)
         
-        Surfaces.setQuad(self.vertexPointer, index: 0, width: View.instance.width, height: View.instance.height * 3, left: 0, top: 0)
+        Surfaces.setQuad(buffer: self.vertexPointer, index: 0, width: View.instance.width, height: View.instance.height * 3, left: 0, top: 0)
     }
     
     deinit {
-        self.vertexPointer.destroy()
-        self.colorPointer.destroy()
+        self.vertexPointer.deallocate()
+        self.colorPointer.deallocate()
     }
     
     func load() {
@@ -46,7 +46,7 @@ class FadeScene : NSObject, Fade {
         self.backgroundColor = previousScene.backgroundColor
     }
     
-    func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval) {
+    func update(timeSinceLastUpdate: TimeInterval) {
         self.time += timeSinceLastUpdate
         self.progress = min(GLfloat(time / duration), fullProgress)
         
@@ -57,7 +57,7 @@ class FadeScene : NSObject, Fade {
             firstScene = false
             // TODO: Charger ici la seconde scène ?
             nextScene.willAppear?()
-            nextScene.updateWithTimeSinceLastUpdate(0)
+            nextScene.update(timeSinceLastUpdate: 0)
             self.backgroundColor = nextScene.backgroundColor
         }
     }
@@ -72,7 +72,7 @@ class FadeScene : NSObject, Fade {
             nextScene.draw()
         }
         
-        Surfaces.setBlackColor(self.colorPointer, index: 0, to: Surfaces.vertexesByQuad * Surfaces.colorComposants, alpha: darkness)
+        Surfaces.setBlackColor(buffer: self.colorPointer, index: 0, to: Surfaces.vertexesByQuad * Surfaces.colorComposants, alpha: darkness)
         
         Draws.drawWithVertexPointer(self.vertexPointer, colorPointer: self.colorPointer, count: GLsizei(Surfaces.vertexesByQuad))
     }

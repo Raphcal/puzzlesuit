@@ -43,6 +43,6 @@ func != (left: BoardLocation, right: BoardLocation) -> Bool {
     return left.x != right.x || left.y != right.y
 }
 
-func += (inout left: BoardLocation, right: BoardLocation) {
+func += (left: inout BoardLocation, right: BoardLocation) {
     left = left + right
 }

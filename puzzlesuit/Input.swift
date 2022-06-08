@@ -60,16 +60,16 @@ class Input : NSObject, Controller {
         self.previousTouchCount = touchCount
         self.touchCount = touches.count
         
-        controller.updateWithTouches(touches)
+        controller.updateWithTouches(touches: touches)
     }
     
     func pressed(button: GamePadButton) -> Bool {
         // TODO: Inverser le fonctionnement de cette méthode. Enregistrer des listeners par scène plutôt que de faire du polling.
-        return controller.pressed(button)
+        return controller.pressed(button: button)
     }
     
     func pressing(button: GamePadButton) -> Bool {
-        return controller.pressing(button)
+        return controller.pressing(button: button)
     }
     
     func draw() {

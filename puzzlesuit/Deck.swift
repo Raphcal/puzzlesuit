@@ -16,7 +16,7 @@ class Deck {
         if cards.count == 0 {
             fillDeck()
         }
-        return cards.removeAtIndex(Random.next(cards.count))
+        return cards.remove(at: Random.next(range: cards.count))
     }
     
     private func fillDeck() {

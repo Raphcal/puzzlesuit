@@ -17,7 +17,7 @@
 
 @implementation SurfaceArray
 
-- (id)initWithCapacity:(NSInteger)capacity coordinates:(NSInteger)coordinates {
+- (id _Nonnull)initWithCapacity:(NSInteger)capacity coordinates:(NSInteger)coordinates {
     self = [super init];
     if (self) {
         NSInteger total = capacity * coordinates;

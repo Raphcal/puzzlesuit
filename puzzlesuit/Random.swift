@@ -18,8 +18,8 @@ class Random {
 	}
 	
     /// Renvoi un nombre décimal compris entre 0.0 et range - 0.0...1
-	static func next(range: NSTimeInterval) -> NSTimeInterval {
-		return NSTimeInterval(Double(arc4random()) / Double(Random.maximumValue)) * range
+	static func next(range: TimeInterval) -> TimeInterval {
+		return TimeInterval(Double(arc4random()) / Double(Random.maximumValue)) * range
 	}
     
     /// Renvoi un entier généré pseudo aléatoirement entre 0 et range - 1

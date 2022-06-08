@@ -18,7 +18,7 @@ class ReferencePool {
     
     init(capacity: Int) {
         var available = [Int]()
-        for var reference = capacity - 1; reference >= 0; reference-- {
+        for reference in stride(from: capacity - 1, through: 0, by: -1) {
             available.append(reference)
         }
         self.available = available
@@ -43,11 +43,11 @@ class ReferencePool {
     }
     
     func nextReferenceAfter(other: Int) -> Int {
-        for var index = available.count - 1; index >= 0; index-- {
+        for index in stride(from: available.count - 1, through: 0, by: -1) {
             let reference = available[index]
-            
+
             if reference > other {
-                available.removeAtIndex(index)
+                available.remove(at: index)
                 return reference
             }
         }
@@ -56,7 +56,7 @@ class ReferencePool {
     
     func next(other: Int?) -> Int {
         if let reference = other {
-            return nextReferenceAfter(reference)
+            return nextReferenceAfter(other: reference)
         } else {
             return nextReference()
         }

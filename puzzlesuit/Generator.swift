@@ -13,7 +13,9 @@ class GeneratorState {
     private var count = 0
     
     func next() -> Int {
-        return count++
+        let next = count
+        count += 1
+        return next
     }
     
 }
@@ -28,7 +30,7 @@ class Generator {
     
     init(capacity: Int) {
         let deck = Deck()
-        self.cards = (0..<capacity).flatMap({ _ in deck.next() })
+        self.cards = (0 ..< capacity).map { _ in deck.next() }
     }
     
     func cardForState(state: GeneratorState) -> Card {

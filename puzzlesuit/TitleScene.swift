@@ -17,8 +17,8 @@ class TitleScene : NSObject, Scene {
         // TODO: À écrire.
     }
     
-    func updateWithTimeSinceLastUpdate(timeSinceLastUpdate: NSTimeInterval) {
-        if Input.instance.pressed(.Start) {
+    func update(timeSinceLastUpdate: TimeInterval) {
+        if Input.instance.pressed(button: .Start) {
             director.nextScene = GameScene()
         }
     }
